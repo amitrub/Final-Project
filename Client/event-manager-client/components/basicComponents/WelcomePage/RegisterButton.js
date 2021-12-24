@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import Colors from "../../../constants/colors";
 
-const Button = (props) => {
+const RegisterButton = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        console.log("try");
+        props.navi.navigate({ routeName: "Register" });
       }}
     >
       <View style={styles.button}>
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default RegisterButton;

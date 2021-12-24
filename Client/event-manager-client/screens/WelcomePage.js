@@ -1,13 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Button from "../components/basicComponents/WelcomePage/Button";
+import RegisterButton from "../components/basicComponents/WelcomePage/RegisterButton";
 import LogoImage from "../components/basicComponents/WelcomePage/LogoImage";
 import Colors from "../constants/colors";
 
-const WelcomePage = () => {
+const WelcomePage = (props) => {
   return (
     <View style={styles.screen}>
-      <View style={{ paddingTop: "20%" }}>
+      <View style={{ paddingTop: "10%" }}>
         <LogoImage />
       </View>
 
@@ -16,8 +16,8 @@ const WelcomePage = () => {
       </View>
 
       <View style={{ paddingTop: "25%" }}>
-        <Button text={"Register with Google"} />
-        <Button text={"Register"} />
+        <RegisterButton text={"Register with Google"} navi={props.navigation} />
+        <RegisterButton text={"Register"} navi={props.navigation} />
       </View>
     </View>
   );

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import WelcomePage from "./screens/WelcomePage";
+import { StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
+import ScreenNavigation from "./navigation/ScreenNavigation";
 
 const fetchFonts = () => {
-  console.log("in fetch fonts");
   return Font.loadAsync({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
@@ -18,8 +17,7 @@ export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   if (!dataLoaded) {
-    console.log("in if");
-
+    console.log("Uploading data...");
     return (
       <AppLoading
         startAsync={fetchFonts}
@@ -28,14 +26,8 @@ export default function App() {
       />
     );
   }
-  console.log("outside if");
 
-  return (
-    <View style={styles.screen}>
-      {/*<Header title={"Event Manager App"}> </Header>*/}
-      <WelcomePage />
-    </View>
-  );
+  return <ScreenNavigation />;
 }
 
 const styles = StyleSheet.create({
