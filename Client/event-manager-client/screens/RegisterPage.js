@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import Colors from "../constants/colors";
 
 const RegisterPage = (props) => {
-  console.log(props);
+  //console.log(props);
   return (
     <View style={styles.screen}>
       <View style={{ paddingTop: "15%" }}>

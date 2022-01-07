@@ -16,8 +16,16 @@ const WelcomePage = (props) => {
       </View>
 
       <View style={{ paddingTop: "25%" }}>
-        <RegisterButton text={"Register with Google"} navi={props.navigation} />
-        <RegisterButton text={"Register"} navi={props.navigation} />
+        <RegisterButton
+          text={"Register with Google"}
+          navi={props.navigation}
+          navToPage={"Register"}
+        />
+        <RegisterButton
+          text={"Register"}
+          navi={props.navigation}
+          navToPage={"Register"}
+        />
       </View>
     </View>
   );
