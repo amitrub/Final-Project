@@ -76,12 +76,25 @@ WSGI_APPLICATION = 'server_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# Local
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# Remote
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         "NAME": "Cyou_Prod_Setuptool",
+#         "HOST": "52.233.237.178",
+#         "USER": "sa",
+#         "PASSWORD": "DBking678",
+#         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server",},
+#     }
+# }
 
 
 # Password validation
