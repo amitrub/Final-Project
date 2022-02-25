@@ -55,6 +55,16 @@ class UserProfileSupplierViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email',)
 
+class SupplierProductViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating profiles"""
+    serializer_class = serializers.SupplierProductSerializer
+    queryset = models.SupplierProduct.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('supplier', 'product',)
+
+
 class EventViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
     serializer_class = serializers.EventSerializer
@@ -72,11 +82,11 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer.save(event_manager=user)
 
 
-
     def perform_update(self, serializer):
         """Sets the user profile to the logged in user"""
         user = UserProfileEventManager.objects.get(pk=self.request.user.id)
         serializer.save(event_manager=user)
+
 
 class EventScheduleViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
@@ -88,4 +98,32 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
         IsAuthenticated,
     )
 
+class EventOwnerViewSet(viewsets.ModelViewSet):
+    """Handle creating, reading and updating profiles feed items"""
+    serializer_class = serializers.EventOwnerSerializer
+    queryset = models.EventOwner.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (
+        permissions.UpdateOwnEventOwner,
+        IsAuthenticated,
+    )
 
+class EventSupplierViewSet(viewsets.ModelViewSet):
+    """Handle creating, reading and updating profiles feed items"""
+    serializer_class = serializers.EventSupplierSerializer
+    queryset = models.EventSupplier.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (
+        permissions.UpdateOwnEventSupplier,
+        IsAuthenticated,
+    )
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    """Handle creating, reading and updating profiles feed items"""
+    serializer_class = serializers.PaymentSerializer
+    queryset = models.Payment.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (
+        permissions.PaymentUpdate,
+        IsAuthenticated,
+    )
