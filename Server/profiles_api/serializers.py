@@ -2,10 +2,6 @@ from rest_framework import serializers
 
 from profiles_api import models
 
-class HelloSerializer(serializers.Serializer):
-    """Serializes a name field for testing our APIView"""
-    name = serializers.CharField(max_length=10)
-
 # -------------------User-------------------
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -163,22 +159,4 @@ class EventScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EventSchedule
         fields = ('id', 'event', 'start_time', 'end_time', 'description')
-        # extra_kwargs = {
-        #     'event_manager': {
-        #         'read_only': True
-        #     }
-        # }
 
-
-
-class ProfileFeedItemSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.ProfileFeedItem
-        fields = ('id', 'user_profile', 'status_text', 'create_on')
-        extra_kwargs = {
-            'user_profile': {
-                'read_only': True
-            }
-        }

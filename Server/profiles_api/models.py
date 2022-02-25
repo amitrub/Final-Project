@@ -61,7 +61,6 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 # -------------------EventManager-------------------
 
-
 class UserProfileEventManager(UserProfile):
     class Meta:
         proxy = False
@@ -75,7 +74,6 @@ class UserProfileEventOwner(UserProfile):
     class Meta:
         proxy = False
     objects = UserProfileManager()
-
 
 # -------------------Supplier-------------------
 
@@ -139,19 +137,6 @@ class EventSchedule(models.Model):
         """Return the model as a string"""
         return self.description
 
-
-class ProfileFeedItem(models.Model):
-    """Profile status update"""
-    user_profile = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    status_text = models.CharField(max_length=255)
-    create_on = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        """Return the model as a string"""
-        return self.status_text
 
 
 
