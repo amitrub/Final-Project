@@ -1,8 +1,6 @@
 from rest_framework import permissions
 
-from profiles_api.models import UserProfileEventManager
-
-from Server.profiles_api.models import UserProfileEventOwner, UserProfileSupplier
+from Server.profiles_api.models import UserProfileEventOwner, UserProfileSupplier, UserProfileEventManager
 
 
 class UpdateOwnProfile(permissions.BasePermission):
