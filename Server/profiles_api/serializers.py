@@ -2,6 +2,9 @@ from rest_framework import serializers
 
 from profiles_api import models
 
+class HelloSerializer(serializers.Serializer):
+    """Serializes a name field for testing our APIView"""
+    name = serializers.CharField(max_length=10)
 
 # -------------------User-------------------
 
@@ -17,7 +20,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
                 'style': {'input_type': 'password'}
             }
         }
-
     def create(self, validated_data):
         """Create and return new user"""
         user = models.UserProfile.objects.create_user(
@@ -38,7 +40,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-
 # -------------------EventManager-------------------
 
 class UserProfileEventManagerSerializer(serializers.ModelSerializer):
@@ -53,7 +54,6 @@ class UserProfileEventManagerSerializer(serializers.ModelSerializer):
                 'style': {'input_type': 'password'}
             }
         }
-
     def create(self, validated_data):
         """Create and return new user"""
         user = models.UserProfileEventManager.objects.create_user(
@@ -74,7 +74,6 @@ class UserProfileEventManagerSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-
 # -------------------EventOwner-------------------
 
 class UserProfileEventOwnerSerializer(serializers.ModelSerializer):
@@ -89,7 +88,6 @@ class UserProfileEventOwnerSerializer(serializers.ModelSerializer):
                 'style': {'input_type': 'password'}
             }
         }
-
     def create(self, validated_data):
         """Create and return new user"""
         user = models.UserProfileEventOwner.objects.create_user(
@@ -109,7 +107,6 @@ class UserProfileEventOwnerSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-
 # -------------------Supplier-------------------
 
 class UserProfileSupplierSerializer(serializers.ModelSerializer):
@@ -124,7 +121,6 @@ class UserProfileSupplierSerializer(serializers.ModelSerializer):
                 'style': {'input_type': 'password'}
             }
         }
-
     def create(self, validated_data):
         """Create and return new user"""
         user = models.UserProfileSupplier.objects.create_user(
@@ -145,17 +141,6 @@ class UserProfileSupplierSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-
-# -------------------SupplierProduct-------------------
-
-class SupplierProductSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.SupplierProduct
-        fields = ('supplier', 'product')
-
-
 # -------------------Event-------------------
 
 class EventSerializer(serializers.ModelSerializer):
@@ -170,7 +155,6 @@ class EventSerializer(serializers.ModelSerializer):
             }
         }
 
-
 # -------------------EventSchedule-------------------
 
 class EventScheduleSerializer(serializers.ModelSerializer):
@@ -179,42 +163,22 @@ class EventScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EventSchedule
         fields = ('id', 'event', 'start_time', 'end_time', 'description')
+        # extra_kwargs = {
+        #     'event_manager': {
+        #         'read_only': True
+        #     }
+        # }
 
 
-# -------------------EventOwner-------------------
 
-class EventOwnerSerializer(serializers.ModelSerializer):
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
     """Serializer profile feed items"""
 
     class Meta:
-        model = models.EventOwner
-        fields = ('id', 'event_owner', 'event')
+        model = models.ProfileFeedItem
+        fields = ('id', 'user_profile', 'status_text', 'create_on')
         extra_kwargs = {
-            'event': {
+            'user_profile': {
                 'read_only': True
             }
         }
-
-
-# -------------------EventSupplier-------------------
-
-class EventSupplierSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.EventOwner
-        fields = ('id', 'event_owner', 'event')
-        extra_kwargs = {
-            'event': {
-                'read_only': True
-            }
-        }
-
-# -------------------Payment-------------------
-
-class PaymentSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.Paymenr
-        fields = ('id', 'from_user', 'to_user', 'date', 'amount')

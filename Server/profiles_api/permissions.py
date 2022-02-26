@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from Server.profiles_api.models import UserProfileEventOwner, UserProfileSupplier, UserProfileEventManager
+from profiles_api.models import UserProfileEventManager
 
 
 class UpdateOwnProfile(permissions.BasePermission):
@@ -13,7 +13,6 @@ class UpdateOwnProfile(permissions.BasePermission):
 
         return obj.id == request.user.id
 
-
 class UpdateOwnEvent(permissions.BasePermission):
     """Allow users to update their own status"""
 
@@ -24,13 +23,13 @@ class UpdateOwnEvent(permissions.BasePermission):
         id = request.user.id
         return UserProfileEventManager.objects.filter(pk=id).exists()
 
+
     def has_object_permission(self, request, view, obj):
         """Check the user is trying to update their own status"""
         # if request.method in permissions.SAFE_METHODS:
         #     return True
 
         return obj.event_manager.id == request.user.id
-
 
 class UpdateOwnEventSchedule(permissions.BasePermission):
     """Allow users to update their own status"""
@@ -42,44 +41,18 @@ class UpdateOwnEventSchedule(permissions.BasePermission):
         id = request.user.id
         return UserProfileEventManager.objects.filter(pk=id).exists()
 
+
     def has_object_permission(self, request, view, obj):
         """Check the user is trying to update their own status"""
+        # if request.method in permissions.SAFE_METHODS:
         return True
 
-
-class UpdateOwnEventOwner(permissions.BasePermission):
-    """Allow users to update their own status"""
-
-    def has_permission(self, request, view):
-        """
-        Return `True` if permission is granted, `False` otherwise.
-        """
-        id = request.user.id
-        return UserProfileEventOwner.objects.filter(pk=id).exists()
-
-    def has_object_permission(self, request, view, obj):
-        """Check the user is trying to update their own status"""
-        return True
-
-
-class UpdateOwnEventSupplier(permissions.BasePermission):
-    """Allow users to update their own status"""
-
-    def has_permission(self, request, view):
-        """
-        Return `True` if permission is granted, `False` otherwise.
-        """
-        id = request.user.id
-        return UserProfileSupplier.objects.filter(pk=id).exists()
-
-    def has_object_permission(self, request, view, obj):
-        """Check the user is trying to update their own status"""
-        return True
-
-
-class PaymentUpdate(permissions.BasePermission):
-    """Allow users to update their own status"""
-
-    def has_object_permission(self, request, view, obj):
-        """Check the user is trying to update their own status"""
-        return obj.from_user.id == request.user.id
+# class UpdateOwnStatus(permissions.BasePermission):
+#     """Allow users to update their own status"""
+#
+#     def has_object_permission(self, request, view, obj):
+#         """Check the user is trying to update their own status"""
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
+#
+#         return obj.user_profile.id == request.user.id
