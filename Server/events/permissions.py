@@ -1,17 +1,8 @@
 from rest_framework import permissions
 
-from profiles_api.models import UserProfileEventManager
+from events.models import Event
+from users.models import EventManager
 
-
-class UpdateOwnProfile(permissions.BasePermission):
-    """Allow user to edit their own profile"""
-
-    def has_object_permission(self, request, view, obj):
-        """Check user is trying to edit their own profile"""
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        return obj.id == request.user.id
 
 class UpdateOwnEvent(permissions.BasePermission):
     """Allow users to update their own status"""
@@ -21,8 +12,7 @@ class UpdateOwnEvent(permissions.BasePermission):
         Return `True` if permission is granted, `False` otherwise.
         """
         id = request.user.id
-        return UserProfileEventManager.objects.filter(pk=id).exists()
-
+        return EventManager.objects.filter(pk=id).exists()
 
     def has_object_permission(self, request, view, obj):
         """Check the user is trying to update their own status"""
@@ -30,6 +20,7 @@ class UpdateOwnEvent(permissions.BasePermission):
         #     return True
 
         return obj.event_manager.id == request.user.id
+
 
 class UpdateOwnEventSchedule(permissions.BasePermission):
     """Allow users to update their own status"""
@@ -39,10 +30,11 @@ class UpdateOwnEventSchedule(permissions.BasePermission):
         Return `True` if permission is granted, `False` otherwise.
         """
         id = request.user.id
-        return UserProfileEventManager.objects.filter(pk=id).exists()
-
+        return EventManager.objects.filter(pk=id).exists()
 
     def has_object_permission(self, request, view, obj):
         """Check the user is trying to update their own status"""
-        return True
+        event_id = obj.event_id
+        event = Event.objects.get(id=event_id)
+        return event.event_manager.id == request.user.id
 
