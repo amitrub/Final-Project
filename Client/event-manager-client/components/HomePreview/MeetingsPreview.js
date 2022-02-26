@@ -4,7 +4,6 @@ import Colors from "../../constants/colors";
 
 const MeetingsPreview = (props) => {
   console.log("MeetingsPreview");
-  console.log(props);
   return (
     <View style={styles.screen}>
       <Text
