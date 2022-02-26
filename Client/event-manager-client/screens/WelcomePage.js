@@ -22,7 +22,7 @@ const WelcomePage = (props) => {
           navToPage={"Register"}
         />
         <RegisterButton
-          text={"Register"}
+          text={"Register / Login"}
           navi={props.navigation}
           navToPage={"Register"}
         />
