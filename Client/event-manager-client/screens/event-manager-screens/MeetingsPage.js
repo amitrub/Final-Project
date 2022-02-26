@@ -2,23 +2,25 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import Colors from "../../constants/colors";
 import SelectDropdown from "react-native-select-dropdown";
-import BodyText from "../../components/basicComponents/BodyText";
+import ItemListButton from "../../components/basicComponents/ItemListButton";
 
-const renderListItem = ({ item }) => {
-  return (
-    <View style={styles.listItem}>
-      <BodyText text={item}></BodyText>
-    </View>
-  );
-};
+
 
 const MeetingsPage = (props) => {
   const testEvents = [
-    { eventName: "event1", meetings: ["הדס ורועי - חתונה", "אור ורוני- חתונה", "בריגיט ותום - ברית", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "p"] },
-    { eventName: "event2", meetings: ["e2m1", "e2m2", "e2m3"] },
+    {  eventName: "event1", meetings: ["הדס ורועי - חתונה", "אור ורוני- חתונה", "בריגיט ותום - ברית", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "p"] },
+    {  eventName: "event2", meetings: ["e2m1", "e2m2", "e2m3"] },
   ];
   const [events, onChangeEvents] = React.useState(testEvents);
   const [meetings, onChangeMeetings] = React.useState([]);
+
+  const renderListItem = ({ item }) => {
+  return (
+    <View style={styles.listItem}>
+      <ItemListButton text={item} navi={props.navigation}/>
+    </View>
+  );
+};
 
   return (
     <View style={styles.screen}>
@@ -28,7 +30,6 @@ const MeetingsPage = (props) => {
         <SelectDropdown
           data={events}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
             onChangeMeetings(selectedItem.meetings);
           }}
           buttonTextAfterSelection={(selectedItem, index) => {
