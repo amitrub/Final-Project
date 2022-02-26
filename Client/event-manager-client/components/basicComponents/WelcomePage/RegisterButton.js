@@ -6,7 +6,7 @@ const RegisterButton = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        props.navi.navigate({ routeName: "Register" });
+        props.navi.navigate({ routeName: props.navToPage });
       }}
     >
       <View style={styles.button}>

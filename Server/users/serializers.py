@@ -1,18 +1,14 @@
 from rest_framework import serializers
 
-from profiles_api import models
-
-class HelloSerializer(serializers.Serializer):
-    """Serializes a name field for testing our APIView"""
-    name = serializers.CharField(max_length=10)
+from users import models
 
 # -------------------User-------------------
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
 
     class Meta:
-        model = models.UserProfile
+        model = models.User
         fields = ('id', 'email', 'name', 'password', 'phone')
         extra_kwargs = {
             'password': {
@@ -22,7 +18,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         }
     def create(self, validated_data):
         """Create and return new user"""
-        user = models.UserProfile.objects.create_user(
+        user = models.User.objects.create_user(
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password'],
@@ -42,11 +38,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 # -------------------EventManager-------------------
 
-class UserProfileEventManagerSerializer(serializers.ModelSerializer):
+class EventManagerSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
 
     class Meta:
-        model = models.UserProfileEventManager
+        model = models.EventManager
         fields = ('id', 'email', 'name', 'password', 'phone')
         extra_kwargs = {
             'password': {
@@ -56,7 +52,7 @@ class UserProfileEventManagerSerializer(serializers.ModelSerializer):
         }
     def create(self, validated_data):
         """Create and return new user"""
-        user = models.UserProfileEventManager.objects.create_user(
+        user = models.EventManager.objects.create_user(
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password'],
@@ -76,11 +72,11 @@ class UserProfileEventManagerSerializer(serializers.ModelSerializer):
 
 # -------------------EventOwner-------------------
 
-class UserProfileEventOwnerSerializer(serializers.ModelSerializer):
+class EventOwnerSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
 
     class Meta:
-        model = models.UserProfileEventOwner
+        model = models.EventOwner
         fields = ('id', 'email', 'name', 'password', 'phone')
         extra_kwargs = {
             'password': {
@@ -90,7 +86,7 @@ class UserProfileEventOwnerSerializer(serializers.ModelSerializer):
         }
     def create(self, validated_data):
         """Create and return new user"""
-        user = models.UserProfileEventOwner.objects.create_user(
+        user = models.EventOwner.objects.create_user(
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password'],
@@ -109,11 +105,11 @@ class UserProfileEventOwnerSerializer(serializers.ModelSerializer):
 
 # -------------------Supplier-------------------
 
-class UserProfileSupplierSerializer(serializers.ModelSerializer):
+class SupplierSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
 
     class Meta:
-        model = models.UserProfileSupplier
+        model = models.Supplier
         fields = ('id', 'email', 'name', 'password', 'phone', 'supplier_type')
         extra_kwargs = {
             'password': {
@@ -123,7 +119,7 @@ class UserProfileSupplierSerializer(serializers.ModelSerializer):
         }
     def create(self, validated_data):
         """Create and return new user"""
-        user = models.UserProfileSupplier.objects.create_user(
+        user = models.Supplier.objects.create_user(
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password'],
@@ -141,44 +137,3 @@ class UserProfileSupplierSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-# -------------------Event-------------------
-
-class EventSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.Event
-        fields = ('id', 'event_manager', 'type', 'date', 'budget')
-        extra_kwargs = {
-            'event_manager': {
-                'read_only': True
-            }
-        }
-
-# -------------------EventSchedule-------------------
-
-class EventScheduleSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.EventSchedule
-        fields = ('id', 'event', 'start_time', 'end_time', 'description')
-        # extra_kwargs = {
-        #     'event_manager': {
-        #         'read_only': True
-        #     }
-        # }
-
-
-
-class ProfileFeedItemSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    class Meta:
-        model = models.ProfileFeedItem
-        fields = ('id', 'user_profile', 'status_text', 'create_on')
-        extra_kwargs = {
-            'user_profile': {
-                'read_only': True
-            }
-        }

@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
-from django.conf import settings
+
 
 # -------------------User-------------------
 
-class UserProfileManager(BaseUserManager):
+class UserObjectsManager(BaseUserManager):
     """Manager for user profiles"""
 
     def create_user(self, email, name, password=None, phone=""):
@@ -33,7 +33,8 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-class UserProfile(AbstractBaseUser, PermissionsMixin):
+
+class User(AbstractBaseUser, PermissionsMixin):
     """Database model for users in the system"""
 
     email = models.EmailField(max_length=255, unique=True)
@@ -42,7 +43,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    objects = UserProfileManager()
+    objects = UserObjectsManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
@@ -59,28 +60,29 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         "Return string representation of our user"
         return self.email
 
+
 # -------------------EventManager-------------------
 
-
-class UserProfileEventManager(UserProfile):
+class EventManager(User):
     class Meta:
         proxy = False
 
-    objects = UserProfileManager()
+    objects = UserObjectsManager()
+
 
 # -------------------EventOwner-------------------
 
-class UserProfileEventOwner(UserProfile):
-
+class EventOwner(User):
     class Meta:
         proxy = False
-    objects = UserProfileManager()
+
+    objects = UserObjectsManager()
 
 
 # -------------------Supplier-------------------
 
-class UserProfileSupplierManager(UserProfileManager):
-    """Manager for user profiles"""
+class SupplierObjectsManager(UserObjectsManager):
+    """Manager for supplier profiles"""
 
     def create_user(self, email, name, password=None, phone="", supplier_type=""):
         """Create a new user profile"""
@@ -98,64 +100,10 @@ class UserProfileSupplierManager(UserProfileManager):
 
         return user
 
-class UserProfileSupplier(UserProfile):
+
+class Supplier(User):
     class Meta:
         proxy = False
 
     supplier_type = models.CharField(max_length=255)
-    objects = UserProfileSupplierManager()
-
-# -------------------Event-------------------
-
-class Event(models.Model):
-    """Profile status update"""
-    event_manager = models.ForeignKey(
-        'profiles_api.UserProfileEventManager',
-        on_delete=models.CASCADE
-    )
-    type = models.CharField(max_length=255)
-    date = models.DateField()
-    budget = models.PositiveIntegerField()
-
-
-    def __str__(self):
-        """Return the model as a string"""
-        return self.type
-
-# -------------------EventSchedule-------------------
-
-class EventSchedule(models.Model):
-    """"""
-    event = models.ForeignKey(
-        'profiles_api.Event',
-        on_delete=models.CASCADE
-    )
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    description = models.CharField(max_length=255)
-
-
-    def __str__(self):
-        """Return the model as a string"""
-        return self.description
-
-
-class ProfileFeedItem(models.Model):
-    """Profile status update"""
-    user_profile = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    status_text = models.CharField(max_length=255)
-    create_on = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        """Return the model as a string"""
-        return self.status_text
-
-
-
-
-
-
-
+    objects = SupplierObjectsManager()
