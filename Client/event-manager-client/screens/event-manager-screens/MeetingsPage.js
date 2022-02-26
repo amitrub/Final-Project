@@ -7,23 +7,22 @@ import BodyText from "../../components/basicComponents/BodyText";
 const renderListItem = ({ item }) => {
   return (
     <View style={styles.listItem}>
-      <BodyText>{item}</BodyText>
+      <BodyText text={item}></BodyText>
     </View>
   );
 };
 
 const MeetingsPage = (props) => {
   const testEvents = [
-    { eventName: "event1", meetings: ["e1m1", "e1m2", "e1m3"] },
+    { eventName: "event1", meetings: ["הדס ורועי - חתונה", "אור ורוני- חתונה", "בריגיט ותום - ברית", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "p"] },
     { eventName: "event2", meetings: ["e2m1", "e2m2", "e2m3"] },
-    { eventName: "event3", meetings: ["e3m1", "e3m2", "e3m3"] },
   ];
   const [events, onChangeEvents] = React.useState(testEvents);
   const [meetings, onChangeMeetings] = React.useState([]);
 
   return (
-    <View>
-      <View style={styles.screen}>
+    <View style={styles.screen}>
+      <View >
         <Text>MeetingsPage</Text>
         <Text>Choose Event:</Text>
         <SelectDropdown
@@ -46,7 +45,6 @@ const MeetingsPage = (props) => {
           keyExtractor={(item) => item}
           data={meetings}
           renderItem={renderListItem}
-          // contentContainerStyle={styles.list}
         />
       </View>
     </View>
@@ -58,29 +56,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 18,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  list: {
-    // flexGrow: 1,
-    // // alignItems: 'center',
-    // justifyContent: "flex-end",
-  },
   listItem: {
     padding: 10,
     marginVertical: 10,
     backgroundColor: Colors.button_gray,
-    // borderColor: "black",
-    // borderWidth: 1,
     borderRadius: 150,
     height: 48,
-    width: 240,
+    width: 300,
     justifyContent: "center",
     alignItems: "center",
   },
