@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Colors from "../../constants/colors";
 import EventDetailButton from "../../components/basicComponents/EventDetailButton";
 import DateTitle from "../../components/basicComponents/DateTitle";
@@ -7,6 +7,7 @@ import DateTitle from "../../components/basicComponents/DateTitle";
 const MeetingPage = (props) => {
   return (
       <View>
+          <ScrollView>
         <View style={{ paddingTop: "10%", paddingBottom: "5%"}}>
             <Text style={styles.mainTitle}>החתונה של הדס ורועי</Text>
         </View>
@@ -21,6 +22,7 @@ const MeetingPage = (props) => {
             <EventDetailButton key="5" title={"לוז"} items={["רועי", "הדס"]}/>
             <EventDetailButton key="6" title={"צק-ליסט"} items={["רועי", "הדס"]}/>
         </View>
+          </ScrollView>
       </View>
   );
 };

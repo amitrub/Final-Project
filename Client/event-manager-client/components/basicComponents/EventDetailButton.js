@@ -1,14 +1,21 @@
 import React from "react";
 import {StyleSheet, Text, View} from "react-native";
 import Colors from "../../constants/colors";
-import  Icon  from 'react-native-vector-icons';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 const EventDetailButton = (props) => (
+    <View>
+    <View style={styles.icons}>
+       <Entypo name='edit' size={16} />
+      <Entypo name='plus' size={16} />
+    </View>
   <View style={styles.listItem}>
-    <Icon name="Edit"/>
     <Text>{props.title} </Text>
-      {props.items.map(item =>  <Text key={item}>{item}</Text>)}
+    <View style={styles.row}>
+            {props.items.map(item =>  <Text key={item}>{item}</Text>)}
+    </View>
+  </View>
   </View>
 );
 
@@ -18,14 +25,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   listItem: {
-    padding: 10,
-    marginVertical: 10,
     backgroundColor: Colors.button_gray,
     borderRadius: 150,
-    height: 48,
+    height: 70,
     width: 300,
     justifyContent: "center",
     alignItems: "center",
+  },
+    icons: {
+    marginRight: 240,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
+      row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });
 export default EventDetailButton;
