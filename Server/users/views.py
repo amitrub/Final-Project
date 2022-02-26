@@ -1,3 +1,5 @@
+import copy
+
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
@@ -47,13 +49,20 @@ class EventManagerViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(pk=user_id)
             if user.is_staff:
                 return self.queryset
 
         except User.DoesNotExist:
             raise NotFound('A User with this id does not exist')
-        return self.queryset.filter(id=user_id)
+        return self.queryset.filter(pk=user_id)
+
+    def update(self, request, *args, **kwargs):
+        raise NotFound('Update Event Manager By Update User, Not In Here')
+
+
+
+
 
 class EventOwnerViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
@@ -67,13 +76,16 @@ class EventOwnerViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(pk=user_id)
             if user.is_staff:
                 return self.queryset
 
         except User.DoesNotExist:
             raise NotFound('A User with this id does not exist')
-        return self.queryset.filter(id=user_id)
+        return self.queryset.filter(pk=user_id)
+
+    def update(self, request, *args, **kwargs):
+        raise NotFound('Update Event Owner By Update User, Not In Here')
 
 
 class SupplierViewSet(viewsets.ModelViewSet):
@@ -88,10 +100,16 @@ class SupplierViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(pk=user_id)
             if user.is_staff:
                 return self.queryset
 
         except User.DoesNotExist:
             raise NotFound('A User with this id does not exist')
-        return self.queryset.filter(id=user_id)
+        return self.queryset.filter(pk=user_id)
+
+    def update(self, request, *args, **kwargs):
+        if 'user' in request.data:
+            request.data.pop('user')
+        return super().update(request, *args, **kwargs)
+        # raise NotFound('Update Supplier By Update User, Not In Here')
