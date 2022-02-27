@@ -1,16 +1,23 @@
+from django.conf.urls import url
 from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
 
 from users import views
 
 router = DefaultRouter()
 router.register('user', views.UserViewSet)
-router.register('event_manager', views.EventManagerViewSet)
-router.register('event_owner', views.EventOwnerViewSet)
-router.register('supplier', views.SupplierViewSet)
+# router.register('event_manager', views.EventManagerViewSet)
+# router.register('event_owner', views.EventOwnerViewSet)
+# router.register('supplier', views.SupplierViewSet)
+
 
 urlpatterns = [
     path('login/', views.UserLoginApiView.as_view()),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    url(r'^user/(?P<user_id>\d+)/event_manager', views.EventManagerAPIView.as_view()),
+    url(r'^user/(?P<user_id>\d+)/event_owner', views.EventOwnerAPIView.as_view()),
+    url(r'^user/(?P<user_id>\d+)/supplier', views.SupplierAPIView.as_view()),
+    # path('', include(user_types_router.urls)),
 ]

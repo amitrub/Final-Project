@@ -1,16 +1,17 @@
-import copy
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from users import serializers
 from users import models
 from users import permissions
-from users.models import User
+from users.models import User, EventManager, EventOwner, Supplier
 
 
 class UserLoginApiView(ObtainAuthToken):
@@ -37,79 +38,93 @@ class UserViewSet(viewsets.ModelViewSet):
             raise NotFound('A User with this id does not exist')
         return self.queryset.filter(id=user_id)
 
-class EventManagerViewSet(viewsets.ModelViewSet):
-    """Handle creating and updating profiles"""
+
+class EventManagerAPIView(APIView):
     serializer_class = serializers.EventManagerSerializer
-    queryset = models.EventManager.objects.all()
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('name', 'email',)
+    permission_classes = (permissions.UpdateTypeProfile,)
 
-    def get_queryset(self, *args, **kwargs):
-        user_id = self.request.user.id
+    def get(self, request, user_id):
+        is_event_manager = EventManager.objects.filter(pk=user_id).exists()
+        return Response({'is_event_manager': is_event_manager})
+
+    def post(self, request, user_id):
         try:
             user = User.objects.get(pk=user_id)
-            if user.is_staff:
-                return self.queryset
-
         except User.DoesNotExist:
-            raise NotFound('A User with this id does not exist')
-        return self.queryset.filter(pk=user_id)
+            raise NotFound('A user with this id does not exist')
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, *args, **kwargs):
-        raise NotFound('Update Event Manager By Update User, Not In Here')
+    def delete(self, request, user_id):
+        """Delete an object"""
+        try:
+            event_manager = EventManager.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            raise NotFound('A Event Manager with this id does not exist')
+        event_manager.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-
-
-
-class EventOwnerViewSet(viewsets.ModelViewSet):
-    """Handle creating and updating profiles"""
+class EventOwnerAPIView(APIView):
     serializer_class = serializers.EventOwnerSerializer
-    queryset = models.EventOwner.objects.all()
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('name', 'email',)
+    permission_classes = (permissions.UpdateTypeProfile,)
 
-    def get_queryset(self, *args, **kwargs):
-        user_id = self.request.user.id
+    def get(self, request, user_id):
+        is_event_owner = EventOwner.objects.filter(pk=user_id).exists()
+        return Response({'is_event_owner': is_event_owner})
+
+    def post(self, request, user_id):
         try:
             user = User.objects.get(pk=user_id)
-            if user.is_staff:
-                return self.queryset
-
         except User.DoesNotExist:
-            raise NotFound('A User with this id does not exist')
-        return self.queryset.filter(pk=user_id)
+            raise NotFound('A user with this id does not exist')
+        serializer = self.serializer_class(data=request.data)
+        # serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, *args, **kwargs):
-        raise NotFound('Update Event Owner By Update User, Not In Here')
+    def delete(self, request, user_id):
+        """Delete an object"""
+        try:
+            event_owner = EventOwner.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            raise NotFound('A Event Owner with this id does not exist')
+        event_owner.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class SupplierViewSet(viewsets.ModelViewSet):
-    """Handle creating and updating profiles"""
+class SupplierAPIView(APIView):
     serializer_class = serializers.SupplierSerializer
-    queryset = models.Supplier.objects.all()
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('name', 'email',)
+    permission_classes = (permissions.UpdateTypeProfile,)
 
-    def get_queryset(self, *args, **kwargs):
-        user_id = self.request.user.id
+    def get(self, request, user_id):
+        is_event_owner = Supplier.objects.filter(pk=user_id).exists()
+        try:
+            supplier_type = Supplier.objects.get(pk=user_id).supplier_type
+        except Supplier.DoesNotExist:
+            supplier_type = None
+        return Response({'is_supplier': is_event_owner, "supplier_type": supplier_type})
+
+    def post(self, request, user_id):
         try:
             user = User.objects.get(pk=user_id)
-            if user.is_staff:
-                return self.queryset
-
         except User.DoesNotExist:
-            raise NotFound('A User with this id does not exist')
-        return self.queryset.filter(pk=user_id)
+            raise NotFound('A user with this id does not exist')
+        serializer = self.serializer_class(data=request.data)
+        # serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, *args, **kwargs):
-        if 'user' in request.data:
-            request.data.pop('user')
-        return super().update(request, *args, **kwargs)
-        # raise NotFound('Update Supplier By Update User, Not In Here')
+    def delete(self, request, user_id):
+        """Delete an object"""
+        try:
+            supplier = Supplier.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            raise NotFound('A Event Owner with this id does not exist')
+        supplier.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
