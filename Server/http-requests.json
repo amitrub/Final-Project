@@ -1,0 +1,173 @@
+[
+  {
+    "Name": "User Login Api",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/login/",
+      "Headers": {},
+      "Request Type": {
+        "POST": {
+            "username": {
+                "type": "string",
+                "required": true,
+                "read_only": false,
+                "label": "Username"
+            },
+            "password": {
+                "type": "string",
+                "required": true,
+                "read_only": false,
+                "label": "Password"
+            },
+            "--OUTPUT--": {
+              "token": {
+                  "type": "string",
+                  "required": false,
+                  "read_only": true,
+                  "label": "Token"
+              }
+            }
+        }
+      }
+    }
+  },
+  {
+    "Name": "User List",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+      },
+      "Request Type": "OPTIONS"
+    }
+  },
+  {
+    "Name": "User Instance",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/<user_id:int>/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+      },
+      "Request Type": "OPTIONS"
+    }
+  },
+  {
+    "Name": "Event Manager Api",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/<user_id:int>/event_manager/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+      },
+      "Request Type": {
+        "GET": {
+            "--OUTPUT--": {
+                "is_event_manager": "boolean"
+            }
+        },
+        "POST": {
+            "--OUTPUT--": {
+               "user": "string"
+              }
+            },
+        "DELETE": {
+            "--Description--":"remove user from event manager"
+            }
+        }
+      }
+  },
+  {
+    "Name": "Event Owner Api",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/<user_id:int>/event_owner/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+      },
+      "Request Type": {
+        "GET": {
+            "--OUTPUT--": {
+                "is_event_owner": "boolean"
+            }
+        },
+        "POST": {
+            "--OUTPUT--": {
+               "user": "string"
+              }
+            },
+        "DELETE": {
+            "--Description--":"remove user from event owner"
+            }
+        }
+      }
+  },
+  {
+    "Name": "Supplier Api",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/<user_id:int>/supplier/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+      },
+      "Request Type": {
+        "GET": {
+            "--OUTPUT--": {
+                "is_supplier": "boolean",
+                "supplier_type": "string"
+            }
+        },
+        "POST": {
+            "supplier_type": {
+                "type": "string",
+                "required": true,
+                "read_only": false,
+                "label": "Supplier type"
+            },
+            "--OUTPUT--": {
+               "user": "string"
+              }
+            },
+        "DELETE": {
+            "--Description--":"remove user from supplier"
+            }
+        }
+      }
+  },
+   {
+    "Name": "Event List",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/events/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e (only event managers)"
+      },
+      "Request Type": "OPTIONS"
+    }
+  },
+  {
+    "Name": "Event Instance",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/events/<event_id:int>/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e (only event managers)"
+      },
+      "Request Type": "OPTIONS"
+    }
+  },
+  {
+    "Name": "Event Schedule List",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/events/<event_id:int>/event_schedule/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e (only event managers)"
+      },
+      "Request Type": "OPTIONS"
+    }
+  },
+  {
+    "Name": "Event Schedule Instance",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/events/<event_id:int>/event_schedule/<event_schedule_id:int>/",
+      "Headers": {
+        "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e (only event managers)"
+      },
+      "Request Type": "OPTIONS"
+    }
+  }
+]
+

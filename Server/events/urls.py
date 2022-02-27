@@ -19,7 +19,7 @@ event_schedule_router.register(
     views.EventScheduleViewSet,
     basename='event-event_schedule_router'
 )
-# router.register('event_schedule', views.EventScheduleViewSet)
+
 app_name = 'events'
 urlpatterns = [
     path('', include(router.urls)),
