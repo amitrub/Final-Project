@@ -63,47 +63,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 # -------------------EventManager-------------------
 
-class EventManager(User):
-    class Meta:
-        proxy = False
-
-    objects = UserObjectsManager()
+class EventManager(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                primary_key=True)
 
 
 # -------------------EventOwner-------------------
 
-class EventOwner(User):
-    class Meta:
-        proxy = False
-
-    objects = UserObjectsManager()
+class EventOwner(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                primary_key=True)
 
 
 # -------------------Supplier-------------------
 
-class SupplierObjectsManager(UserObjectsManager):
-    """Manager for supplier profiles"""
 
-    def create_user(self, email, name, password=None, phone="", supplier_type=""):
-        """Create a new user profile"""
-        user = super().create_user(email, name, password, phone)
-        user.supplier_type = supplier_type
-        user.save(using=self._db)
-
-        return user
-
-    def create_superuser(self, email, name, password, phone="", supplier_type=""):
-        """Create and save a new superuser with given details"""
-        user = super().create_superuser(email, name, password, phone)
-        user.supplier_type = supplier_type
-        user.save(using=self._db)
-
-        return user
-
-
-class Supplier(User):
-    class Meta:
-        proxy = False
+class Supplier(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                primary_key=True)
 
     supplier_type = models.CharField(max_length=255)
-    objects = SupplierObjectsManager()
