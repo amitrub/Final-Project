@@ -29,7 +29,7 @@ const MeetingsPage = (props) => {
         <SelectDropdown
           data={events}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
+            //console.log(selectedItem, index);
             onChangeMeetings(selectedItem.meetings);
           }}
           buttonTextAfterSelection={(selectedItem, index) => {

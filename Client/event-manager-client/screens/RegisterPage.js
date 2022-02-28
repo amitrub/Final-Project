@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,12 +8,22 @@ import {
   SafeAreaView,
 } from "react-native";
 import Colors from "../constants/colors";
+import apiRegisterUser from "../api/apiHandler";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../store/actions/meals";
 
 const RegisterPage = (props) => {
-  const [text, onChangeText] = React.useState("");
-  const [number, onChangeNumber] = React.useState("");
+  const [emailRegister, onChangeEmailRegister] = React.useState("");
+  const [passwordRegister, onChangePasswordRegister] = React.useState("");
+  const [nameRegister, onChangeNameRegister] = React.useState("");
+  const [phoneRegister, onChangePhoneRegister] = React.useState("");
 
-  const onPressRegister = () => {
+  const [emailLogin, onChangeEmailLogin] = React.useState("");
+  const [passwordLogin, onChangePasswordLogin] = React.useState("");
+
+  const [stam, onChangeStam] = React.useState("");
+
+  const onPressRegister = async () => {
     console.log("onPressRegister");
     props.navigation.navigate("HomePage");
   };
@@ -23,8 +33,24 @@ const RegisterPage = (props) => {
     props.navigation.navigate("HomePage");
   };
 
+  //HOW TO? get redux state in every component on the app
+  const availableMeals = useSelector((state) => state["meals"].filteredMeals);
+  console.log("availableMeals: " + availableMeals);
+
+  const dispatch = useDispatch();
+  const toggleFavoriteHandler = useCallback(() => {
+    console.log("toggleFavoriteHandler");
+    dispatch(toggleFavorite("mealId"));
+  }, [dispatch]);
+
+  useEffect(() => {
+    // props.navigation.setParams({ mealTitle: selectedMeal.title });
+    props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+  }, [toggleFavoriteHandler]);
+
   return (
     <View style={styles.screen}>
+      {/**** Extract RegisterInput Component ****/}
       <View style={{ paddingTop: "15%" }}>
         <Text style={styles.mainTitle}>REGISTER</Text>
       </View>
@@ -32,16 +58,28 @@ const RegisterPage = (props) => {
       <SafeAreaView>
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={text}
+          onChangeText={onChangeEmailRegister}
+          value={emailRegister}
           placeholder={"Email address"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={number}
+          onChangeText={onChangeNameRegister}
+          value={nameRegister}
+          placeholder={"Full Name"}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangePasswordRegister}
+          value={passwordRegister}
           placeholder="password"
           // keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangePhoneRegister}
+          value={phoneRegister}
+          placeholder={"Phone Number"}
         />
       </SafeAreaView>
 
@@ -53,6 +91,19 @@ const RegisterPage = (props) => {
       />
 
       <View style={{ paddingTop: "15%" }}>
+        <Text>{availableMeals}</Text>
+        <Button
+          onPress={toggleFavoriteHandler}
+          title="Stam"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+      </View>
+
+      {/**** end RegisterInput Component ****/}
+
+      {/**** Extract LoginInput Component ****/}
+      <View style={{ paddingTop: "15%" }}>
         <Text>Have you register before?</Text>
       </View>
 
@@ -63,14 +114,14 @@ const RegisterPage = (props) => {
       <SafeAreaView>
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={text}
+          onChangeText={onChangeEmailLogin}
+          value={emailLogin}
           placeholder={"Email address"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={number}
+          onChangeText={props.navigation.toggleFav}
+          value={passwordLogin}
           placeholder="password"
           // keyboardType="numeric"
         />
@@ -82,6 +133,7 @@ const RegisterPage = (props) => {
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
+      {/**** end LoginInput Component ****/}
     </View>
   );
 };
