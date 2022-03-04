@@ -6,6 +6,7 @@ import {
   Button,
   SafeAreaView,
   TextInput,
+  Alert,
 } from "react-native";
 import Colors from "../../../constants/colors";
 import { useDispatch } from "react-redux";
@@ -21,13 +22,24 @@ const RegisterInput = (props) => {
     // setEmailLogin("");
     // setPasswordLogin("");
   };
-
+  const createTwoButtonAlert = (props, message) =>
+    Alert.alert("You are almost there!", message, [
+      {
+        text: "OK",
+        onPress: () => {
+          props.navi.navigate("HomePage");
+        },
+      },
+      { text: "Cancel", onPress: () => console.log("Cancel Pressed") },
+    ]);
   const dispatch = useDispatch();
   const onPressLogin = useCallback(async () => {
     await dispatch(await userActions.loginApi(email, password));
-    //Cant jump with stack navigator after dispatch
-    //props.navigation.navigate("HomePage");
     emptyLoginInputs();
+    createTwoButtonAlert(
+      props,
+      "You have successfully signed in!\npress OK and go to your Home Page"
+    );
   }, [dispatch, email, password]);
 
   return (

@@ -26,7 +26,7 @@ const RegisterPage = (props) => {
           <Text>-------------------------------------</Text>
         </View>
 
-        <LoginInput />
+        <LoginInput navi={props.navigation} />
       </ScrollView>
     </SafeAreaView>
   );
