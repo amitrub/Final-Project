@@ -8,45 +8,43 @@ import {
   SafeAreaView,
 } from "react-native";
 import Colors from "../constants/colors";
-import apiRegisterUser from "../api/apiHandler";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../store/actions/meals";
+import * as userActions from "../store/actions/users";
 
 const RegisterPage = (props) => {
-  const [emailRegister, onChangeEmailRegister] = React.useState("");
-  const [passwordRegister, onChangePasswordRegister] = React.useState("");
-  const [nameRegister, onChangeNameRegister] = React.useState("");
-  const [phoneRegister, onChangePhoneRegister] = React.useState("");
+  const [emailRegister, setEmailRegister] = React.useState("");
+  const [passwordRegister, setPasswordRegister] = React.useState("");
+  const [nameRegister, setNameRegister] = React.useState("");
+  const [phoneRegister, setPhoneRegister] = React.useState("");
 
-  const [emailLogin, onChangeEmailLogin] = React.useState("");
-  const [passwordLogin, onChangePasswordLogin] = React.useState("");
+  const [emailLogin, setEmailLogin] = React.useState("");
+  const [passwordLogin, setPasswordLogin] = React.useState("");
 
-  const [stam, onChangeStam] = React.useState("");
+  const registeredUsers = useSelector((state) => state["users"].registered);
 
-  const onPressRegister = async () => {
-    console.log("onPressRegister");
-    props.navigation.navigate("HomePage");
-  };
+  const dispatch = useDispatch();
+  const onPressRegister = useCallback(async () => {
+    debugger;
+    console.log("enter to onPressRegister");
+
+    await dispatch(
+      await userActions.registerApi(
+        nameRegister,
+        emailRegister,
+        passwordRegister,
+        phoneRegister
+      )
+    );
+    console.log("back to onPressRegister");
+    //Cant jump with stack navigator after dispatch
+    //props.navigation.navigate("HomePage");
+  }, [dispatch, nameRegister, emailRegister, passwordRegister, phoneRegister]);
 
   const onPressLogin = () => {
     console.log("onPressLogin");
     props.navigation.navigate("HomePage");
   };
-
-  //HOW TO? get redux state in every component on the app
-  const availableMeals = useSelector((state) => state["meals"].filteredMeals);
-  console.log("availableMeals: " + availableMeals);
-
-  const dispatch = useDispatch();
-  const toggleFavoriteHandler = useCallback(() => {
-    console.log("toggleFavoriteHandler");
-    dispatch(toggleFavorite("mealId"));
-  }, [dispatch]);
-
-  useEffect(() => {
-    // props.navigation.setParams({ mealTitle: selectedMeal.title });
-    props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
-  }, [toggleFavoriteHandler]);
 
   return (
     <View style={styles.screen}>
@@ -55,29 +53,31 @@ const RegisterPage = (props) => {
         <Text style={styles.mainTitle}>REGISTER</Text>
       </View>
 
+      <Text>{JSON.stringify(registeredUsers)}</Text>
+
       <SafeAreaView>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeEmailRegister}
+          onChangeText={setEmailRegister}
           value={emailRegister}
           placeholder={"Email address"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={onChangeNameRegister}
+          onChangeText={setNameRegister}
           value={nameRegister}
           placeholder={"Full Name"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={onChangePasswordRegister}
+          onChangeText={setPasswordRegister}
           value={passwordRegister}
           placeholder="password"
           // keyboardType="numeric"
         />
         <TextInput
           style={styles.input}
-          onChangeText={onChangePhoneRegister}
+          onChangeText={setPhoneRegister}
           value={phoneRegister}
           placeholder={"Phone Number"}
         />
@@ -89,17 +89,6 @@ const RegisterPage = (props) => {
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
-
-      <View style={{ paddingTop: "15%" }}>
-        <Text>{availableMeals}</Text>
-        <Button
-          onPress={toggleFavoriteHandler}
-          title="Stam"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
-      </View>
-
       {/**** end RegisterInput Component ****/}
 
       {/**** Extract LoginInput Component ****/}
@@ -114,13 +103,13 @@ const RegisterPage = (props) => {
       <SafeAreaView>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeEmailLogin}
+          onChangeText={setEmailLogin}
           value={emailLogin}
           placeholder={"Email address"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={props.navigation.toggleFav}
+          onChangeText={setPasswordLogin}
           value={passwordLogin}
           placeholder="password"
           // keyboardType="numeric"

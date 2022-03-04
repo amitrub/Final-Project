@@ -10,37 +10,7 @@ const mealsReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_FAVORITE:
       console.log("TOGGLE_FAVORITE");
-
-      return async (dispatch) => {
-        // any async code you want!
-        const title = "title";
-        const description = "description";
-        const imageUrl = "imageUrl";
-        const price = "price";
-
-        console.log("before fetch");
-        const response = await fetch(
-          "https://test-server-event-manager-default-rtdb.firebaseio.com/tests.json",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              title,
-              description,
-              imageUrl,
-              price,
-            }),
-          }
-        );
-
-        const resData = await response.json();
-        console.log("resData");
-        console.log(resData);
-        dispatch({ ...state, favoriteMeals: "after change" });
-      };
-
+      return { ...state, favoriteMeals: ["roee"] };
     // case SET_FILTERS:
     //   const appliedFilters = action.filters;
     //   const updatedFilteredMeals = state.meals.filter(meal => {

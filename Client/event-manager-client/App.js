@@ -5,14 +5,16 @@ import AppLoading from "expo-app-loading";
 import ScreenNavigation from "./navigation/ScreenNavigation";
 import { enableScreens } from "react-native-screens";
 import { applyMiddleware, combineReducers, createStore } from "redux";
-import mealsReducer from "./store/reducers/meals";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
+import mealsReducer from "./store/reducers/meals";
+import usersReducer from "./store/reducers/users";
 
 enableScreens();
 
 const rootReducer = combineReducers({
   meals: mealsReducer,
+  users: usersReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
