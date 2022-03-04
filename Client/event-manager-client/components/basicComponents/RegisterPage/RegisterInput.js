@@ -7,6 +7,7 @@ import {
   Button,
   SafeAreaView,
   TextInput,
+  Alert,
 } from "react-native";
 import Colors from "../../../constants/colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +40,11 @@ const RegisterInput = (props) => {
     // setStreet("");
   };
   const registeredUsers = useSelector((state) => state["users"].registered);
+  const createOneButtonAlert = (message) =>
+    Alert.alert("Event manager app", message, [
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+
   const dispatch = useDispatch();
   const onPressRegister = useCallback(async () => {
     await dispatch(
@@ -53,9 +59,9 @@ const RegisterInput = (props) => {
         number
       )
     );
-    //Cant jump with stack navigator after dispatch
-    //props.navigation.navigate("HomePage");
     emptyRegisterInputs();
+    //todo: need to get a response and decide about the message!
+    createOneButtonAlert("You have successfully registered!\nplease SIGN IN");
   }, [
     dispatch,
     fullName,

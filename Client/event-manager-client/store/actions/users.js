@@ -54,6 +54,7 @@ export const registerApi = (
 
 export const loginApi = (email, password) => {
   return async (dispatch) => {
+    console.log("loginApi >> before fetch");
     await fetch(firebase_base_url + login, {
       method: "POST",
       headers: {
@@ -65,6 +66,7 @@ export const loginApi = (email, password) => {
       }),
     })
       .then((response) => {
+        console.log("loginApi >> then");
         const responseData = response.json();
         //OUTPUT: token / maybe name ? to show on home page
         // const sign_in_user = new SignedInUser(email, password, "", responseData.token);

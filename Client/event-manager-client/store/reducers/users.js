@@ -15,7 +15,7 @@ const usersReducer = (state = initialState, action) => {
     case LOGIN_USER:
       return {
         ...state,
-        signed_in_user: state.registered.concat(action.registerUser),
+        signed_in_user: action.sign_in_user,
       };
     default:
       return state;
