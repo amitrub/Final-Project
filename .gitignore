@@ -127,6 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/Server/.idea/dataSources.local.xml
+
+*.xml
 /Server/.idea/vcs.xml
 /.idea/prettier.xml
 /.idea/misc.xml

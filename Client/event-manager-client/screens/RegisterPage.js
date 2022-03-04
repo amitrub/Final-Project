@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,15 +8,38 @@ import {
   SafeAreaView,
 } from "react-native";
 import Colors from "../constants/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../store/actions/meals";
+import * as userActions from "../store/actions/users";
 
 const RegisterPage = (props) => {
-  const [text, onChangeText] = React.useState("");
-  const [number, onChangeNumber] = React.useState("");
+  const [emailRegister, setEmailRegister] = React.useState("");
+  const [passwordRegister, setPasswordRegister] = React.useState("");
+  const [nameRegister, setNameRegister] = React.useState("");
+  const [phoneRegister, setPhoneRegister] = React.useState("");
 
-  const onPressRegister = () => {
-    console.log("onPressRegister");
-    props.navigation.navigate("HomePage");
-  };
+  const [emailLogin, setEmailLogin] = React.useState("");
+  const [passwordLogin, setPasswordLogin] = React.useState("");
+
+  const registeredUsers = useSelector((state) => state["users"].registered);
+
+  const dispatch = useDispatch();
+  const onPressRegister = useCallback(async () => {
+    debugger;
+    console.log("enter to onPressRegister");
+
+    await dispatch(
+      await userActions.registerApi(
+        nameRegister,
+        emailRegister,
+        passwordRegister,
+        phoneRegister
+      )
+    );
+    console.log("back to onPressRegister");
+    //Cant jump with stack navigator after dispatch
+    //props.navigation.navigate("HomePage");
+  }, [dispatch, nameRegister, emailRegister, passwordRegister, phoneRegister]);
 
   const onPressLogin = () => {
     console.log("onPressLogin");
@@ -25,23 +48,38 @@ const RegisterPage = (props) => {
 
   return (
     <View style={styles.screen}>
+      {/**** Extract RegisterInput Component ****/}
       <View style={{ paddingTop: "15%" }}>
         <Text style={styles.mainTitle}>REGISTER</Text>
       </View>
 
+      <Text>{JSON.stringify(registeredUsers)}</Text>
+
       <SafeAreaView>
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={text}
+          onChangeText={setEmailRegister}
+          value={emailRegister}
           placeholder={"Email address"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={number}
+          onChangeText={setNameRegister}
+          value={nameRegister}
+          placeholder={"Full Name"}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={setPasswordRegister}
+          value={passwordRegister}
           placeholder="password"
           // keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={setPhoneRegister}
+          value={phoneRegister}
+          placeholder={"Phone Number"}
         />
       </SafeAreaView>
 
@@ -51,7 +89,9 @@ const RegisterPage = (props) => {
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
+      {/**** end RegisterInput Component ****/}
 
+      {/**** Extract LoginInput Component ****/}
       <View style={{ paddingTop: "15%" }}>
         <Text>Have you register before?</Text>
       </View>
@@ -63,14 +103,14 @@ const RegisterPage = (props) => {
       <SafeAreaView>
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={text}
+          onChangeText={setEmailLogin}
+          value={emailLogin}
           placeholder={"Email address"}
         />
         <TextInput
           style={styles.input}
-          onChangeText={() => {}}
-          value={number}
+          onChangeText={setPasswordLogin}
+          value={passwordLogin}
           placeholder="password"
           // keyboardType="numeric"
         />
@@ -82,6 +122,7 @@ const RegisterPage = (props) => {
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
+      {/**** end LoginInput Component ****/}
     </View>
   );
 };
