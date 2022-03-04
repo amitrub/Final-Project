@@ -57,7 +57,7 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         event_id = self.kwargs.get("event_pk")
         try:
-            event = Event.objects.get(id=event_id)
+            event = Event.objects.get(pk=event_id)
         except Event.DoesNotExist:
             raise NotFound('A event with this id does not exist')
         return self.queryset.filter(event=event)
@@ -65,7 +65,7 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         event_id = self.kwargs.get("event_pk")
         try:
-            event = Event.objects.get(id=event_id)
+            event = Event.objects.get(pk=event_id)
         except Event.DoesNotExist:
             raise NotFound('A event with this id does not exist')
         serializer = self.get_serializer(data=request.data)

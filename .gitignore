@@ -130,3 +130,10 @@ dmypy.json
 /Server/.idea/dataSources.local.xml
 
 *.xml
+/Server/.idea/vcs.xml
+/.idea/prettier.xml
+/.idea/misc.xml
+/.idea/git_toolbox_prj.xml
+/Server/.idea/dataSources.xml
+/.idea/encodings.xml
+/Server/.idea/dataSources.local.xml

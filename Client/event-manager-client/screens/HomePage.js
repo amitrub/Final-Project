@@ -8,9 +8,9 @@ import TasksPreview from "../components/HomePreview/TasksPreview";
 const HomePage = (props) => {
   return (
     <View style={styles.screen}>
-      <View style={{ paddingTop: "15%" }}>
+      {/*<View style={{ paddingTop: "15%" }}>*/}
         <Text style={styles.mainTitle}>Hello Hadasi kof sheli balev</Text>
-      </View>
+      {/*</View>*/}
 
       <View style={{ paddingTop: "15%" }}>
         <MeetingsPreview HomeProps={props} />
