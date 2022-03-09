@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import RegisterButton from "../components/basicComponents/WelcomePage/RegisterButton";
-import LogoImage from "../components/basicComponents/WelcomePage/LogoImage";
-import Colors from "../constants/colors";
+import RegisterButton from "../../components/basicComponents/WelcomePage/RegisterButton";
+import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
+import Colors from "../../constants/colors";
 
 const WelcomePage = (props) => {
   return (

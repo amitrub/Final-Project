@@ -9,12 +9,14 @@ import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 import mealsReducer from "./store/reducers/meals";
 import usersReducer from "./store/reducers/users";
+import meetingsReducer from "./store/reducers/meetings";
 
 enableScreens();
 
 const rootReducer = combineReducers({
   meals: mealsReducer,
   users: usersReducer,
+  meetings: meetingsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -52,8 +54,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    // backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
 });

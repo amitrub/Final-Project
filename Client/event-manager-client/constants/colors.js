@@ -8,4 +8,5 @@ export default {
   red_task: "#F36D6D",
   yellow_task: "#F8E432",
   orange_task: "#FD8A37",
+  blue: "#841584",
 };
