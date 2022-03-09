@@ -82,7 +82,7 @@ class EventOwnerAPIView(APIView):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         serializer = self.serializer_class(data=request.data)
-        # serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)
         serializer.save(user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -114,7 +114,7 @@ class SupplierAPIView(APIView):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         serializer = self.serializer_class(data=request.data)
-        # serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)
         serializer.save(user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

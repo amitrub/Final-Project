@@ -4,6 +4,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from products import models, serializers, permissions
 from payments.models import Payment
@@ -16,7 +17,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = models.Product.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (
-        permissions.Payment,
+        permissions.UpdateProducts,
         IsAuthenticated,
     )
 
@@ -28,7 +29,14 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+    # def post(self, request, user_id):
+    #     supplier = request.data['supplier']
+    #     if str(request.user.id) != str(supplier):
+    #         return Response(status=status.HTTP_403_FORBIDDEN)
+    #     serializer = self.serializer_class(data=request.data)
+    #     # serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 from django.shortcuts import render
 
