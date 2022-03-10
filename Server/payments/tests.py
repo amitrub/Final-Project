@@ -78,3 +78,13 @@ class ProductTest(APITestCase):
         print(response.content)
         assert response.status_code == 201
 
+    def test_payment_fail(self):
+        url = reverse('payment-list')
+        response = self.client.post(url,
+                                    {'from_user': self.user1.data['id'],
+                                     'to_user': self.response_register.data['id'],
+                                     'date': '2022-03-09',
+                                     'amount': 10000}, format='json')
+
+        print(response.content)
+        assert response.status_code == 403

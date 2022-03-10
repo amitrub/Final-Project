@@ -43,13 +43,14 @@ class ProductTest(APITestCase):
                                           {"username": "roeebenhouse@gmail.com",
                                            "password": "8111996", }
                                           , format='json')
+
         self.token = response_login.data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
         url = reverse('user:supplier', kwargs={'user_id': id})
         response = self.client.post(url, {"supplier_type": "flowers"}, format='json')
         self.supplier = Supplier.objects.get(user_id=id)
 
-    def test_product(self):
+    def test_product_success(self):
         url = reverse('product-list')
         response = self.client.post(url,
                                     {'supplier': self.supplier.user_id,
@@ -57,5 +58,35 @@ class ProductTest(APITestCase):
 
         assert response.status_code == 201
 
-    def test_product1(self):
-        assert True
+    def test_product_fail(self):
+        data = {
+            "country": "Israel",
+            "city": "Kadima",
+            "street": "alon",
+            'number': 6
+        }
+        url = reverse('user:user-list')
+        serializer = AddressSerializer(data=data)
+        if serializer.is_valid():
+            address = serializer.validated_data
+        response_register = self.client.post(url,
+                                             {'email': 'amitrub@gmail.com',
+                                              'name': 'amit',
+                                              'password': '8111996',
+                                              'phone': '0546343178',
+                                              "address": serializer.data}, format='json')
+        id = response_register.data['id']
+        url = reverse('user:login')
+        response_login = self.client.post(url,
+                                          {"username": "amitrub@gmail.com",
+                                           "password": "8111996", }
+                                          , format='json')
+        self.token = response_login.data['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        url = reverse('product-list')
+        response = self.client.post(url,
+                                    {'supplier': self.supplier.user_id,
+                                     'description': 'banana'}, format='json')
+
+        assert response.status_code == 403
+

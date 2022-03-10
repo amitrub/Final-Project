@@ -70,3 +70,36 @@ class UserCreateListTest(APITestCase):
                                     , format='json')
         assert response.status_code == 201
 
+    def test_add_event_fail(self):
+        data = {
+            "country": "Israel",
+            "city": "Kadima",
+            "street": "alon",
+            'number': 6
+        }
+        url = reverse('user:user-list')
+        serializer = AddressSerializer(data=data)
+        if serializer.is_valid():
+            address = serializer.validated_data
+        response_register = self.client.post(url,
+                                             {'email': 'amitrub@gmail.com',
+                                              'name': 'amit',
+                                              'password': '8111996',
+                                              'phone': '0546343178',
+                                              "address": serializer.data}, format='json')
+        id = response_register.data['id']
+        url = reverse('user:login')
+        response_login = self.client.post(url,
+                                          {"username": "amitrub@gmail.com",
+                                           "password": "8111996", }
+                                          , format='json')
+        self.token = response_login.data['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        url = reverse('events:event-list')
+        response = self.client.post(url,
+                                    {"type": "wedding",
+                                     "event_name": "roy&hadas",
+                                     'date': '2022-09-23',
+                                     'budget': '100000'}
+                                    , format='json')
+        assert response.status_code == 403
