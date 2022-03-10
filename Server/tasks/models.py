@@ -9,11 +9,11 @@ class Task(models.Model):
     event_manager = models.ForeignKey(
         EventManager,
         on_delete=models.CASCADE,
-        related_name='events',
+        related_name='task',
     )
-    task_name = models.CharField(max_length=255)
-    deadline = models.DateField()
-    description = models.CharField(max_length=255)
+    task_name = models.CharField(max_length=255, default='')
+    deadline = models.DateField(default=None)
+    description = models.CharField(max_length=255,default='')
 
     def __str__(self):
         """Return the model as a string"""

@@ -7,7 +7,7 @@ from tasks import serializers, models, permissions
 from users.models import EventManager
 
 
-class EventViewSet(viewsets.ModelViewSet):
+class TaskViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
     serializer_class = serializers.TaskSerializer
     queryset = models.Task.objects.all()

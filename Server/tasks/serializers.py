@@ -8,7 +8,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Task
-        fields = '__all__'
+        fields = ('id','event_manager','task_name','deadline','description')
         extra_kwargs = {
             'event_manager': {
                 'read_only': True

@@ -10,6 +10,7 @@ class Product(models.Model):
         Supplier,
         on_delete=models.CASCADE,
         related_name='from_user',
+        default= None
     )
     description = models.CharField(max_length=255)
 
