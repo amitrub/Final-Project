@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import Colors from "../../constants/colors";
 
 const EventsPreview = (props) => {
-  console.log("EventsPreview");
+  //console.log("EventsPreview");
   return (
     <View style={styles.screen}>
       <Text
