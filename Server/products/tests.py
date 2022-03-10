@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from django.test import TestCase
 
@@ -12,12 +11,12 @@ from rest_framework.templatetags import rest_framework
 
 from addresses.serializers import AddressSerializer
 from users import views
-from users.models import User, EventManager
+from users.models import User, Supplier
 from addresses.models import Address
 from rest_framework.test import APITestCase, APIClient
 
 
-class UserCreateListTest(APITestCase):
+class ProductTest(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
@@ -44,33 +43,22 @@ class UserCreateListTest(APITestCase):
                                           {"username": "roeebenhouse@gmail.com",
                                            "password": "8111996", }
                                           , format='json')
+
         self.token = response_login.data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
-        url = reverse('user:event_manager', kwargs={'user_id': id})
-        self.client.post(url)
+        url = reverse('user:supplier', kwargs={'user_id': id})
+        response = self.client.post(url, {"supplier_type": "flowers"}, format='json')
+        self.supplier = Supplier.objects.get(user_id=id)
 
-
-    def test_add_event(self):
-        url = reverse('events:event-list')
-        token = f"Token {self.token}"
+    def test_product_success(self):
+        url = reverse('product-list')
         response = self.client.post(url,
-                                    {"type": "wedding",
-                                     "event_name": "roy&hadas",
-                                     'date': '2022-09-23',
-                                     'budget': '100000'}
-                                    , format='json')
-        event_id = response.data['id']
+                                    {'supplier': self.supplier.user_id,
+                                     'description': 'banana'}, format='json')
+
         assert response.status_code == 201
 
-        url = reverse('events:event-event_schedule_router-list', kwargs={'event_pk': event_id})
-        response = self.client.post(url,
-                                    {"start_time": "2022-09-23 18:00",
-                                     "end_time": "2022-09-23 20:00",
-                                     'description': 'reception', }
-                                    , format='json')
-        assert response.status_code == 201
-
-    def test_add_event_fail(self):
+    def test_product_fail(self):
         data = {
             "country": "Israel",
             "city": "Kadima",
@@ -95,11 +83,10 @@ class UserCreateListTest(APITestCase):
                                           , format='json')
         self.token = response_login.data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
-        url = reverse('events:event-list')
+        url = reverse('product-list')
         response = self.client.post(url,
-                                    {"type": "wedding",
-                                     "event_name": "roy&hadas",
-                                     'date': '2022-09-23',
-                                     'budget': '100000'}
-                                    , format='json')
+                                    {'supplier': self.supplier.user_id,
+                                     'description': 'banana'}, format='json')
+
         assert response.status_code == 403
+
