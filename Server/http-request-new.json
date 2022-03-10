@@ -1,0 +1,183 @@
+[
+ {
+    "Name": "User Login Api",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/login/",
+      "Headers": {},
+      "Request Type": {
+        "POST": {
+          "header": {},
+          "body": {
+            "username": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            }
+          },
+          "response": {
+              "token": {
+                  "type": "string"
+              }
+            }
+        }
+      }
+    }
+  },
+   {
+    "Name": "Register",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/",
+      "Headers": {},
+      "Request Type": {
+        "POST": {
+          "headers":
+          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
+          "body":
+                {
+                  "email": {
+                        "type": "string"
+                  },
+                  "name": {
+                        "type": "string"
+                  },
+                  "phone": {
+                        "type": "string"
+                  },
+                  "password": {
+                        "type": "string"
+                  },
+                  "address": {
+                      "country": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "street": {
+                        "type": "string"
+                      },
+                      "number": {
+                        "type": "int"
+                      }
+                  }
+              },
+          "response":
+              {
+                  "id": 1,
+                  "email": "reutlevy30@gmail.com",
+                  "name": "Reut",
+                  "phone": "0546343178",
+                  "password": "811199",
+                  "address": {
+                      "id": 1,
+                      "country": "Israel",
+                      "city": "BeerSheva",
+                      "street": "Rager",
+                      "number": 167
+                  }
+              }
+            }
+        }
+      }
+    },
+     {
+    "Name": "user-list",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/",
+      "Headers": {},
+      "Request Type": {
+        "GET": {
+          "headers":
+          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
+          "body": { },
+          "response":
+              {
+                  "id": 1,
+                  "email": "reutlevy30@gmail.com",
+                  "name": "Reut",
+                  "phone": "0546343178",
+                  "address": {
+                      "id": 1,
+                      "country": "Israel",
+                      "city": "BeerSheva",
+                      "street": "Rager",
+                      "number": 167
+                  }
+              }
+            }
+        }
+      }
+    },
+   {
+    "Name": "Is event-manager",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/user/{user-id}/event_manager/",
+      "Request Type": {
+        // in order to see if a user is a event manager you should get with the user id
+        "GET": {
+          "headers":
+          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
+          "body": { },
+          "response":
+              {
+                  "is_event_manager": true
+              }
+            },
+        // in order to make user event manager you should post with the user id
+          "POST": {
+          "headers":
+          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
+          "body": { },
+          "response":
+              {
+                  "is_event_manager": true
+              }
+            }
+         }
+      }
+    },
+     {
+    "Name": "Get all events",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/events",
+      "Request Type": {
+        // in order get all the events of some user
+        "GET": {
+          "headers":
+          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
+          "body": { },
+          "response":
+             {
+                "id": 1,
+                "type": "wedding",
+                "event_name": "dfdsf",
+                "date": "2022-10-12",
+                "budget": 3242342,
+
+              }
+            },
+        // in order to create a new event
+        "POST": {
+          "headers":
+          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
+          "body": {
+            "type": "string",
+            "event_name": "string",
+            "date": "date in format 2022-10-12",
+            "budget": "int"
+          },
+          "response":
+              {
+                "id": 1,
+                "type": "wedding",
+                "event_name": "dfdsf",
+                "date": "2022-10-12",
+                "budget": 3242342,
+                "event_manager": 1
+              }
+            }
+         }
+      }
+    }
+  ]
