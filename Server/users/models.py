@@ -66,7 +66,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class EventManager(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE,
-                                primary_key=True)
+                                primary_key=True,
+                                default= None)
 
 
 # -------------------EventOwner-------------------
@@ -74,7 +75,8 @@ class EventManager(models.Model):
 class EventOwner(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE,
-                                primary_key=True)
+                                primary_key=True,
+                                default= None)
 
 
 # -------------------Supplier-------------------
@@ -83,6 +85,7 @@ class EventOwner(models.Model):
 class Supplier(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE,
-                                primary_key=True)
+                                primary_key=True,
+                                default= None)
 
     supplier_type = models.CharField(max_length=255)
