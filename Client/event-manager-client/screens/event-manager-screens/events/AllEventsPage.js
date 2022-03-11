@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import Colors from "../../../constants/colors";
+import { base_url, firebaseJson, previewEvents } from "../../../constants/urls";
+import EventEntity from "../../../Entities/EventEntity";
+import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
-import { base_url, firebaseJson, previewEvents } from "../../constants/urls";
-import EventEntity from "../../Entities/EventEntity";
-import EventItem from "../basicComponents/Events/EventItem";
 
-const EventsPreview = (props) => {
+const AllEventsPage = (props) => {
+  debugger;
+  const { HomeProps } = props.navigation.state.params;
   const [previewEventsData, setPreviewEventsData] = useState([]);
   const url = base_url + previewEvents + firebaseJson;
 
@@ -42,31 +45,23 @@ const EventsPreview = (props) => {
             owners={previewEvent.owners}
             type={previewEvent.type}
             location={previewEvent.location}
-            navi={props.HomeProps.navigation}
+            navi={HomeProps.navigation}
           />
         );
       })}
     </View>
   );
 
-  const previewTitle = (
+  const AllEventsTitle = (
     <View style={styles.row}>
-      <Text style={styles.textTitle}>Upcoming events</Text>
-      <Entypo
-        name="dots-three-horizontal"
-        size={22}
-        onPress={() =>
-          props.HomeProps.navigation.navigate("AllEvents", {
-            HomeProps: props,
-          })
-        }
-      />
+      <Text style={styles.mainTitle}>Events</Text>
+      <Entypo name="plus" size={20} />
     </View>
   );
 
   return (
     <View style={styles.screen}>
-      {previewTitle}
+      {AllEventsTitle}
       {body}
     </View>
   );
@@ -78,19 +73,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   row: {
-    width: 300,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
+    justifyContent: "space-around",
+    marginTop: 30,
+    width: 500,
+    padding: 15,
   },
   textTitle: {
     fontFamily: "alef-regular",
     fontSize: 14,
     textAlign: "left",
   },
+  mainTitle: {
+    color: Colors.text_black,
+    fontFamily: "alef-bold",
+    fontSize: 18,
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: 25,
+    textAlign: "center",
+  },
 });
-
-export default EventsPreview;
+export default AllEventsPage;
