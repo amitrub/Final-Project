@@ -1,4 +1,4 @@
-import { PREVIEW, MEETINGS } from "../actions/meetings";
+import { PREVIEW_MEETINGS, MEETINGS } from "../actions/meetings";
 
 const initialState = {
   previewMeetings: [],
@@ -7,7 +7,7 @@ const initialState = {
 
 const meetingsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case PREVIEW:
+    case PREVIEW_MEETINGS:
       return {
         ...state,
         previewMeetings: action.previewMeetings,

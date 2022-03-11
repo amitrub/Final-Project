@@ -7,14 +7,8 @@ const RegisterPage = (props) => {
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView>
-        <RegisterInput />
-
-        <View style={{ paddingTop: "15%", alignItems: "center" }}>
-          <Text>Already registered? Sign in...</Text>
-          <Text>-------------------------------------</Text>
-        </View>
-
         <LoginInput navi={props.navigation} />
+        <RegisterInput />
       </ScrollView>
     </SafeAreaView>
   );

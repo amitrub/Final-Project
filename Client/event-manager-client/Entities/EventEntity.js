@@ -1,9 +1,11 @@
 class EventEntity {
-  constructor(hall, type, ownersName, date, meetings) {
-    this.hall = hall;
+  constructor(owners, location, type, date, meetings) {
+    this.owners = owners;
+    this.location = location;
     this.type = type;
-    this.ownersName = ownersName;
     this.date = date;
     this.meetings = meetings;
   }
 }
+
+export default EventEntity;

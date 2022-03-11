@@ -10,6 +10,7 @@ import ReduxThunk from "redux-thunk";
 import mealsReducer from "./store/reducers/meals";
 import usersReducer from "./store/reducers/users";
 import meetingsReducer from "./store/reducers/meetings";
+import eventsReducer from "./store/reducers/events";
 
 enableScreens();
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   meals: mealsReducer,
   users: usersReducer,
   meetings: meetingsReducer,
+  events: eventsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

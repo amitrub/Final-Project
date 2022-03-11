@@ -1,14 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../../constants/colors";
 
 const MeetingItem = (props) => (
-  <View style={styles.listItem}>
+  <TouchableOpacity style={styles.listItem}>
     <Text style={styles.textTitle}>
       {props.time} {props.location}
     </Text>
     <Text style={styles.textDesc}>{props.description}</Text>
-  </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

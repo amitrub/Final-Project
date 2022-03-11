@@ -1,7 +1,7 @@
 import { base_url, previewMeetings } from "../../constants/urls";
 import MeetingEntity from "../../Entities/MeetingEntity";
 
-export const PREVIEW = "PREVIEW";
+export const PREVIEW_MEETINGS = "PREVIEW_MEETINGS";
 export const MEETINGS = "MEETINGS";
 
 export const getPreviewMeetingsApi = (token) => {

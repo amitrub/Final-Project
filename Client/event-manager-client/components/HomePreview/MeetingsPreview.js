@@ -1,28 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as meetingsActions from "../../store/actions/meetings";
-import * as PropTypes from "prop-types";
+// import * as PropTypes from "prop-types";
 import MeetingItem from "../basicComponents/MeetingItem";
 import Entypo from "react-native-vector-icons/Entypo";
+import {
+  base_url,
+  firebaseJson,
+  previewMeetings,
+  previewMeetingsCapitlP,
+} from "../../constants/urls";
+import EventEntity from "../../Entities/EventEntity";
+import MeetingEntity from "../../Entities/MeetingEntity";
 
-MeetingItem.propTypes = { meeting: PropTypes.any };
+// MeetingItem.propTypes = { meeting: PropTypes.any };
 const MeetingsPreview = (props) => {
-  const [previewMeetings, setPreviewMeetings] = React.useState([]);
-  let previewMeetingsState = useSelector(
-    (state) => state["meetings"].previewMeetings
-  );
+  const [previewMeetingsData, setPreviewMeetingsData] = useState([]);
+  const url = base_url + previewMeetingsCapitlP + firebaseJson;
 
-  const dispatch = useDispatch();
-  dispatch(meetingsActions.getPreviewMeetingsApi("token1234"));
+  const getData = useCallback(async () => {
+    const response = await fetch(url);
+    const data = await response.json();
+    const loadedEvents = [];
+
+    for (const key in data) {
+      loadedEvents.push(
+        new MeetingEntity(
+          data[key].time,
+          data[key].location,
+          data[key].Description
+        )
+      );
+    }
+    setPreviewMeetingsData(loadedEvents);
+  }, []);
 
   useEffect(() => {
-    setPreviewMeetings(previewMeetingsState);
-  }, [previewMeetingsState]);
+    getData()
+      .then((res) => res)
+      .catch((error) => console.log(error));
+  });
 
   const body = (
     <View>
-      {previewMeetings.map((previewMeeting) => {
+      {previewMeetingsData?.map((previewMeeting) => {
         return (
           <MeetingItem
             location={previewMeeting.location}
