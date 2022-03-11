@@ -14,14 +14,27 @@ event_schedule_router = routers.NestedDefaultRouter(
     lookup='event'
 )
 
+meeting_router = routers.NestedDefaultRouter(
+    router,
+    r'events',
+    lookup='event'
+)
+
 event_schedule_router.register(
     r'event_schedule',
     views.EventScheduleViewSet,
     basename='event-event_schedule_router'
 )
 
+meeting_router.register(
+    r'meeting',
+    views.MeetingViewSet,
+    basename='event-meeting_router'
+)
+
 app_name = 'events'
 urlpatterns = [
     path('', include(router.urls)),
     path('', include(event_schedule_router.urls)),
+    path('', include(meeting_router.urls)),
 ]
