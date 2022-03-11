@@ -3,10 +3,12 @@ from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import action
 from rest_framework.settings import api_settings
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 
 from users import serializers
 from users import models
@@ -17,6 +19,11 @@ from users.models import User, EventManager, EventOwner, Supplier
 class UserLoginApiView(ObtainAuthToken):
     """Handle creating user authentication tokens"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+    def post(self, request, *args, **kwargs):
+        response = super(UserLoginApiView, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
 
 class UserViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
@@ -38,6 +45,10 @@ class UserViewSet(viewsets.ModelViewSet):
             raise NotFound('A User with this id does not exist')
         return self.queryset.filter(id=user_id)
 
+    @action(detail=True, methods=['get'])
+    def homepage(self, request, pk=None):
+        id = self.request.user.id
+        return Response({'id': id})
 
 class EventManagerAPIView(APIView):
     serializer_class = serializers.EventManagerSerializer
