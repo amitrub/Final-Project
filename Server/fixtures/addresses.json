@@ -1,0 +1,13 @@
+[
+{
+    "model": "addresses.address",
+    "pk": 1,
+    "fields": {
+        "country": "Israel",
+        "city": "Beer Sheva",
+        "street": "Yaakov Cohen",
+        "number": 3,
+        "user": 1
+    }
+}
+]
