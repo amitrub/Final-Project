@@ -79,7 +79,6 @@ const RegisterInput = (props) => {
       <View style={{ paddingTop: "15%" }}>
         <Text style={styles.mainTitle}>SIGN UP</Text>
       </View>
-
       <SafeAreaView>
         <TextInput
           style={styles.input}
@@ -126,7 +125,7 @@ const RegisterInput = (props) => {
         <TextInput
           style={styles.input}
           onChangeText={setNumber}
-          value={number}
+          value={number.toString()}
           placeholder="number"
           keyboardType="numeric"
         />

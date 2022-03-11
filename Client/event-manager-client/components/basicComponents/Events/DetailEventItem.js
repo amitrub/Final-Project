@@ -1,21 +1,22 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
-import Colors from "../../constants/colors";
-import Entypo from 'react-native-vector-icons/Entypo';
+import { StyleSheet, Text, View } from "react-native";
+import Colors from "../../../constants/colors";
+import Entypo from "react-native-vector-icons/Entypo";
 
-
-const EventDetailButton = (props) => (
-    <View>
+const DetailEventItem = (props) => (
+  <View>
     <View style={styles.icons}>
-       <Entypo name='edit' size={16} />
-      <Entypo name='plus' size={16} />
+      <Entypo name="edit" size={16} />
+      <Entypo name="plus" size={16} />
     </View>
-  <View style={styles.listItem}>
-    <Text>{props.title} </Text>
-    <View style={styles.row}>
-            {props.items.map(item =>  <Text key={item}>{item}</Text>)}
+    <View style={styles.listItem}>
+      <Text>{props.title} </Text>
+      <View style={styles.row}>
+        {props.items.map((item) => (
+          <Text key={item}>{item}</Text>
+        ))}
+      </View>
     </View>
-  </View>
   </View>
 );
 
@@ -32,15 +33,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-    icons: {
+  icons: {
     marginRight: 240,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
   },
-      row: {
+  row: {
     flexDirection: "row",
     flexWrap: "wrap",
   },
 });
-export default EventDetailButton;
+export default DetailEventItem;
