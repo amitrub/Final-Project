@@ -13,11 +13,11 @@ class AddressViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
     serializer_class = serializers.AddressSerializer
     queryset = models.Address.objects.all()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (
-        permissions.UpdateOwnAddress,
-        IsAuthenticated,
-    )
+    # authentication_classes = (TokenAuthentication,)
+    #     # permission_classes = (
+    #     #     permissions.UpdateOwnAddress,
+    #     #     IsAuthenticated,
+    #     # )
 
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id

@@ -1,0 +1,38 @@
+-- React native hooks: --
+https://reactjs.org/docs/hooks-reference.html
+https://react-redux.js.org/api/hooks
+
+-------------------------------------------------------
+
+-- useCallback --
+[purpose]: to avoid infinite loop, and inefficient rendering
+[explanation]: useCallback will return a memoized version of the callback that only changes if one of the dependencies has changed.
+[example]:
+  const toggleFavoriteHandler = useCallback(() => {
+    console.log("toggleFavoriteHandler");
+    dispatch(toggleFavorite("mealId"));
+  }, [dispatch]);
+--> toggleFavoriteHandler - just a regular 'onChangeSomething function' with a callback
+--> useCallback define it like that just when dispatch changed - toggleFavoriteHandler define again
+
+-------------------------------------------------------
+
+-- useSelector --
+[purpose]: to get redux state in every component on the app
+[example]:
+  const availableMeals = useSelector((state) => state["users"].users);
+  ["users"] - name of the reducer
+  .users - name of the parameter of the state
+
+-------------------------------------------------------
+
+-- useEffect --
+[purpose]:
+[explanation]:
+[example]:
+useEffect(() => {
+     props.navigation.setParams({ mealTitle: selectedMeal.title });
+        props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+     }, [toggleFavoriteHandler]);
+
+-------------------------------------------------------

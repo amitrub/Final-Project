@@ -1,3 +1,5 @@
+import json
+
 from django.db import models
 from users.models import User
 
@@ -18,6 +20,9 @@ class Address(models.Model):
                             null=True,
                             blank=True)
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
     def __str__(self):
         """Return the model as a string"""
         return "{} {}, {}, {}".format(self.street, str(self.number), self.city, self.country)
