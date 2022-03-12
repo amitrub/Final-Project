@@ -25,7 +25,7 @@ class UserLoginApiView(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid(raise_exception=False):
             return Response({"Failure": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'token': token.key, 'id': token.user_id})
+        return Response({'token': token.key, 'id': token.user_id, 'name':token.user.name})
 
 
 class UserViewSet(viewsets.ModelViewSet):
