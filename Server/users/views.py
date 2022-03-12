@@ -43,7 +43,7 @@ class UserViewSet(viewsets.ModelViewSet):
             res = ''
             for value in serializer.errors.values():
                 res = value[0] + '/n'
-            return Response({"Failure": res}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -79,8 +79,11 @@ class EventManagerAPIView(APIView):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=user)
+        serializer.is_valid(raise_exception=False)
+        try:
+            serializer.save(user=user)
+        except Exception:
+            return Response({'Error': "The user is already an event manager"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, user_id):
@@ -88,7 +91,7 @@ class EventManagerAPIView(APIView):
         try:
             event_manager = EventManager.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A Event Manager with this id does not exist')
+            return Response({'Error': "A Event Manager with this id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         event_manager.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -108,8 +111,11 @@ class EventOwnerAPIView(APIView):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=user)
+        serializer.is_valid(raise_exception=False)
+        try:
+            serializer.save(user=user)
+        except Exception:
+            return Response({'Error': "The user is already an event owner"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, user_id):
@@ -117,7 +123,7 @@ class EventOwnerAPIView(APIView):
         try:
             event_owner = EventOwner.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A Event Owner with this id does not exist')
+            return Response({'Error': "A Event Owner with this id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         event_owner.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -141,8 +147,11 @@ class SupplierAPIView(APIView):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=user)
+        serializer.is_valid(raise_exception=False)
+        try:
+            serializer.save(user=user)
+        except Exception:
+            return Response({'Error': "The user is already a supplier"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, user_id):
@@ -150,6 +159,6 @@ class SupplierAPIView(APIView):
         try:
             supplier = Supplier.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A Event Owner with this id does not exist')
+            return Response({'Error': "A supplier with this id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         supplier.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
