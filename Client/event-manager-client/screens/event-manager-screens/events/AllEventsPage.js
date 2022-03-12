@@ -9,7 +9,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 const AllEventsPage = (props) => {
   const { HomeProps } = props.navigation.state.params;
   const [previewEventsData, setPreviewEventsData] = useState([]);
-  const url = base_url + previewEvents + firebaseJson;
+  const url = base_url + previewEvents;
 
   const getData = useCallback(async () => {
     const response = await fetch(url);

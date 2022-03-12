@@ -6,63 +6,61 @@ import EventsPreview from "../../components/HomePreview/EventsPreview";
 import TasksPreview from "../../components/HomePreview/TasksPreview";
 import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../global/UserAuthentication";
-import { base_url, eventManager, login } from "../../constants/urls";
-import {
-  createOneButtonAlert,
-  STATUS_FAILED,
-  STATUS_SUCCESS,
-} from "../../constants/errorHandler";
+import { base_url, eventManager } from "../../constants/urls";
+import { STATUS_FAILED, STATUS_SUCCESS } from "../../constants/errorHandler";
 
 const HomePage = (props) => {
   const myContext = useContext(UserAuthentication);
   console.log("myContext homepage", myContext);
 
   async function postEventManager() {
-    await fetch(base_url + eventManager(myContext.id), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+    await fetch(
+      base_url + eventManager(myContext.id),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
       },
-    })
+      { timeout: 2000 }
+    )
       .then(async (res) => {
-        try {
-          const data = await res.json();
-          if (STATUS_FAILED(res.status)) {
-            console.log("POST is-event-manager FAILED");
-          } else if (STATUS_SUCCESS(res.status)) {
-            console.log("POST is-event-manager SUCCESS");
-          }
-        } catch (error) {
-          console.log("postEventManager error", error);
+        const data = await res.json();
+        const message = data.Error ? data.Error : "";
+        if (STATUS_FAILED(res.status)) {
+          console.log("POST is-event-manager FAILED >> Error: ", message);
+        } else if (STATUS_SUCCESS(res.status)) {
+          console.log("POST is-event-manager SUCCESS");
         }
       })
       .catch((error) => console.log("postEventManager catch error", error));
   }
   async function getIsEventManager() {
-    await fetch(base_url + eventManager(myContext.id), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+    await fetch(
+      base_url + eventManager(myContext.id),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
       },
-    })
+      { timeout: 2000 }
+    )
       .then(async (res) => {
-        try {
-          const data = await res.json();
-          if (STATUS_FAILED(res.status)) {
-            console.log("GET is-event-manager FAILED");
-          } else if (STATUS_SUCCESS(res.status)) {
-            if (!data.is_event_manager) {
-              await postEventManager();
-            } else {
-              console.log(
-                "GET is-event-manager SUCCESS >> already event-manager"
-              );
-            }
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = data.Error ? data.Error : "";
+          console.log("GET is-event-manager FAILED >> Error: ", message);
+        } else if (STATUS_SUCCESS(res.status)) {
+          if (!data.is_event_manager) {
+            await postEventManager();
+          } else {
+            console.log(
+              "GET is-event-manager SUCCESS >> already event-manager"
+            );
           }
-        } catch (error) {
-          console.log("GET is-event-manager catch error", error);
         }
       })
       .catch((error) => console.log("onPressRegister error", error));
@@ -76,7 +74,7 @@ const HomePage = (props) => {
     <SafeAreaView style={styles.screen}>
       <ScrollView>
         <View style={styles.row}>
-          <Text style={styles.mainTitle}>Hello Hadasi Hayafa</Text>
+          <Text style={styles.mainTitle}>Hello {myContext.name}!</Text>
           <Entypo name="plus" size={20} />
         </View>
         <View style={{ paddingTop: "7%" }}>

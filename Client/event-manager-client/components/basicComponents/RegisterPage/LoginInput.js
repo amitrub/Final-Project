@@ -38,38 +38,36 @@ const RegisterInput = (props) => {
     ]);
 
   const onPressLogin = useCallback(async () => {
-    await fetch(base_url + login, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    await fetch(
+      base_url + login,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
       },
-      body: JSON.stringify({
-        username: email,
-        password: password,
-      }),
-    })
+      {
+        timeout: 2000,
+      }
+    )
       .then(async (res) => {
-        try {
-          const data = await res.json();
-          if (STATUS_FAILED(res.status)) {
-            //const message = data.email[0];
-            console.log("data failed", data);
-            createOneButtonAlert(
-              "Username or password are invalid, try again",
-              "OK",
-              "Login failed"
-            );
-          } else if (STATUS_SUCCESS(res.status)) {
-            const message =
-              "You have successfully login!\npress OK to go to your home page";
-            createTwoButtonAlert(props, message);
-            myContext.setToken(data.token);
-            myContext.setId(data.id);
-          }
-        } catch (error) {
-          console.log("handleResponseLogin error", error);
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = data.Error ? data.Error : "";
+          createOneButtonAlert(message, "OK", "Login failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          const message =
+            "You have successfully login!\npress OK to your home page";
+          myContext.setToken(data.token);
+          myContext.setId(data.id);
+          myContext.setName(data.name);
+          createTwoButtonAlert(props, message);
+          emptyLoginInputs();
         }
-        emptyLoginInputs();
       })
       .catch((error) => console.log("onPressRegister error", error));
   }, [email, password]);
