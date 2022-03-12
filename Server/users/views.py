@@ -1,4 +1,3 @@
-
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
@@ -23,7 +22,11 @@ class UserLoginApiView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         response = super(UserLoginApiView, self).post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid(raise_exception=False):
+            return Response({"Failure": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'token': token.key, 'id': token.user_id})
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
@@ -33,6 +36,16 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email',)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid(raise_exception=False):
+            res = ''
+            for value in serializer.errors.values():
+                res = value[0] + '/n'
+            return Response({"Failure": res}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id
@@ -49,6 +62,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def homepage(self, request, pk=None):
         id = self.request.user.id
         return Response({'id': id})
+
 
 class EventManagerAPIView(APIView):
     serializer_class = serializers.EventManagerSerializer
@@ -78,6 +92,7 @@ class EventManagerAPIView(APIView):
         event_manager.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class EventOwnerAPIView(APIView):
     serializer_class = serializers.EventOwnerSerializer
     authentication_classes = (TokenAuthentication,)
@@ -105,6 +120,7 @@ class EventOwnerAPIView(APIView):
             raise NotFound('A Event Owner with this id does not exist')
         event_owner.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class SupplierAPIView(APIView):
     serializer_class = serializers.SupplierSerializer
@@ -137,5 +153,3 @@ class SupplierAPIView(APIView):
             raise NotFound('A Event Owner with this id does not exist')
         supplier.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
