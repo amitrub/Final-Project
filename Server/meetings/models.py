@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from events.models import Event
+from users.models import EventManager
 
 
 class Meetings(models.Model):
@@ -13,6 +14,13 @@ class Meetings(models.Model):
                                  related_name='meetings',
                                  null=True,
                                  blank=True)
+    event_manager = models.ForeignKey(
+        EventManager,
+        on_delete=models.CASCADE,
+        related_name='meetings',
+        default=None,
+    )
+
     def __str__(self):
         """Return the model as a string"""
         return self.description

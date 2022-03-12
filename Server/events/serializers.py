@@ -44,7 +44,7 @@ class EventSerializer(serializers.ModelSerializer):
         if 'meetings' in validated_data:
             meetings = validated_data.pop('meetings')
             for meeting in meetings:
-                meeting_new = Meetings.objects.create(**meeting)
+                meeting_new = Meetings.objects.create(event_manager=validated_data['event_manager'], **meeting)
                 meeting_new.event.add(event)
         return event
 
