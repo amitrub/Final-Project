@@ -56,6 +56,12 @@ python3 manage.py migrate
 #create superuser
 python3 manage.py createsuperuser
 
+#To dump data:
+python3 manage.py dumpdata app.model_name --indent 4 > fixtures/model_name.json
+
+#To load data:
+python3 manage.py loaddata fixtures/model_name.json --app app.model_name
+
 #frontend app!!
 #create package.json file - init npm
 npm init -y

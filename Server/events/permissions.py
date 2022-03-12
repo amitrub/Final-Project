@@ -39,3 +39,20 @@ class UpdateOwnEventSchedule(permissions.BasePermission):
         event = Event.objects.get(id=event_id)
         return event.event_manager.pk == request.user.id
 
+
+class UpdateOwnMeeting(permissions.BasePermission):
+    """Allow users to update their own status"""
+
+    def has_permission(self, request, view):
+        """
+        Return `True` if permission is granted, `False` otherwise.
+        """
+        event_pk = view.kwargs.get("event_pk")
+        event = Event.objects.get(id=int(event_pk))
+        return event.event_manager.pk == request.user.id
+
+    def has_object_permission(self, request, view, obj):
+        """Check the user is trying to update their own status"""
+        event_id = obj.event_id
+        event = Event.objects.get(id=event_id)
+        return event.event_manager.pk == request.user.id

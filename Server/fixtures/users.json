@@ -1,0 +1,35 @@
+[
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$xCq9G6Ui9cF8oUnnHiIBa9$d5tAYResjtdgDEucg/PMt2eUYtpEJ+r71EB3bQIECfw=",
+        "last_login": null,
+        "is_superuser": false,
+        "email": "amitrubin21@gmail.com",
+        "name": "amit",
+        "phone": "+972545770440",
+        "is_active": true,
+        "is_staff": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.eventmanager",
+    "pk": 1,
+    "fields": {}
+},
+{
+    "model": "users.eventowner",
+    "pk": 1,
+    "fields": {}
+},
+{
+    "model": "users.supplier",
+    "pk": 1,
+    "fields": {
+        "supplier_type": "DJ"
+    }
+}
+]
