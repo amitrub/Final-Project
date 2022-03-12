@@ -1,4 +1,5 @@
 from django.db import models
+from rest_framework.utils import json
 
 from users.models import EventManager, Supplier
 
@@ -22,6 +23,10 @@ class Event(models.Model):
     def __str__(self):
         """Return the model as a string"""
         return self.event_name
+
+    def tojson(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
 
 
 # -------------------EventSchedule-------------------
