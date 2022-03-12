@@ -1,6 +1,6 @@
 from django.db import models
 
-from users.models import EventManager
+from users.models import EventManager, Supplier
 
 
 # -------------------Event-------------------
@@ -11,11 +11,13 @@ class Event(models.Model):
         EventManager,
         on_delete=models.CASCADE,
         related_name='events',
+        default=None
     )
     type = models.CharField(max_length=255)
     event_name = models.CharField(max_length=255)
     date = models.DateField()
     budget = models.PositiveIntegerField()
+    location = models.CharField(max_length=255)
 
     def __str__(self):
         """Return the model as a string"""
