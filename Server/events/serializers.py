@@ -4,6 +4,8 @@ from events import models
 
 # -------------------Event-------------------
 from events.models import Event
+from meetings.models import Meetings
+from meetings.serializers import MeetingSerializer
 from suppliers.models import Supplier
 from suppliers.serializers import SupplierSerializer
 
@@ -11,10 +13,11 @@ from suppliers.serializers import SupplierSerializer
 class EventSerializer(serializers.ModelSerializer):
     """Serializer profile feed items"""
     suppliers = SupplierSerializer(many=True, required=False)
+    meetings = MeetingSerializer(many=True, required=False)
 
     class Meta:
         model = models.Event
-        fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'suppliers')
+        fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'suppliers', 'meetings')
         # fields = '__all__'
         extra_kwargs = {
             'event_manager': {
@@ -34,9 +37,15 @@ class EventSerializer(serializers.ModelSerializer):
         )
         if 'suppliers' in validated_data:
             suppliers = validated_data.pop('suppliers')
+            print(suppliers)
             for supplier in suppliers:
                 supplier_new = Supplier.objects.create(**supplier)
                 supplier_new.event.add(event)
+        if 'meetings' in validated_data:
+            meetings = validated_data.pop('meetings')
+            for meeting in meetings:
+                meeting_new = Meetings.objects.create(**meeting)
+                meeting_new.event.add(event)
         return event
 
 
@@ -55,16 +64,15 @@ class EventScheduleSerializer(serializers.ModelSerializer):
         fields = ('id', 'event', 'start_time', 'end_time', 'description')
         # fields = '__all__'
 
-
-class MeetingSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-
-    event = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='event_name'
-    )
-
-    class Meta:
-        model = models.Meeting
-        fields = ('id', 'event', 'date', 'description', 'time')
-        # fields = '__all__'
+# class MeetingSerializer(serializers.ModelSerializer):
+#     """Serializer profile feed items"""
+#
+#     event = serializers.SlugRelatedField(
+#         read_only=True,
+#         slug_field='event_name'
+#     )
+#
+#     class Meta:
+#         model = models.Meeting
+#         fields = ('id', 'event', 'date', 'description', 'time')
+#         # fields = '__all__'
