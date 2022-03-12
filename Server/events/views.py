@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -30,11 +31,27 @@ class EventViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(event_manager=event_manager)
 
 
-    def perform_create(self, serializer):
-        """Sets the user profile to the logged in user"""
+    # def perform_create(self, serializer):
+    #     """Sets the user profile to the logged in user"""
+    #     id = self.request.user.id
+    #     user = EventManager.objects.get(pk=id)
+    #     serializer.save(event_manager=user)
+
+    def create(self, request, *args, **kwargs):
         id = self.request.user.id
-        user = EventManager.objects.get(pk=id)
+        try:
+            user = EventManager.objects.get(pk=id)
+        except User.DoesNotExist:
+            raise NotFound('A user with this id does not exist')
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid(raise_exception=False):
+            res = ''
+            for value in serializer.errors.values():
+                res = value[0] + '\n'
+            return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save(event_manager=user)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_update(self, serializer):
         """Sets the user profile to the logged in user"""
@@ -69,7 +86,11 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
         except Event.DoesNotExist:
             raise NotFound('A event with this id does not exist')
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid(raise_exception=False):
+            res = ''
+            for value in serializer.errors.values():
+                res = value[0] + '/n'
+            return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save(event=event)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
@@ -101,7 +122,11 @@ class MeetingViewSet(viewsets.ModelViewSet):
         except Event.DoesNotExist:
             raise NotFound('A event with this id does not exist')
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid(raise_exception=False):
+            res = ''
+            for value in serializer.errors.values():
+                res = value[0] + '/n'
+            return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save(event=event)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
