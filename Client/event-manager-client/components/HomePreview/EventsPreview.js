@@ -1,31 +1,34 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
-import { base_url, firebaseJson, previewEvents } from "../../constants/urls";
+import { allEvents, base_url } from "../../constants/urls";
 import EventEntity from "../../Entities/EventEntity";
 import EventItem from "../basicComponents/Events/EventItem";
 
 const EventsPreview = (props) => {
   const [previewEventsData, setPreviewEventsData] = useState([]);
-  const url = base_url + previewEvents + firebaseJson;
+  const url = base_url + allEvents;
 
   const getData = useCallback(async () => {
-    const response = await fetch(url);
-    const data = await response.json();
-    const loadedEvents = [];
+    await fetch(url)
+      .then(async (res) => {
+        const data = await res.json();
+        const loadedEvents = [];
+        debugger;
+        for (const key in data) {
+          loadedEvents.push(
+            new EventEntity(
+              data[key].owners,
+              data[key].location,
+              data[key].type,
+              data[key].date
+            )
+          );
+        }
 
-    for (const key in data) {
-      loadedEvents.push(
-        new EventEntity(
-          data[key].owners,
-          data[key].location,
-          data[key].type,
-          data[key].date
-        )
-      );
-    }
-
-    setPreviewEventsData(loadedEvents);
+        setPreviewEventsData(loadedEvents);
+      })
+      .catch((error) => console.log("hadas", error));
   }, []);
   useEffect(() => {
     getData()

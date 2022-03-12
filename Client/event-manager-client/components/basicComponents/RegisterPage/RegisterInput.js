@@ -1,22 +1,30 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Button,
   SafeAreaView,
   TextInput,
   Alert,
 } from "react-native";
 import Colors from "../../../constants/colors";
-import { useDispatch, useSelector } from "react-redux";
-import * as userActions from "../../../store/actions/users";
+import { base_url, register } from "../../../constants/urls";
+import RegisterUser from "../../../Entities/Users/RegisterUser";
+import Address from "../../../Entities/Users/Address";
+import {
+  createOneButtonAlert,
+  handleResponseRegister,
+  STATUS_FAILED,
+  STATUS_SUCCESS,
+} from "../../../constants/errorHandler";
+import UserAuthentication from "../../../global/UserAuthentication";
 
 const RegisterInput = (props) => {
-  const [email, setEmail] = React.useState("emailTest");
-  const [password, setPassword] = React.useState("passTest");
-  const [fullName, setFullName] = React.useState("nameTest");
+  const myContext = useContext(UserAuthentication);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [fullName, setFullName] = React.useState("");
   const [phone, setPhone] = React.useState("phoneTest");
   const [city, setCity] = React.useState("cityTest");
   const [country, setCountry] = React.useState("countryTest");
@@ -24,55 +32,49 @@ const RegisterInput = (props) => {
   const [street, setStreet] = React.useState("streetTest");
 
   const emptyRegisterInputs = () => {
-    setEmail("emailTest");
-    setPassword("passTest");
-    setFullName("nameTest");
-    setPhone("phoneTest");
-    setCity("cityTest");
-    setCountry("countryTest");
-    setStreet("streetTest");
-    // setEmail("");
-    // setPassword("");
-    // setFullName("");
-    // setPhone("");
-    // setCity("");
-    // setCountry("");
-    // setStreet("");
+    setEmail("");
+    setPassword("");
+    setFullName("");
+    setPhone("");
+    setCity("");
+    setCountry("");
+    setStreet("");
   };
-  const registeredUsers = useSelector((state) => state["users"].registered);
-  const createOneButtonAlert = (message) =>
-    Alert.alert("Event manager app", message, [
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
 
-  const dispatch = useDispatch();
   const onPressRegister = useCallback(async () => {
-    await dispatch(
-      await userActions.registerApi(
-        fullName,
-        email,
-        password,
-        phone,
-        country,
-        city,
-        street,
-        number
-      )
+    const user = new RegisterUser(
+      fullName,
+      email,
+      password,
+      phone,
+      new Address(country, city, street, number)
     );
-    emptyRegisterInputs();
-    //todo: need to get a response and decide about the message!
-    createOneButtonAlert("You have successfully registered!\nplease SIGN IN");
-  }, [
-    dispatch,
-    fullName,
-    email,
-    password,
-    phone,
-    country,
-    city,
-    street,
-    number,
-  ]);
+    await fetch(base_url + register, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then(async (res) => {
+        try {
+          const data = await res.json();
+
+          if (STATUS_FAILED(res.status)) {
+            const message = data.email[0];
+            createOneButtonAlert(message, "OK", "Registration Failed");
+          } else if (STATUS_SUCCESS(res.status)) {
+            myContext.setId(data.id);
+            const message = "You have successfully registered!\nplease LOGIN";
+            createOneButtonAlert(message, "OK", "Registration Succeeded");
+          }
+        } catch (error) {
+          console.log("handleResponse register error", error);
+        }
+        emptyRegisterInputs();
+      })
+      .catch((error) => console.log("onPressRegister error", error));
+  }, [email, password, fullName, phone, city, country, number, street]);
 
   return (
     <View>

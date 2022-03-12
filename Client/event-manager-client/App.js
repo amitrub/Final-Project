@@ -11,6 +11,7 @@ import mealsReducer from "./store/reducers/meals";
 import usersReducer from "./store/reducers/users";
 import meetingsReducer from "./store/reducers/meetings";
 import eventsReducer from "./store/reducers/events";
+import UserAuthentication from "./global/UserAuthentication";
 
 enableScreens();
 
@@ -35,6 +36,16 @@ const fetchFonts = () => {
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
+  //Context fields
+  const [id, setId] = useState(-1);
+  const [token, setToken] = useState("");
+  const userAuth = {
+    id: id,
+    token: token,
+    setId: setId,
+    setToken: setToken,
+  };
+
   if (!dataLoaded) {
     console.log("Uploading data...");
     return (
@@ -47,9 +58,11 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
-      <ScreenNavigation />
-    </Provider>
+    <UserAuthentication.Provider value={userAuth}>
+      <Provider store={store}>
+        <ScreenNavigation />
+      </Provider>
+    </UserAuthentication.Provider>
   );
 }
 

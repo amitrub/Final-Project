@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   View,
   Text,
@@ -9,18 +9,22 @@ import {
   Alert,
 } from "react-native";
 import Colors from "../../../constants/colors";
-import { useDispatch } from "react-redux";
-import * as userActions from "../../../store/actions/users";
+import { base_url, login } from "../../../constants/urls";
+import {
+  createOneButtonAlert,
+  STATUS_FAILED,
+  STATUS_SUCCESS,
+} from "../../../constants/errorHandler";
+import UserAuthentication from "../../../global/UserAuthentication";
 
 const RegisterInput = (props) => {
-  const [email, setEmail] = React.useState("emailTest");
-  const [password, setPassword] = React.useState("passTest");
+  const myContext = useContext(UserAuthentication);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const emptyLoginInputs = () => {
-    setEmail("emailTest");
-    setPassword("passTest");
-    // setEmailLogin("");
-    // setPasswordLogin("");
+    setEmail("");
+    setPassword("");
   };
   const createTwoButtonAlert = (props, message) =>
     Alert.alert("You are almost there!", message, [
@@ -32,15 +36,43 @@ const RegisterInput = (props) => {
       },
       { text: "Cancel", onPress: () => console.log("Cancel Pressed") },
     ]);
-  const dispatch = useDispatch();
+
   const onPressLogin = useCallback(async () => {
-    await dispatch(await userActions.loginApi(email, password));
-    emptyLoginInputs();
-    createTwoButtonAlert(
-      props,
-      "You have successfully signed in!\npress OK and go to your Home Page"
-    );
-  }, [dispatch, email, password]);
+    await fetch(base_url + login, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: email,
+        password: password,
+      }),
+    })
+      .then(async (res) => {
+        try {
+          const data = await res.json();
+
+          if (STATUS_FAILED(res.status)) {
+            //const message = data.email[0];
+            console.log("data failed", data);
+            createOneButtonAlert(
+              "Username or password are invalid, try again",
+              "OK",
+              "Login failed"
+            );
+          } else if (STATUS_SUCCESS(res.status)) {
+            const message =
+              "You have successfully login!\npress OK to go to your home page";
+            createTwoButtonAlert(props, message);
+            myContext.setToken(data.token);
+          }
+        } catch (error) {
+          console.log("handleResponseLogin error", error);
+        }
+        emptyLoginInputs();
+      })
+      .catch((error) => console.log("onPressRegister error", error));
+  }, [email, password]);
 
   return (
     <View>

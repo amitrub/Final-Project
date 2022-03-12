@@ -36,3 +36,33 @@ useEffect(() => {
      }, [toggleFavoriteHandler]);
 
 -------------------------------------------------------
+
+  // const registeredUsers = useSelector((state) => state["users"].registered);
+  // const dispatch = useDispatch();
+  // const onPressRegister = useCallback(async () => {
+  //   await dispatch(
+  //     await userActions.registerApi(
+  //       fullName,
+  //       email,
+  //       password,
+  //       phone,
+  //       country,
+  //       city,
+  //       street,
+  //       number
+  //     )
+  //   );
+  //   emptyRegisterInputs();
+  //   //todo: need to get a response and decide about the message!
+  //   createOneButtonAlert("You have successfully registered!\nplease SIGN IN");
+  // }, [
+  //   dispatch,
+  //   fullName,
+  //   email,
+  //   password,
+  //   phone,
+  //   country,
+  //   city,
+  //   street,
+  //   number,
+  // ]);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import Colors from "../../constants/colors";
 import MeetingsPreview from "../../components/HomePreview/MeetingsPreview";
@@ -7,14 +7,11 @@ import TasksPreview from "../../components/HomePreview/TasksPreview";
 import { useDispatch, useSelector } from "react-redux";
 import * as eventsActions from "../../store/actions/events";
 import Entypo from "react-native-vector-icons/Entypo";
+import UserAuthentication from "../../global/UserAuthentication";
 
 const HomePage = (props) => {
-  const previewEventsState = useSelector((state) => state.events.previewEvents);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(eventsActions.getPreviewEventsApi("token1234"));
-  }, [dispatch]);
+  const myContext = useContext(UserAuthentication);
+  console.log("myContext homepage", myContext);
 
   return (
     <SafeAreaView style={styles.screen}>
