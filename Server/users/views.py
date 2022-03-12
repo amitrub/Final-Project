@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 res = value[0] + '/n'
             return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'id': serializer.data['id']}, status=status.HTTP_201_CREATED)
 
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id
