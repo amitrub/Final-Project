@@ -137,49 +137,110 @@
          }
       }
     },
-     {
+  {
     "Name": "Get all events",
     "OPTIONS": {
       "URL": "http://localhost:8000/api/events",
       "Request Type": {
         // in order get all the events of some user
         "GET": {
-          "headers":
-          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
-          "body": { },
-          "response":
-             {
-                "id": 1,
-                "type": "wedding",
-                "event_name": "dfdsf",
-                "date": "2022-10-12",
-                "budget": 3242342,
-
+          "headers": {
+            "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+          },
+          "body": {},
+          "response": {
+            "id": 13,
+            "event_manager": 1,
+            "type": "wedding",
+            "event_name": "rou&hads",
+            "date": "2022-09-23",
+            "budget": 2100,
+            "location": "israel",
+            "suppliers": [
+              {
+                "id": 9,
+                "name": "reut",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200,
+                "event": [
+                  13
+                ]
+              },
+              {
+                "id": 10,
+                "name": "reut1",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200,
+                "event": [
+                  13
+                ]
               }
-            },
+            ]
+          }
+        },
         // in order to create a new event
         "POST": {
-          "headers":
-          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
-          "body": {
-            "type": "string",
-            "event_name": "string",
-            "date": "date in format 2022-10-12",
-            "budget": "int"
+          "headers": {
+            "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
           },
-          "response":
+          "body": {
+            "type": "wedding",
+            "event_name": "rou&hads",
+            "date": "2022-09-23",
+            "budget": 2100,
+            "location": "israel",
+            "suppliers": [
               {
-                "id": 1,
-                "type": "wedding",
-                "event_name": "dfdsf",
-                "date": "2022-10-12",
-                "budget": 3242342,
-                "event_manager": 1
+                "name": "reut",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200
+              },
+              {
+                "name": "reut1",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200
               }
-            }
-         }
+            ]
+          },
+          "response": {
+            "id": 14,
+            "event_manager": 1,
+            "type": "wedding",
+            "event_name": "rou&hads",
+            "date": "2022-09-23",
+            "budget": 2100,
+            "location": "israel",
+            "suppliers": [
+              {
+                "id": 11,
+                "name": "reut",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200,
+                "event": [
+                  14
+                ]
+              },
+              {
+                "id": 12,
+                "name": "reut1",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200,
+                "event": [
+                  14
+                ]
+              }
+            ]
+          }
+        }
       }
-    },
+    }
+  },
        {
     "Name": "Get all meetings",
     "OPTIONS": {
@@ -228,5 +289,50 @@
             }
          }
       }
+    },
+  {
+    "Name": "Get specific event",
+    "OPTIONS": {
+      "URL": "http://localhost:8000/api/events/<event-id>/",
+      "Request Type": {
+        // in order get all the events of some user
+        "GET": {
+          "headers": {
+            "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+          },
+          "body": {},
+          "response": {
+            "id": 13,
+            "event_manager": 1,
+            "type": "wedding",
+            "event_name": "rou&hads",
+            "date": "2022-09-23",
+            "budget": 2100,
+            "location": "israel",
+            "suppliers": [
+              {
+                "id": 9,
+                "name": "reut",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200,
+                "event": [
+                  13
+                ]
+              },
+              {
+                "id": 10,
+                "name": "reut1",
+                "price": 1000,
+                "advance_pay": 1500,
+                "pay_method": 200,
+                "event": [
+                  13
+                ]
+              }
+            ]
+          }
+        }
+      }
     }
-  ]
+  }

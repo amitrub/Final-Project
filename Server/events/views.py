@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import User
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -7,7 +9,7 @@ from rest_framework.exceptions import NotFound
 from events import serializers
 from events import models
 from events import permissions
-from events.models import Event
+from events.models import Event, Meeting
 from users.models import EventManager
 from rest_framework.response import Response
 
@@ -58,6 +60,17 @@ class EventViewSet(viewsets.ModelViewSet):
         user = EventManager.objects.get(pk=self.request.user.id)
         serializer.save(event_manager=user)
 
+    # def retrieve(self, request, *args, **kwargs):
+    #     id = kwargs['pk']
+    #     event = Event.objects.filter(pk = id)
+    #     data = event.values()
+    #     meetings = Meeting.objects.filter(event__id=id)
+    #     data['meetings'] = meetings.values()
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid()
+    #     # response = serializer.data
+    #     # response.update({'meetings': meetings})
+    #     return Response(data, status=status.HTTP_200_OK)
 
 class EventScheduleViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
@@ -94,6 +107,7 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
         serializer.save(event=event)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class MeetingViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
