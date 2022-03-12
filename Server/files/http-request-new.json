@@ -204,6 +204,13 @@
                 "advance_pay": 1500,
                 "pay_method": 200
               }
+            ],
+            "meetings": [
+                 {
+                   "description": "flowers",
+                   "date": "2022-09-23",
+                   "time": "18:00:00",
+                  }
             ]
           },
           "response": {
@@ -235,61 +242,21 @@
                   14
                 ]
               }
+            ],
+            "meetings": [
+                 {
+                   "id": 1,
+                   "description": "flowers",
+                   "date": "2022-09-23",
+                   "time": "18:00:00",
+                   "events": [2]
+                  }
             ]
           }
         }
       }
     }
   },
-       {
-    "Name": "Get all meetings",
-    "OPTIONS": {
-      "URL": "http://localhost:8000/api/events/<event-id>/meeting",
-      "Request Type": {
-        // in order get all the events of some user
-        "GET": {
-          "headers":
-          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
-          "body": { },
-          "response":
-          [
-                       {
-                        "id": 1,
-                        "event": "dfdsf",
-                        "date": "2022-10-12",
-                        "description": "flowers",
-                        "time": "18:00:00"
-                      },
-                      {
-                        "id": 2,
-                        "event": "dfdsf",
-                        "date": "2022-12-12",
-                        "description": "flowers",
-                        "time": "20:00:00"
-                       }
-           ]
-         },
-        // in order to create a new meeting
-        "POST": {
-          "headers":
-          {"Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"},
-          "body": {
-             "date": "2022-12-12",
-             "description": "flowers",
-             "time": "20:00:00"
-          },
-          "response":
-                {
-                    "id": 3,
-                    "event": "dfdsf",
-                    "date": "2022-10-12",
-                    "description": "saddsad",
-                    "time": "18:00:00"
-                }
-            }
-         }
-      }
-    },
   {
     "Name": "Get specific event",
     "OPTIONS": {
@@ -330,9 +297,49 @@
                   13
                 ]
               }
+            ],
+            "meetings": [
+                 {
+                      "id": 1,
+                      "description": "flowers",
+                      "date": "2022-09-23",
+                      "time": "18:00:00",
+                      "event": [
+                          2
+                      ]
+                  }
             ]
           }
         }
       }
     }
+  },
+  {
+    "Name": "get all meetings",
+      "OPTIONS": {
+      "URL": "http://localhost:8000/api/meetings",
+      "Request Type": {
+        // in order get all the meetings of some user
+        "GET": {
+          "headers": {
+            "Authorization": "Token b09a7ac64fbbc746864135f38fc0feaab68c286e"
+          },
+          "body": {},
+          "response": {
+              [
+                  {
+                      "id": 1,
+                      "description": "flowers",
+                      "date": "2022-09-23",
+                      "time": "18:00:00",
+                      "event": [
+                          2
+                      ]
+                  }
+              ]
+          }
+        }
+      }
+    }
+  }
   }
