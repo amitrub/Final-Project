@@ -7,7 +7,6 @@ import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
 
 const AllEventsPage = (props) => {
-  debugger;
   const { HomeProps } = props.navigation.state.params;
   const [previewEventsData, setPreviewEventsData] = useState([]);
   const url = base_url + previewEvents + firebaseJson;

@@ -51,7 +51,6 @@ const RegisterInput = (props) => {
       .then(async (res) => {
         try {
           const data = await res.json();
-
           if (STATUS_FAILED(res.status)) {
             //const message = data.email[0];
             console.log("data failed", data);
@@ -65,6 +64,7 @@ const RegisterInput = (props) => {
               "You have successfully login!\npress OK to go to your home page";
             createTwoButtonAlert(props, message);
             myContext.setToken(data.token);
+            myContext.setId(data.id);
           }
         } catch (error) {
           console.log("handleResponseLogin error", error);

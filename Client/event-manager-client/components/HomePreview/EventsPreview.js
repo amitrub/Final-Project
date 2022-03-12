@@ -1,20 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import { allEvents, base_url } from "../../constants/urls";
 import EventEntity from "../../Entities/EventEntity";
 import EventItem from "../basicComponents/Events/EventItem";
+import UserAuthentication from "../../global/UserAuthentication";
 
 const EventsPreview = (props) => {
+  const myContext = useContext(UserAuthentication);
   const [previewEventsData, setPreviewEventsData] = useState([]);
   const url = base_url + allEvents;
 
   const getData = useCallback(async () => {
-    await fetch(url)
+    await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${myContext.token}`,
+      },
+    })
       .then(async (res) => {
         const data = await res.json();
         const loadedEvents = [];
-        debugger;
         for (const key in data) {
           loadedEvents.push(
             new EventEntity(

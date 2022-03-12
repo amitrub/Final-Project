@@ -59,12 +59,11 @@ const RegisterInput = (props) => {
       .then(async (res) => {
         try {
           const data = await res.json();
-
+          debugger;
           if (STATUS_FAILED(res.status)) {
             const message = data.email[0];
             createOneButtonAlert(message, "OK", "Registration Failed");
           } else if (STATUS_SUCCESS(res.status)) {
-            myContext.setId(data.id);
             const message = "You have successfully registered!\nplease LOGIN";
             createOneButtonAlert(message, "OK", "Registration Succeeded");
           }
