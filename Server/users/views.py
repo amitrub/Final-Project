@@ -24,7 +24,7 @@ class UserLoginApiView(ObtainAuthToken):
         token = Token.objects.get(key=response.data['token'])
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid(raise_exception=False):
-            return Response({"Failure": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Error": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'token': token.key, 'id': token.user_id, 'name':token.user.name})
 
 
