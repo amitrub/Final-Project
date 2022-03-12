@@ -9,7 +9,7 @@ from rest_framework.exceptions import NotFound
 from events import serializers
 from events import models
 from events import permissions
-from events.models import Event, Meeting
+from events.models import Event
 from users.models import EventManager
 from rest_framework.response import Response
 
@@ -52,8 +52,8 @@ class EventViewSet(viewsets.ModelViewSet):
                 res = value[0] + '\n'
             return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save(event_manager=user)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        # headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def perform_update(self, serializer):
         """Sets the user profile to the logged in user"""
@@ -109,38 +109,38 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class MeetingViewSet(viewsets.ModelViewSet):
-    """Handle creating, reading and updating profiles feed items"""
-    serializer_class = serializers.MeetingSerializer
-    queryset = models.Meeting.objects.all().select_related(
-        'event'
-    )
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (
-        permissions.UpdateOwnMeeting,
-        IsAuthenticated,
-    )
-
-    def get_queryset(self, *args, **kwargs):
-        event_id = self.kwargs.get("event_pk")
-        try:
-            event = Event.objects.get(pk=event_id)
-        except Event.DoesNotExist:
-            raise NotFound('A event with this id does not exist')
-        return self.queryset.filter(event=event)
-
-    def create(self, request, *args, **kwargs):
-        event_id = self.kwargs.get("event_pk")
-        try:
-            event = Event.objects.get(pk=event_id)
-        except Event.DoesNotExist:
-            raise NotFound('A event with this id does not exist')
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid(raise_exception=False):
-            res = ''
-            for value in serializer.errors.values():
-                res = value[0] + '/n'
-            return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save(event=event)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+# class MeetingViewSet(viewsets.ModelViewSet):
+#     """Handle creating, reading and updating profiles feed items"""
+#     serializer_class = serializers.MeetingSerializer
+#     queryset = models.Meeting.objects.all().select_related(
+#         'event'
+#     )
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (
+#         permissions.UpdateOwnMeeting,
+#         IsAuthenticated,
+#     )
+#
+#     def get_queryset(self, *args, **kwargs):
+#         event_id = self.kwargs.get("event_pk")
+#         try:
+#             event = Event.objects.get(pk=event_id)
+#         except Event.DoesNotExist:
+#             raise NotFound('A event with this id does not exist')
+#         return self.queryset.filter(event=event)
+#
+#     def create(self, request, *args, **kwargs):
+#         event_id = self.kwargs.get("event_pk")
+#         try:
+#             event = Event.objects.get(pk=event_id)
+#         except Event.DoesNotExist:
+#             raise NotFound('A event with this id does not exist')
+#         serializer = self.get_serializer(data=request.data)
+#         if not serializer.is_valid(raise_exception=False):
+#             res = ''
+#             for value in serializer.errors.values():
+#                 res = value[0] + '/n'
+#             return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
+#         serializer.save(event=event)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

@@ -4,7 +4,7 @@ from rest_framework import serializers
 from suppliers import models
 
 
-# -------------------Address-------------------
+# -------------------Suuplier-------------------
 
 class SupplierSerializer(serializers.ModelSerializer):
     """Serializer profile feed items"""

@@ -46,20 +46,20 @@ class EventSchedule(models.Model):
         """Return the model as a string"""
         return self.description
 
-
-# -------------------Meeting-------------------
-
-class Meeting(models.Model):
-    """"""
-    event = models.ForeignKey(
-        Event,
-        on_delete=models.CASCADE,
-        related_name='meetings',
-    )
-    description = models.CharField(max_length=255)
-    date = models.DateField()
-    time = models.TimeField()
-
-    def __str__(self):
-        """Return the model as a string"""
-        return self.description
+#
+# # -------------------Meeting-------------------
+#
+# class Meeting(models.Model):
+#     """"""
+#     event = models.ForeignKey(
+#         Event,
+#         on_delete=models.CASCADE,
+#         related_name='meetings',
+#     )
+#     description = models.CharField(max_length=255)
+#     date = models.DateField()
+#     time = models.TimeField()
+#
+#     def __str__(self):
+#         """Return the model as a string"""
+#         return self.description
