@@ -20,6 +20,7 @@ class Meetings(models.Model):
         related_name='meetings',
         default=None,
     )
+    location = models.CharField(max_length=255)
 
     def __str__(self):
         """Return the model as a string"""

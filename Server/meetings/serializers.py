@@ -8,4 +8,4 @@ class MeetingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Meetings
-        fields = ('id', 'description', 'date', 'time', 'event')
+        fields = ('id', 'description', 'date', 'time', 'event', 'location')
