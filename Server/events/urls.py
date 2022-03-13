@@ -26,11 +26,11 @@ event_schedule_router.register(
     basename='event-event_schedule_router'
 )
 
-meeting_router.register(
-    r'meeting',
-    views.MeetingViewSet,
-    basename='event-meeting_router'
-)
+# meeting_router.register(
+#     r'meeting',
+#     views.MeetingViewSet,
+#     basename='event-meeting_router'
+# )
 
 app_name = 'events'
 urlpatterns = [
