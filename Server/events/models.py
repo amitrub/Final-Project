@@ -19,6 +19,7 @@ class Event(models.Model):
     date = models.DateField()
     budget = models.PositiveIntegerField()
     location = models.CharField(max_length=255)
+    events_owners = models.CharField(max_length=255)
 
     def __str__(self):
         """Return the model as a string"""

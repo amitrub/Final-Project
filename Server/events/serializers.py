@@ -17,7 +17,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Event
-        fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'suppliers', 'meetings')
+        fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'suppliers', 'meetings', 'events_owners')
         # fields = '__all__'
         extra_kwargs = {
             'event_manager': {
@@ -34,6 +34,7 @@ class EventSerializer(serializers.ModelSerializer):
             date=validated_data['date'],
             budget=validated_data['budget'],
             location=validated_data['location'],
+            events_owners = validated_data['events_owners']
         )
         if 'suppliers' in validated_data:
             suppliers = validated_data.pop('suppliers')
