@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'payments',
     'products',
     'tasks',
-    'suppliers'
+    'suppliers',
 ]
 
 MIDDLEWARE = [
@@ -88,6 +88,42 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    # Version of logging
+    'disable_existing_loggers': False,
+
+    'filters': {
+        # information regarding filters
+    },
+
+    'formatters': {
+        '<formatter_name>': {
+            'format': '<formatter_info>',
+            'style': '{',
+        }
+    },
+
+    'handlers': {
+        'file': {
+            'level': '<log_level>',
+            'class': '<logging_class>',
+            'filename': '<file_name>',
+        },
+
+        'console': {
+            'class': '<logging_class>',
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': '<log_level>',
+        },
     }
 }
 

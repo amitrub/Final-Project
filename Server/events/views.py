@@ -13,6 +13,8 @@ from events.models import Event, Meeting
 from users.models import EventManager
 from rest_framework.response import Response
 
+import logging
+logger = logging.getLogger(__name__)
 
 class EventViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
@@ -29,6 +31,7 @@ class EventViewSet(viewsets.ModelViewSet):
         try:
             event_manager = EventManager.objects.get(pk=user_id)
         except EventManager.DoesNotExist:
+            logger.error("could not find user while adding an event")
             raise NotFound('A event manager with this id does not exist')
         return self.queryset.filter(event_manager=event_manager)
 
@@ -50,6 +53,7 @@ class EventViewSet(viewsets.ModelViewSet):
             res = ''
             for value in serializer.errors.values():
                 res = value[0] + '\n'
+            logger.error("Error in create an event")
             return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save(event_manager=user)
         headers = self.get_success_headers(serializer.data)
