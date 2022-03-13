@@ -52,7 +52,7 @@ class EventViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid(raise_exception=False):
             res = ''
             for value in serializer.errors.values():
-                res = value[0] + '\n'
+                res = res + str(value[0])
             logger.error("Error in create an event")
             return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save(event_manager=user)

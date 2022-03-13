@@ -9,7 +9,7 @@ class Supplier(models.Model):
     name = models.CharField(max_length=255)
     price = models.PositiveIntegerField()
     advance_pay = models.PositiveIntegerField()
-    pay_method = models.PositiveIntegerField()
+    pay_method = models.CharField(max_length=255)
     event = models.ManyToManyField(Event,
                                    related_name='suppliers',
                                    null=True,

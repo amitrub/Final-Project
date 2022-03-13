@@ -11,6 +11,7 @@ from django.urls import reverse
 from rest_framework.templatetags import rest_framework
 
 from addresses.serializers import AddressSerializer
+from suppliers.serializers import SupplierSerializer
 from users import views
 from users.models import User, EventManager
 from addresses.models import Address
@@ -49,15 +50,36 @@ class UserCreateListTest(APITestCase):
         url = reverse('user:event_manager', kwargs={'user_id': id})
         self.client.post(url)
 
-
     def test_add_event(self):
         url = reverse('events:event-list')
         token = f"Token {self.token}"
+        supplier1 = {
+            "name": "reut",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        supplier2 = {
+            "name": "reut2",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        meeting1 = {
+            "description": "flowers",
+            "date": '2022-09-23',
+            "time": '18:00',
+            "location": "tel-aviv"
+        }
         response = self.client.post(url,
                                     {"type": "wedding",
                                      "event_name": "roy&hadas",
                                      'date': '2022-09-23',
-                                     'budget': '100000'}
+                                     'budget': '100000',
+                                     'location': 'Keisaria',
+                                     'events_owners': 'Roy',
+                                     'suppliers': [supplier2, supplier1],
+                                     'meetings': [meeting1]}
                                     , format='json')
         event_id = response.data['id']
         assert response.status_code == 201
@@ -76,6 +98,24 @@ class UserCreateListTest(APITestCase):
             "city": "Kadima",
             "street": "alon",
             'number': 6
+        }
+        supplier1 = {
+            "name": "reut",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        supplier2 = {
+            "name": "reut2",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        meeting1 = {
+            "description": "flowers",
+            "date": '2022-09-23',
+            "time": '18:00',
+            "location": "tel-aviv"
         }
         url = reverse('user:user-list')
         serializer = AddressSerializer(data=data)
@@ -100,6 +140,11 @@ class UserCreateListTest(APITestCase):
                                     {"type": "wedding",
                                      "event_name": "roy&hadas",
                                      'date': '2022-09-23',
-                                     'budget': '100000'}
+                                     'budget': '100000',
+                                     'location': 'Keisaria',
+                                     'events_owners': 'Roy',
+                                     'suppliers': [supplier2, supplier1],
+                                     'meetings': [meeting1]
+                                     }
                                     , format='json')
         assert response.status_code == 403
