@@ -12,16 +12,21 @@ const EventsPreview = (props) => {
   const url = base_url + allEvents;
 
   const getData = useCallback(async () => {
-    await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+    await fetch(
+      url,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
       },
-    })
+      { timeout: 2000 }
+    )
       .then(async (res) => {
         const data = await res.json();
         const loadedEvents = [];
+        debugger;
         for (const key in data) {
           loadedEvents.push(
             new EventEntity(
@@ -38,6 +43,8 @@ const EventsPreview = (props) => {
       .catch((error) => console.log("hadas", error));
   }, []);
   useEffect(() => {
+    debugger;
+
     getData()
       .then((res) => res)
       .catch((error) => console.log(error));
