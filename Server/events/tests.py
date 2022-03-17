@@ -11,6 +11,7 @@ from django.urls import reverse
 from rest_framework.templatetags import rest_framework
 
 from addresses.serializers import AddressSerializer
+from events.models import Event, EventSchedule
 from suppliers.serializers import SupplierSerializer
 from users import views
 from users.models import User, EventManager
@@ -83,6 +84,7 @@ class UserCreateListTest(APITestCase):
                                     , format='json')
         event_id = response.data['id']
         assert response.status_code == 201
+        self.assertTrue(Event.objects.get(event_name='roy&hadas'))
 
         url = reverse('events:event-event_schedule_router-list', kwargs={'event_pk': event_id})
         response = self.client.post(url,
@@ -90,9 +92,10 @@ class UserCreateListTest(APITestCase):
                                      "end_time": "2022-09-23 20:00",
                                      'description': 'reception', }
                                     , format='json')
+        self.assertTrue(EventSchedule.objects.get(description='reception'))
         assert response.status_code == 201
 
-    def test_add_event_fail(self):
+    def test_add_event_fail_forbidden(self):
         data = {
             "country": "Israel",
             "city": "Kadima",
@@ -148,3 +151,69 @@ class UserCreateListTest(APITestCase):
                                      }
                                     , format='json')
         assert response.status_code == 403
+
+    def test_add_event_fail_wrong_date(self):
+        url = reverse('events:event-list')
+        token = f"Token {self.token}"
+        supplier1 = {
+            "name": "reut",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        supplier2 = {
+            "name": "reut2",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        meeting1 = {
+            "description": "flowers",
+            "date": '2022-09-23',
+            "time": '18:00',
+            "location": "tel-aviv"
+        }
+        response = self.client.post(url,
+                                    {"type": "wedding",
+                                     "event_name": "roy&hadas",
+                                     'date': '202dfsdfd2-09-23',
+                                     'budget': '100000',
+                                     'location': 'Keisaria',
+                                     'events_owners': 'Roy',
+                                     'suppliers': [supplier2, supplier1],
+                                     'meetings': [meeting1]}
+                                    , format='json')
+        assert response.status_code == 400
+
+    def test_add_event_fail_missing_detail(self):
+        url = reverse('events:event-list')
+        token = f"Token {self.token}"
+        supplier1 = {
+            "name": "reut",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        supplier2 = {
+            "name": "reut2",
+            "price": 1000,
+            "advance_pay": 1500,
+            'pay_method': "bit"
+        }
+        meeting1 = {
+            "description": "flowers",
+            "date": '2022-09-23',
+            "time": '18:00',
+            "location": "tel-aviv"
+        }
+        response = self.client.post(url,
+                                    {
+                                     "event_name": "roy&hadas",
+                                     'date': '202dfsdfd2-09-23',
+                                     'budget': '100000',
+                                     'location': 'Keisaria',
+                                     'events_owners': 'Roy',
+                                     'suppliers': [supplier2, supplier1],
+                                     'meetings': [meeting1]}
+                                    , format='json')
+        assert response.status_code == 400
