@@ -2,10 +2,10 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from addresses import views
+from suppliers import views
 
 router = DefaultRouter()
-router.register('suppliers', views.AddressViewSet)
+router.register('suppliers', views.SupplierViewSet)
 
 app_name = 'suppliers'
 
