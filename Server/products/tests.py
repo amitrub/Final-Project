@@ -10,6 +10,7 @@ from django.urls import reverse
 from rest_framework.templatetags import rest_framework
 
 from addresses.serializers import AddressSerializer
+from products.models import Product
 from users import views
 from users.models import User, Supplier
 from addresses.models import Address
@@ -55,8 +56,22 @@ class ProductTest(APITestCase):
         response = self.client.post(url,
                                     {'supplier': self.supplier.user_id,
                                      'description': 'banana'}, format='json')
-
+        self.assertTrue(Product.objects.get(supplier=self.supplier.user_id))
         assert response.status_code == 201
+
+    def test_product_empty_description(self):
+        url = reverse('product-list')
+        response = self.client.post(url,
+                                    {'supplier': self.supplier.user_id,
+                                     'description': ''}, format='json')
+        assert response.status_code == 400
+
+    def test_product_supplier_not_exist(self):
+        url = reverse('product-list')
+        response = self.client.post(url,
+                                    {'supplier': 10000,
+                                     'description': ''}, format='json')
+        assert response.status_code == 403
 
     def test_product_fail(self):
         data = {
