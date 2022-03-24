@@ -19,6 +19,7 @@ import {
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
 import UserAuthentication from "../../../global/UserAuthentication";
+import Log from "../../../constants/logger";
 
 const RegisterInput = (props) => {
   const myContext = useContext(UserAuthentication);
@@ -49,30 +50,34 @@ const RegisterInput = (props) => {
       phone,
       new Address(country, city, street, number)
     );
-    await fetch(base_url + register, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    Log.info("onPressRegister >> POST Register");
+
+    await fetch(
+      base_url + register,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
       },
-      body: JSON.stringify(user),
-    })
+      { timeout: 2000 }
+    )
       .then(async (res) => {
-        try {
-          const data = await res.json();
-          debugger;
-          if (STATUS_FAILED(res.status)) {
-            const message = data.email[0];
-            createOneButtonAlert(message, "OK", "Registration Failed");
-          } else if (STATUS_SUCCESS(res.status)) {
-            const message = "You have successfully registered!\nplease LOGIN";
-            createOneButtonAlert(message, "OK", "Registration Succeeded");
-          }
-        } catch (error) {
-          console.log("handleResponse register error", error);
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = data.Error ? data.Error : "";
+          createOneButtonAlert(message, "OK", "Registration Failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          const message = "You have successfully registered!\nplease LOGIN";
+          createOneButtonAlert(message, "OK", "Registration Succeeded");
+          emptyRegisterInputs();
         }
-        emptyRegisterInputs();
       })
-      .catch((error) => console.log("onPressRegister error", error));
+      .catch((error) => {
+        createOneButtonAlert("Server is soooo slow, you should check it...");
+        Log.error("onPressRegister error", error);
+      });
   }, [email, password, fullName, phone, city, country, number, street]);
 
   return (

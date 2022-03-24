@@ -9,4 +9,6 @@ export default {
   yellow_task: "#F8E432",
   orange_task: "#FD8A37",
   blue: "#841584",
+  dark_gray: "#545454",
+  white: "#FFFFFF",
 };

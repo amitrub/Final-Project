@@ -16,62 +16,65 @@ import {
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
 import UserAuthentication from "../../../global/UserAuthentication";
+import Log from "../../../constants/logger";
 
-const RegisterInput = (props) => {
+const LoginInput = (props) => {
+  Log.info("LoginInput >> loading");
   const myContext = useContext(UserAuthentication);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("R@h.com");
+  const [password, setPassword] = React.useState("1234");
 
   const emptyLoginInputs = () => {
-    setEmail("");
-    setPassword("");
+    setEmail("R@h.com");
+    setPassword("1234");
   };
   const createTwoButtonAlert = (props, message) =>
     Alert.alert("You are almost there!", message, [
       {
         text: "OK",
         onPress: () => {
+          Log.info("LoginInput >> Redirect to HomePage");
           props.navi.navigate("HomePage");
         },
       },
-      { text: "Cancel", onPress: () => console.log("Cancel Pressed") },
+      { text: "Cancel", onPress: () => Log.info("Cancel Pressed") },
     ]);
 
   const onPressLogin = useCallback(async () => {
-    await fetch(base_url + login, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    Log.info("onPressLogin >> POST Login");
+
+    await fetch(
+      base_url + login,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
       },
-      body: JSON.stringify({
-        username: email,
-        password: password,
-      }),
-    })
+      {
+        timeout: 1000,
+      }
+    )
       .then(async (res) => {
-        try {
-          const data = await res.json();
-          if (STATUS_FAILED(res.status)) {
-            //const message = data.email[0];
-            console.log("data failed", data);
-            createOneButtonAlert(
-              "Username or password are invalid, try again",
-              "OK",
-              "Login failed"
-            );
-          } else if (STATUS_SUCCESS(res.status)) {
-            const message =
-              "You have successfully login!\npress OK to go to your home page";
-            createTwoButtonAlert(props, message);
-            myContext.setToken(data.token);
-            myContext.setId(data.id);
-          }
-        } catch (error) {
-          console.log("handleResponseLogin error", error);
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = data.Error ? data.Error : "";
+          createOneButtonAlert(message, "OK", "Login failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          const message =
+            "You have successfully login!\npress OK to your home page";
+          myContext.setToken(data.token);
+          myContext.setId(data.id);
+          myContext.setName(data.name);
+          createTwoButtonAlert(props, message);
+          emptyLoginInputs();
         }
-        emptyLoginInputs();
       })
-      .catch((error) => console.log("onPressRegister error", error));
+      .catch((error) => Log.error("onPressLogin error", error));
   }, [email, password]);
 
   return (
@@ -124,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterInput;
+export default LoginInput;

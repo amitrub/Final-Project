@@ -12,46 +12,54 @@ const EventsPreview = (props) => {
   const url = base_url + allEvents;
 
   const getData = useCallback(async () => {
-    await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+    await fetch(
+      url,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
       },
-    })
+      { timeout: 2000 }
+    )
       .then(async (res) => {
         const data = await res.json();
         const loadedEvents = [];
         for (const key in data) {
           loadedEvents.push(
             new EventEntity(
-              data[key].owners,
-              data[key].location,
+              data[key].id,
+              data[key].event_manager,
               data[key].type,
-              data[key].date
+              // data[key].owners,
+              data[key].event_name,
+              data[key].date,
+              data[key].budget,
+              data[key].location,
+              data[key].meetings,
+              data[key].suppliers
             )
           );
         }
 
         setPreviewEventsData(loadedEvents);
       })
-      .catch((error) => console.log("hadas", error));
+      .catch((error) => console.log(error));
   }, []);
   useEffect(() => {
     getData()
       .then((res) => res)
       .catch((error) => console.log(error));
-  });
+  }, []);
 
   const body = (
     <View>
-      {previewEventsData?.map((previewEvent) => {
+      {previewEventsData?.map((previewEvent, index) => {
         return (
           <EventItem
-            date={previewEvent.date}
-            owners={previewEvent.owners}
-            type={previewEvent.type}
-            location={previewEvent.location}
+            key={index}
+            event={previewEvent}
             navi={props.HomeProps.navigation}
           />
         );
@@ -67,7 +75,7 @@ const EventsPreview = (props) => {
         size={22}
         onPress={() =>
           props.HomeProps.navigation.navigate("AllEvents", {
-            HomeProps: props,
+            navi: props.HomeProps.navigation,
           })
         }
       />

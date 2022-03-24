@@ -39,11 +39,14 @@ export default function App() {
   //Context fields
   const [id, setId] = useState(-1);
   const [token, setToken] = useState("");
+  const [name, setName] = useState("guest");
   const userAuth = {
     id: id,
     token: token,
+    name: name,
     setId: setId,
     setToken: setToken,
+    setName: setName,
   };
 
   if (!dataLoaded) {

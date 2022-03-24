@@ -1,21 +1,18 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../../../constants/colors";
+import Entypo from "react-native-vector-icons/Entypo";
 
-const EventItem = (props) => (
+const ContactItem = (props) => (
   <TouchableOpacity
     style={styles.listItem}
     onPress={() => {
-      props.navi.navigate("EventPage", {
-        event: props.event,
-      });
+      console.log("Add owner");
     }}
   >
-    <View>
-      <Text style={styles.text}>{props.event.date}</Text>
-      <Text style={styles.text}>{props.event.event_name}</Text>
-    </View>
-    <Text style={styles.text}>{props.event.type}</Text>
+    <Entypo name="user" size={16} />
+    <Text style={styles.text}>{props.contact}</Text>
+    <Entypo name="plus" size={16} />
   </TouchableOpacity>
 );
 
@@ -25,8 +22,8 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     backgroundColor: Colors.button_gray,
     borderRadius: 18,
-    height: 60,
-    width: 300,
+    height: 40,
+    width: 230,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
@@ -40,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventItem;
+export default ContactItem;

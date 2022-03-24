@@ -7,10 +7,12 @@ export const createOneButtonAlert = (
   button_text = "OK",
   title = "Event manager app",
   onPressFunction = () => {}
-) =>
-  Alert.alert(title, message, [
+) => {
+  console.log("createOneButtonAlert");
+  return Alert.alert(title, message, [
     { text: button_text, onPress: onPressFunction },
   ]);
+};
 
 export const handleResponseRegister = async (response) => {
   try {

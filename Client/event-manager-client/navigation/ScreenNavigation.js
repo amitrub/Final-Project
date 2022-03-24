@@ -8,6 +8,7 @@ import AllEventsPage from "../screens/event-manager-screens/events/AllEventsPage
 import EventPage from "../screens/event-manager-screens/events/EventPage";
 import MeetingsPage from "../screens/event-manager-screens/meetings/MeetingsPage";
 import TasksPage from "../screens/event-manager-screens/tasks/TasksPage";
+import AddEventOwners from "../screens/add-event-screens/AddEventOwners";
 
 const ScreenNavigation = createStackNavigator({
   Welcome: WelcomePage,
@@ -18,6 +19,7 @@ const ScreenNavigation = createStackNavigator({
   AllEvents: AllEventsPage,
   Meeting: MeetingPage,
   Meetings: MeetingsPage,
+  AddEventOwners: AddEventOwners,
 });
 
 export default createAppContainer(ScreenNavigation);
