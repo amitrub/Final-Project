@@ -1,35 +1,50 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import RegisterButton from "../../components/basicComponents/WelcomePage/RegisterButton";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Button } from "react-native";
+import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Colors from "../../constants/colors";
 import Log from "../../constants/logger";
+import LoginInput from "../../components/basicComponents/RegisterPage/LoginInput";
 
 const WelcomePage = (props) => {
+  const [isLogin, setIsLogin] = useState(false);
   Log.info("Welcome Page >> loading");
   return (
-    <View style={styles.screen}>
-      <View style={{ paddingTop: "10%" }}>
-        <LogoImage />
-      </View>
+    <ScrollView>
+      <View style={styles.screen}>
+        {!isLogin ? (
+          <View>
+            <View style={{ paddingTop: "10%" }}>
+              <LogoImage />
+            </View>
 
-      <View style={{ paddingTop: "15%" }}>
-        <Text style={styles.mainTitle}>ONE APP SHOW</Text>
-      </View>
+            <View style={{ paddingTop: "15%" }}>
+              <Text style={styles.mainTitle}>ONE APP SHOW</Text>
+            </View>
 
-      <View style={{ paddingTop: "25%" }}>
-        <RegisterButton
-          text={"Register with Google"}
-          navi={props.navigation}
-          navToPage={"Register"}
-        />
-        <RegisterButton
-          text={"Register / Login"}
-          navi={props.navigation}
-          navToPage={"Register"}
-        />
+            <View style={{ paddingTop: "15%" }}>
+              <TitleButton
+                text={"Login"}
+                onPress={() => setIsLogin(!isLogin)}
+              />
+              <TitleButton
+                text={"Register"}
+                onPress={() => props.navigation.navigate("Register")}
+              />
+              <TitleButton
+                text={"Sign in with Google"}
+                onPress={() => props.navigation.navigate("Register")}
+              />
+            </View>
+          </View>
+        ) : (
+          <LoginInput
+            navi={props.navigation}
+            onLogin={() => setIsLogin(!isLogin)}
+          />
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

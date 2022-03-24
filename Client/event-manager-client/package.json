@@ -17,6 +17,7 @@
     "expo-contacts": "~10.1.0",
     "expo-font": "~10.0.4",
     "expo-status-bar": "~1.2.0",
+    "fetch-timeout": "^0.0.2",
     "lodash.filter": "^4.6.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",

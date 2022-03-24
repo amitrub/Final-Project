@@ -2,13 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import Colors from "../../../constants/colors";
 
-const RegisterButton = (props) => {
+const TitleButton = (props) => {
   return (
-    <TouchableOpacity
-      onPress={() => {
-        props.navi.navigate({ routeName: props.navToPage });
-      }}
-    >
+    <TouchableOpacity onPress={props.onPress}>
       <View style={styles.button}>
         <Text style={styles.buttonText}>{props.text}</Text>
       </View>
@@ -27,6 +23,7 @@ const styles = StyleSheet.create({
     width: 240,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 18,
   },
   buttonText: {
     color: Colors.text_black,
@@ -35,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterButton;
+export default TitleButton;
