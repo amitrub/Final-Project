@@ -2,7 +2,7 @@
 export const firebase_base_url =
   "https://test-server-event-manager-default-rtdb.firebaseio.com";
 export const local_base_url = "http://127.0.0.1:8000";
-export const local_specific_base_url = "http://10.0.0.37:8000";
+export const local_specific_base_url = "http://10.100.102.31:8000";
 export const ngrok_specific_base_url = "https://0e31-89-139-77-66.ngrok.io";
 export const base_url = local_specific_base_url;
 

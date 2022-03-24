@@ -19,6 +19,7 @@ import {
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
 import UserAuthentication from "../../../global/UserAuthentication";
+import Log from "../../../constants/logger";
 
 const RegisterInput = (props) => {
   const myContext = useContext(UserAuthentication);
@@ -49,6 +50,8 @@ const RegisterInput = (props) => {
       phone,
       new Address(country, city, street, number)
     );
+    Log.info("onPressRegister >> POST Register");
+
     await fetch(
       base_url + register,
       {
@@ -73,7 +76,7 @@ const RegisterInput = (props) => {
       })
       .catch((error) => {
         createOneButtonAlert("Server is soooo slow, you should check it...");
-        console.log("onPressRegister error", error);
+        Log.error("onPressRegister error", error);
       });
   }, [email, password, fullName, phone, city, country, number, street]);
 

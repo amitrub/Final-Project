@@ -3,8 +3,10 @@ import { View, Text, StyleSheet } from "react-native";
 import RegisterButton from "../../components/basicComponents/WelcomePage/RegisterButton";
 import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Colors from "../../constants/colors";
+import Log from "../../constants/logger";
 
 const WelcomePage = (props) => {
+  Log.info("Welcome Page >> loading");
   return (
     <View style={styles.screen}>
       <View style={{ paddingTop: "10%" }}>

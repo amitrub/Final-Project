@@ -1,52 +1,64 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Colors from "../../../constants/colors";
-import { base_url, firebaseJson, previewEvents } from "../../../constants/urls";
+import { allEvents, base_url } from "../../../constants/urls";
 import EventEntity from "../../../Entities/EventEntity";
 import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
+import UserAuthentication from "../../../global/UserAuthentication";
 
 const AllEventsPage = (props) => {
-  const { HomeProps } = props.navigation.state.params;
-  const [previewEventsData, setPreviewEventsData] = useState([]);
-  const url = base_url + previewEvents;
+  const navi = props.navigation.state.params.navi;
+  const myContext = useContext(UserAuthentication);
+  const [allEventsData, setAllEventsData] = useState([]);
+  const url = base_url + allEvents;
 
   const getData = useCallback(async () => {
-    const response = await fetch(url);
-    const data = await response.json();
-    const loadedEvents = [];
+    await fetch(
+      url,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+      },
+      { timeout: 2000 }
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        const loadedEvents = [];
+        for (const key in data) {
+          loadedEvents.push(
+            new EventEntity(
+              data[key].id,
+              data[key].event_manager,
+              data[key].type,
+              // data[key].owners,
+              data[key].event_name,
+              data[key].date,
+              data[key].budget,
+              data[key].location,
+              data[key].meetings,
+              data[key].suppliers
+            )
+          );
+        }
 
-    for (const key in data) {
-      loadedEvents.push(
-        new EventEntity(
-          data[key].owners,
-          data[key].location,
-          data[key].type,
-          data[key].date
-        )
-      );
-    }
-
-    setPreviewEventsData(loadedEvents);
+        setAllEventsData(loadedEvents);
+      })
+      .catch((error) => console.log(error));
   }, []);
   useEffect(() => {
     getData()
       .then((res) => res)
       .catch((error) => console.log(error));
-  });
+  }, []);
 
   const body = (
     <View>
-      {previewEventsData?.map((previewEvent) => {
-        return (
-          <EventItem
-            date={previewEvent.date}
-            owners={previewEvent.owners}
-            type={previewEvent.type}
-            location={previewEvent.location}
-            navi={HomeProps.navigation}
-          />
-        );
+      {allEventsData?.map((previewEvent, index) => {
+        return <EventItem key={index} event={previewEvent} navi={navi} />;
       })}
     </View>
   );
@@ -54,7 +66,11 @@ const AllEventsPage = (props) => {
   const AllEventsTitle = (
     <View style={styles.row}>
       <Text style={styles.mainTitle}>Events</Text>
-      <Entypo name="plus" size={20} />
+      <Entypo
+        name="plus"
+        size={20}
+        onPress={() => navi.navigate("AddEventOwners")}
+      />
     </View>
   );
 

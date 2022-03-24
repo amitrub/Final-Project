@@ -13,7 +13,11 @@ const DetailEventItem = (props) => (
       <Text>{props.title} </Text>
       <View style={styles.row}>
         {props.items.map((item) => (
-          <Text key={item}>{item}</Text>
+          <View style={styles.listItemSmall}>
+            <Text style={styles.whiteText} key={item}>
+              {item}
+            </Text>
+          </View>
         ))}
       </View>
     </View>
@@ -42,6 +46,20 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     flexWrap: "wrap",
+  },
+  listItemSmall: {
+    backgroundColor: Colors.dark_gray,
+    borderRadius: 150,
+    height: 30,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  whiteText: {
+    fontFamily: "alef-regular",
+    fontSize: 14,
+    textAlign: "center",
+    color: Colors.white,
   },
 });
 export default DetailEventItem;

@@ -16,28 +16,33 @@ import {
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
 import UserAuthentication from "../../../global/UserAuthentication";
+import Log from "../../../constants/logger";
 
-const RegisterInput = (props) => {
+const LoginInput = (props) => {
+  Log.info("LoginInput >> loading");
   const myContext = useContext(UserAuthentication);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("R@h.com");
+  const [password, setPassword] = React.useState("1234");
 
   const emptyLoginInputs = () => {
-    setEmail("");
-    setPassword("");
+    setEmail("R@h.com");
+    setPassword("1234");
   };
   const createTwoButtonAlert = (props, message) =>
     Alert.alert("You are almost there!", message, [
       {
         text: "OK",
         onPress: () => {
+          Log.info("LoginInput >> Redirect to HomePage");
           props.navi.navigate("HomePage");
         },
       },
-      { text: "Cancel", onPress: () => console.log("Cancel Pressed") },
+      { text: "Cancel", onPress: () => Log.info("Cancel Pressed") },
     ]);
 
   const onPressLogin = useCallback(async () => {
+    Log.info("onPressLogin >> POST Login");
+
     await fetch(
       base_url + login,
       {
@@ -51,7 +56,7 @@ const RegisterInput = (props) => {
         }),
       },
       {
-        timeout: 2000,
+        timeout: 1000,
       }
     )
       .then(async (res) => {
@@ -69,7 +74,7 @@ const RegisterInput = (props) => {
           emptyLoginInputs();
         }
       })
-      .catch((error) => console.log("onPressRegister error", error));
+      .catch((error) => Log.error("onPressLogin error", error));
   }, [email, password]);
 
   return (
@@ -122,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterInput;
+export default LoginInput;
