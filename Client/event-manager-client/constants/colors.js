@@ -11,4 +11,5 @@ export default {
   blue: "#841584",
   dark_gray: "#545454",
   white: "#FFFFFF",
+  background_gray: "#f2f2f2",
 };

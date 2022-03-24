@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Colors from "../../../constants/colors";
 import { base_url, login } from "../../../constants/urls";
@@ -17,12 +18,15 @@ import {
 } from "../../../constants/errorHandler";
 import UserAuthentication from "../../../global/UserAuthentication";
 import Log from "../../../constants/logger";
+import fetchTimeout from "fetch-timeout";
 
 const LoginInput = (props) => {
   Log.info("LoginInput >> loading");
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("R@h.com");
   const [password, setPassword] = React.useState("1234");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const emptyLoginInputs = () => {
     setEmail("R@h.com");
@@ -35,6 +39,7 @@ const LoginInput = (props) => {
         onPress: () => {
           Log.info("LoginInput >> Redirect to HomePage");
           props.navi.navigate("HomePage");
+          props.onLogin();
         },
       },
       { text: "Cancel", onPress: () => Log.info("Cancel Pressed") },
@@ -42,8 +47,9 @@ const LoginInput = (props) => {
 
   const onPressLogin = useCallback(async () => {
     Log.info("onPressLogin >> POST Login");
+    setIsLoading(true);
 
-    await fetch(
+    await fetchTimeout(
       base_url + login,
       {
         method: "POST",
@@ -55,9 +61,8 @@ const LoginInput = (props) => {
           password: password,
         }),
       },
-      {
-        timeout: 1000,
-      }
+      5000,
+      "Timeout"
     )
       .then(async (res) => {
         const data = await res.json();
@@ -73,9 +78,31 @@ const LoginInput = (props) => {
           createTwoButtonAlert(props, message);
           emptyLoginInputs();
         }
+        setIsLoading(false);
       })
-      .catch((error) => Log.error("onPressLogin error", error));
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err);
+        Log.error("onPressLogin error", err);
+      });
   }, [email, password]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#5500dc" />
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ fontSize: 18 }}>
+          Error fetching data... Check your network connection!
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -98,12 +125,15 @@ const LoginInput = (props) => {
         />
       </SafeAreaView>
 
-      <Button
-        onPress={onPressLogin}
-        title="Login"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
+      <View style={styles.row}>
+        <Button title="Back" onPress={props.onLogin} color="#841584" />
+        <Button
+          onPress={onPressLogin}
+          title="Login"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+      </View>
     </View>
   );
 };
@@ -121,9 +151,16 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     margin: 12,
-    borderWidth: 1,
     padding: 10,
     width: 250,
+    backgroundColor: Colors.background_gray,
+    borderBottomColor: "#000000",
+    borderBottomWidth: 1,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
   },
 });
 

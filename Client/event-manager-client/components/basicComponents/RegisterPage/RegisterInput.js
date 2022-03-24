@@ -160,9 +160,11 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     margin: 12,
-    borderWidth: 1,
     padding: 10,
     width: 250,
+    backgroundColor: Colors.background_gray,
+    borderBottomColor: "#000000",
+    borderBottomWidth: 1,
   },
 });
 

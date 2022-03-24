@@ -2839,6 +2839,11 @@ fbjs@^3.0.0:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.30"
 
+fetch-timeout@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/fetch-timeout/-/fetch-timeout-0.0.2.tgz#f59beb2269359ce84da07ae614da360109c25338"
+  integrity sha1-9ZvrImk1nOhNoHrmFNo2AQnCUzg=
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
