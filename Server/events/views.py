@@ -9,12 +9,15 @@ from rest_framework.exceptions import NotFound
 from events import serializers
 from events import models
 from events import permissions
-from events.models import Event
+from events.models import Event, EventSchedule
+from suppliers.models import Supplier
 from users.models import EventManager
 from rest_framework.response import Response
 
 import logging
+
 logger = logging.getLogger(__name__)
+
 
 class EventViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
@@ -34,7 +37,6 @@ class EventViewSet(viewsets.ModelViewSet):
             logger.error("could not find user while adding an event")
             raise NotFound('A event manager with this id does not exist')
         return self.queryset.filter(event_manager=event_manager)
-
 
     # def perform_create(self, serializer):
     #     """Sets the user profile to the logged in user"""
@@ -64,17 +66,19 @@ class EventViewSet(viewsets.ModelViewSet):
         user = EventManager.objects.get(pk=self.request.user.id)
         serializer.save(event_manager=user)
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     id = kwargs['pk']
-    #     event = Event.objects.filter(pk = id)
-    #     data = event.values()
-    #     meetings = Meeting.objects.filter(event__id=id)
-    #     data['meetings'] = meetings.values()
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid()
-    #     # response = serializer.data
-    #     # response.update({'meetings': meetings})
-    #     return Response(data, status=status.HTTP_200_OK)
+    def retrieve(self, request, *args, **kwargs):
+        event_id = kwargs['pk']
+        response = super(EventViewSet, self).retrieve(request, *args, **kwargs)
+        try:
+            suppliers = Supplier.objects.filter(event_id=event_id)
+            response.data['suppliers'] = suppliers.values()
+            event_schedule = EventSchedule.objects.filter(event_id=event_id)
+            response.data['event_schedules'] = event_schedule.values()
+        except:
+            response.data["Error"] = "There was an error in the request"
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return response
+
 
 class EventScheduleViewSet(viewsets.ModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
@@ -111,7 +115,6 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
         serializer.save(event=event)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 
 # class MeetingViewSet(viewsets.ModelViewSet):
 #     """Handle creating, reading and updating profiles feed items"""
