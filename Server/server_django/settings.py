@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'products',
     'tasks',
     'suppliers',
-    'meetings'
+    'meetings',
+    'event_owner'
 ]
 
 MIDDLEWARE = [
