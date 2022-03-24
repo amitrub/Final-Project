@@ -8,12 +8,13 @@ class Supplier(models.Model):
     """Profile status update"""
     name = models.CharField(max_length=255)
     price = models.PositiveIntegerField()
-    advance_pay = models.PositiveIntegerField()
-    pay_method = models.CharField(max_length=255)
-    event = models.ManyToManyField(Event,
-                                   related_name='suppliers',
-                                   null=True,
-                                   blank=True)
+    advance_pay = models.IntegerField(null=True, blank=True)
+    pay_method = models.CharField(max_length=255, null=True, blank=True)
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='supplier',
+    )
 
     def __str__(self):
         """Return the model as a string"""
