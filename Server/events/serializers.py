@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from event_owner.models import EventOwner
+from event_owner.serializers import EventOwnerSerializer
 from events import models
 
 # -------------------Event-------------------
@@ -12,12 +14,13 @@ from suppliers.serializers import SupplierSerializer
 
 class EventSerializer(serializers.ModelSerializer):
     """Serializer profile feed items"""
-    suppliers = SupplierSerializer(many=True, required=False)
-    meetings = MeetingSerializer(many=True, required=False)
+    # suppliers = SupplierSerializer(many=True, required=False)
+    # meetings = MeetingSerializer(many=True, required=False)
+    event_owners = EventOwnerSerializer(many=True, required=False)
 
     class Meta:
         model = models.Event
-        fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'suppliers', 'meetings', 'events_owners')
+        fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'event_owners')
         # fields = '__all__'
         extra_kwargs = {
             'event_manager': {
@@ -34,19 +37,17 @@ class EventSerializer(serializers.ModelSerializer):
             date=validated_data['date'],
             budget=validated_data['budget'],
             location=validated_data['location'],
-            events_owners = validated_data['events_owners']
         )
-        if 'suppliers' in validated_data:
-            suppliers = validated_data.pop('suppliers')
-            print(suppliers)
-            for supplier in suppliers:
-                supplier_new = Supplier.objects.create(**supplier)
-                supplier_new.event.add(event)
-        if 'meetings' in validated_data:
-            meetings = validated_data.pop('meetings')
-            for meeting in meetings:
-                meeting_new = Meetings.objects.create(event_manager=validated_data['event_manager'], **meeting)
-                meeting_new.event.add(event)
+        if 'event_owners' in validated_data:
+            event_owners = validated_data.pop('event_owners')
+            print(event_owners)
+            for event_owner in event_owners:
+                event_owner_new = EventOwner.objects.create(**event_owner, event_id=event.id)
+        # if 'meetings' in validated_data:
+        #     meetings = validated_data.pop('meetings')
+        #     for meeting in meetings:
+        #         meeting_new = Meetings.objects.create(event_manager=validated_data['event_manager'], **meeting)
+        #         meeting_new.event.add(event)
         return event
 
 

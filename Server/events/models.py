@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework.utils import json
 
-from users.models import EventManager, Supplier
+from users.models import EventManager, Supplier, EventOwner
 
 
 # -------------------Event-------------------
@@ -19,7 +19,6 @@ class Event(models.Model):
     date = models.DateField()
     budget = models.PositiveIntegerField()
     location = models.CharField(max_length=255)
-    events_owners = models.CharField(max_length=255)
 
     def __str__(self):
         """Return the model as a string"""
