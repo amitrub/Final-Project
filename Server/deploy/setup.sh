@@ -2,7 +2,6 @@
 
 set -e
 
-# TODO: Set to URL of git repo.
 PROJECT_GIT_URL='https://github.com/amitrub/Final-Project.git'
 
 PROJECT_BASE_PATH='/usr/local/apps/Final-Project'
@@ -10,7 +9,7 @@ SERVER_BASE_PATH='/usr/local/apps/Final-Project/Server'
 
 echo "Installing dependencies..."
 apt-get update
-apt-get install -y python3-dev python3-venv sqlite python-pip supervisor nginx git
+apt-get install -y python3-dev python3-venv sqlite python-pip3 supervisor nginx git
 
 # Create project directory
 mkdir -p $PROJECT_BASE_PATH
