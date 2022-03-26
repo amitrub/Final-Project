@@ -65,29 +65,28 @@ const HomePage = (props) => {
       })
       .catch((error) => console.log("onPressRegister error", error));
   }
-
   useEffect(async () => {
     await getIsEventManager();
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScrollView>
+    <ScrollView>
+      <View style={styles.screen}>
         <View style={styles.row}>
           <Text style={styles.mainTitle}>Hello {myContext.name}!</Text>
           <Entypo name="plus" size={20} />
         </View>
-        <View style={{ paddingTop: "7%" }}>
-          <MeetingsPreview HomeProps={props} />
+        <View style={{ paddingTop: "15%" }}>
+          <MeetingsPreview />
         </View>
         <View style={{ paddingTop: "7%" }}>
-          <EventsPreview HomeProps={props} />
+          <EventsPreview />
         </View>
         <View style={{ paddingTop: "7%" }}>
-          <TasksPreview HomeProps={props} />
+          <TasksPreview />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     color: Colors.text_black,
     fontFamily: "alef-bold",
-    fontSize: 18,
+    fontSize: 22,
     fontStyle: "normal",
     fontWeight: "700",
     lineHeight: 25,
@@ -109,8 +108,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    marginTop: 30,
-    width: 400,
+    marginTop: 100,
+    width: 450,
   },
 });
 

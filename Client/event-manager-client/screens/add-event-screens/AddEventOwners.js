@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  TextInput,
-} from "react-native";
+import { View, StyleSheet, FlatList, Text, TextInput } from "react-native";
 import Colors from "react-native/Libraries/NewAppScreen/components/Colors";
 import * as Contacts from "expo-contacts";
 import ContactItem from "../../components/basicComponents/Events/ContactItem";
 import filter from "lodash.filter";
+import Loader from "../../components/basicComponents/others/Loader";
+import ErrorScreen, {
+  ErrorImportContacts,
+  ErrorMessages,
+} from "../../components/basicComponents/others/ErrorScreen";
 
 const AddEventOwners = (props) => {
   const [allContacts, setAllContacts] = useState([]);
@@ -50,23 +48,9 @@ const AddEventOwners = (props) => {
       });
   }, []);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#5500dc" />
-      </View>
-    );
-  }
-  if (error) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{ fontSize: 18 }}>
-          {/*Error fetching data... Check your network connection!*/}
-          Error fetching contact!
-        </Text>
-      </View>
-    );
-  }
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
+
   function renderHeader() {
     return (
       <View

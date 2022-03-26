@@ -1,23 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../../../constants/colors";
+import { useNavigation } from "@react-navigation/native";
+import EventPage from "../../../screens/event-manager-screens/events/EventPage";
 
-const EventItem = (props) => (
-  <TouchableOpacity
-    style={styles.listItem}
-    onPress={() => {
-      props.navi.navigate("EventPage", {
-        event: props.event,
-      });
-    }}
-  >
-    <View>
-      <Text style={styles.text}>{props.event.date}</Text>
-      <Text style={styles.text}>{props.event.event_name}</Text>
-    </View>
-    <Text style={styles.text}>{props.event.type}</Text>
-  </TouchableOpacity>
-);
+const EventItem = (props) => {
+  const navigation = useNavigation();
+
+  return (
+    <TouchableOpacity
+      style={styles.listItem}
+      onPress={() => {
+        navigation.navigate("EventPage", {
+          event: props.event,
+        });
+      }}
+    >
+      <View>
+        <Text style={styles.text}>{props.event.date}</Text>
+        <Text style={styles.text}>{props.event.event_name}</Text>
+      </View>
+      <Text style={styles.text}>{props.event.type}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   listItem: {

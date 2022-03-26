@@ -35,7 +35,7 @@ const MeetingsPage = (props) => {
   const renderListItem = ({ item }) => {
     return (
       <View style={styles.listItem}>
-        <ItemListButton text={item} navi={props.navigation} />
+        <ItemListButton text={item} />
       </View>
     );
   };

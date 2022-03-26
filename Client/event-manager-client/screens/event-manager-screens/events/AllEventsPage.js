@@ -8,7 +8,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../../global/UserAuthentication";
 
 const AllEventsPage = (props) => {
-  const navi = props.navigation.state.params.navi;
+  // const params = props.route.params;
   const myContext = useContext(UserAuthentication);
   const [allEventsData, setAllEventsData] = useState([]);
   const url = base_url + allEvents;
@@ -58,7 +58,7 @@ const AllEventsPage = (props) => {
   const body = (
     <View>
       {allEventsData?.map((previewEvent, index) => {
-        return <EventItem key={index} event={previewEvent} navi={navi} />;
+        return <EventItem key={index} event={previewEvent} />;
       })}
     </View>
   );
@@ -69,7 +69,7 @@ const AllEventsPage = (props) => {
       <Entypo
         name="plus"
         size={20}
-        onPress={() => navi.navigate("AddEventOwners")}
+        onPress={() => props.navigation.navigate("AddEventOwners")}
       />
     </View>
   );
