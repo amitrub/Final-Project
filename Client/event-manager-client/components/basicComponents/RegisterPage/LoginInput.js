@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   TextInput,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 import Colors from "../../../constants/colors";
 import { base_url, login } from "../../../constants/urls";
@@ -19,9 +18,16 @@ import {
 import UserAuthentication from "../../../global/UserAuthentication";
 import Log from "../../../constants/logger";
 import fetchTimeout from "fetch-timeout";
+import Loader from "../others/Loader";
+import ErrorScreen, { ErrorMessages } from "../others/ErrorScreen";
+import { useNavigation } from "@react-navigation/native";
+import HomePage from "../../../screens/main-screens/HomePage";
+import { TabNavigator } from "../../../App";
 
 const LoginInput = (props) => {
   Log.info("LoginInput >> loading");
+
+  const navigation = useNavigation();
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("R@h.com");
   const [password, setPassword] = React.useState("1234");
@@ -38,7 +44,7 @@ const LoginInput = (props) => {
         text: "OK",
         onPress: () => {
           Log.info("LoginInput >> Redirect to HomePage");
-          props.navi.navigate("HomePage");
+          navigation.navigate(TabNavigator);
           props.onLogin();
         },
       },
@@ -87,26 +93,12 @@ const LoginInput = (props) => {
       });
   }, [email, password]);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#5500dc" />
-      </View>
-    );
-  }
-  if (error) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{ fontSize: 18 }}>
-          Error fetching data... Check your network connection!
-        </Text>
-      </View>
-    );
-  }
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   return (
     <View>
-      <View style={{ paddingTop: "5%" }}>
+      <View style={{ paddingTop: "50%" }}>
         <Text style={styles.mainTitle}>SIGN IN</Text>
       </View>
 

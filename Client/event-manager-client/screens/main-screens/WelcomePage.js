@@ -7,8 +7,16 @@ import Log from "../../constants/logger";
 import LoginInput from "../../components/basicComponents/RegisterPage/LoginInput";
 
 const WelcomePage = (props) => {
-  const [isLogin, setIsLogin] = useState(false);
   Log.info("Welcome Page >> loading");
+  const [isLogin, setIsLogin] = useState(false);
+
+  const onPressRegister = () => {
+    props.navigation.navigate("Register");
+  };
+  const onPressLogin = () => {
+    setIsLogin(!isLogin);
+  };
+
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -23,25 +31,16 @@ const WelcomePage = (props) => {
             </View>
 
             <View style={{ paddingTop: "15%" }}>
+              <TitleButton text={"Login"} onPress={onPressLogin} />
+              <TitleButton text={"Register"} onPress={onPressRegister} />
               <TitleButton
-                text={"Login"}
-                onPress={() => setIsLogin(!isLogin)}
-              />
-              <TitleButton
-                text={"Register"}
-                onPress={() => props.navigation.navigate("Register")}
-              />
-              <TitleButton
-                text={"Sign in with Google"}
-                onPress={() => props.navigation.navigate("Register")}
+                text={"Sign-in with Google"}
+                onPress={onPressRegister}
               />
             </View>
           </View>
         ) : (
-          <LoginInput
-            navi={props.navigation}
-            onLogin={() => setIsLogin(!isLogin)}
-          />
+          <LoginInput onLogin={onPressLogin} />
         )}
       </View>
     </ScrollView>
@@ -52,6 +51,7 @@ const styles = StyleSheet.create({
   screen: {
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: "10%",
   },
   mainTitle: {
     color: Colors.text_black,

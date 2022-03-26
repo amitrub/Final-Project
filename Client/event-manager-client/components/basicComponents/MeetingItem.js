@@ -5,7 +5,7 @@ import Colors from "../../constants/colors";
 const MeetingItem = (props) => (
   <TouchableOpacity style={styles.listItem}>
     <Text style={styles.textTitle}>
-      {props.time} {props.location}
+      {props.location} {props.time}
     </Text>
     <Text style={styles.textDesc}>{props.description}</Text>
   </TouchableOpacity>

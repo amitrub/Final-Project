@@ -13,9 +13,11 @@ import {
 } from "../../constants/urls";
 import EventEntity from "../../Entities/EventEntity";
 import MeetingEntity from "../../Entities/MeetingEntity";
+import { useNavigation } from "@react-navigation/native";
 
 // MeetingItem.propTypes = { meeting: PropTypes.any };
 const MeetingsPreview = (props) => {
+  const navigation = useNavigation();
   const [previewMeetingsData, setPreviewMeetingsData] = useState([]);
   const url = base_url + previewMeetingsCapitlP + firebaseJson;
 
@@ -44,16 +46,25 @@ const MeetingsPreview = (props) => {
 
   const body = (
     <View>
-      {previewMeetingsData?.map((previewMeeting) => {
-        return (
-          <MeetingItem
-            location={previewMeeting.location}
-            time={previewMeeting.time}
-            description={previewMeeting.description}
-          />
-        );
-      })}
+      <MeetingItem
+        location={"LAGO"}
+        time={"18:30"}
+        description={"Choosing flowers to Hupa"}
+      />
     </View>
+
+    //TO BE CONTINUE
+    // <View>
+    //   {previewMeetingsData?.map((previewMeeting) => {
+    //     return (
+    //       <MeetingItem
+    //         location={previewMeeting.location}
+    //         time={previewMeeting.time}
+    //         description={previewMeeting.description}
+    //       />
+    //     );
+    //   })}
+    // </View>
   );
 
   const previewTitle = (
@@ -62,7 +73,7 @@ const MeetingsPreview = (props) => {
       <Entypo
         name="dots-three-horizontal"
         size={22}
-        onPress={() => props.HomeProps.navigation.navigate("Meetings")}
+        onPress={() => navigation.navigate("Meetings")}
       />
     </View>
   );

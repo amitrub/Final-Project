@@ -1,32 +1,48 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Colors from "../../../constants/colors";
 import DetailEventItem from "../../../components/basicComponents/Events/DetailEventItem";
 import EventDateTitle from "../../../components/basicComponents/EventDateTitle";
+import Entypo from "react-native-vector-icons/Entypo";
+import IconButton from "../../../components/basicComponents/buttons/IconButton";
 
 const EventPage = (props) => {
-  const event = props.navigation.state.params.event;
-  debugger;
+  const params = props.route.params;
+  const navigation = props.navigation;
+
+  const event = params.event;
+  const eventName = `${event.event_name}'s ${event.type}`;
+
+  //useEffect - executes after the component rendered
+  //useLayoutEffect - run the effect together with rendering the component
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: eventName,
+      headerRight: () => {
+        return (
+          <IconButton
+            icon={"star"}
+            color={"black"}
+            onPress={() => console.log("Pressed!")}
+          />
+        );
+      },
+    });
+  }, [navigation, eventName]);
+
   return (
     <View>
       <ScrollView>
-        <View style={{ paddingTop: "10%", paddingBottom: "5%" }}>
-          <Text style={styles.mainTitle}>
-            {event.event_name}'s {event.type}
-          </Text>
-        </View>
+        {/*<View style={{ paddingTop: "10%", paddingBottom: "5%" }}>*/}
+        {/*  <Text style={styles.mainTitle}>{eventName}</Text>*/}
+        {/*</View>*/}
         <View style={styles.screen}>
-          <View paddingBottom="4%">
+          <View paddingBottom="4%" paddingTop="15%">
             <EventDateTitle date={event.date} />
           </View>
           <View style={styles.listItem}>
             <Text style={styles.text}>{event.location}</Text>
           </View>
-          {/*<DetailEventItem*/}
-          {/*  key="2"*/}
-          {/*  title={"Suppliers"}*/}
-          {/*  items={event.suppliers}*/}
-          {/*/>*/}
           <DetailEventItem
             key="3"
             title={"Owners"}

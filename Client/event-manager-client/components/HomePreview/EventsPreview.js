@@ -5,9 +5,12 @@ import { allEvents, base_url } from "../../constants/urls";
 import EventEntity from "../../Entities/EventEntity";
 import EventItem from "../basicComponents/Events/EventItem";
 import UserAuthentication from "../../global/UserAuthentication";
+import { useNavigation } from "@react-navigation/native";
 
 const EventsPreview = (props) => {
+  const navigation = useNavigation();
   const myContext = useContext(UserAuthentication);
+
   const [previewEventsData, setPreviewEventsData] = useState([]);
   const url = base_url + allEvents;
 
@@ -56,13 +59,7 @@ const EventsPreview = (props) => {
   const body = (
     <View>
       {previewEventsData?.map((previewEvent, index) => {
-        return (
-          <EventItem
-            key={index}
-            event={previewEvent}
-            navi={props.HomeProps.navigation}
-          />
-        );
+        return <EventItem key={index} event={previewEvent} />;
       })}
     </View>
   );
@@ -73,11 +70,7 @@ const EventsPreview = (props) => {
       <Entypo
         name="dots-three-horizontal"
         size={22}
-        onPress={() =>
-          props.HomeProps.navigation.navigate("AllEvents", {
-            navi: props.HomeProps.navigation,
-          })
-        }
+        onPress={() => navigation.navigate("AllEvents")}
       />
     </View>
   );

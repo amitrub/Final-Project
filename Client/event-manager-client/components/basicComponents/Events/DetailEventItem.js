@@ -12,11 +12,9 @@ const DetailEventItem = (props) => (
     <View style={styles.listItem}>
       <Text>{props.title} </Text>
       <View style={styles.row}>
-        {props.items.map((item) => (
-          <View style={styles.listItemSmall}>
-            <Text style={styles.whiteText} key={item}>
-              {item}
-            </Text>
+        {props.items.map((item, index) => (
+          <View key={index} style={styles.listItemSmall}>
+            <Text style={styles.whiteText}>{item}</Text>
           </View>
         ))}
       </View>
