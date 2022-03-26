@@ -13,7 +13,7 @@ class Supplier(models.Model):
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
-        related_name='supplier',
+        related_name='suppliers',
     )
 
     def __str__(self):
