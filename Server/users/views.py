@@ -15,8 +15,10 @@ from users import permissions
 from users.models import User, EventManager, EventOwner, Supplier
 
 
+# -------------------Login-------------------
 class UserLoginApiView(ObtainAuthToken):
     """Handle creating user authentication tokens"""
+    serializer_class = serializers.AuthTokenSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
     def post(self, request, *args, **kwargs):
@@ -28,6 +30,7 @@ class UserLoginApiView(ObtainAuthToken):
         return Response({'token': token.key, 'id': token.user_id, 'name':token.user.name})
 
 
+# -------------------User-------------------
 class UserViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class = serializers.UserSerializer
@@ -64,6 +67,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({'id': id})
 
 
+# -------------------EventManager-------------------
 class EventManagerAPIView(APIView):
     serializer_class = serializers.EventManagerSerializer
     authentication_classes = (TokenAuthentication,)
@@ -96,6 +100,8 @@ class EventManagerAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# TODO: Not in use yet
+# -------------------EventOwner-------------------
 class EventOwnerAPIView(APIView):
     serializer_class = serializers.EventOwnerSerializer
     authentication_classes = (TokenAuthentication,)
@@ -128,6 +134,8 @@ class EventOwnerAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# TODO: Not in use yet
+# -------------------Supplier-------------------
 class SupplierAPIView(APIView):
     serializer_class = serializers.SupplierSerializer
     authentication_classes = (TokenAuthentication,)

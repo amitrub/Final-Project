@@ -1,2 +1,144 @@
 2022-03-13 11:33:15,184 [WARNING]- Not Found: /
 2022-03-13 11:33:26,206 [WARNING]- Bad Request: /api/payment/
+2022-03-24 20:22:45,833 [WARNING]- Not Found: /favicon.ico
+2022-03-24 20:25:30,343 [WARNING]- Not Found: /api/user/
+2022-03-26 14:14:22,933 [WARNING]- Forbidden: /api/events/
+2022-03-26 14:14:23,965 [WARNING]- Forbidden: /api/payment/
+2022-03-26 14:14:24,731 [WARNING]- Forbidden: /api/products/
+2022-03-26 14:16:15,401 [WARNING]- Bad Request: /api/user/
+2022-03-26 14:16:50,182 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:09:20,550 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:12:12,026 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:12:15,587 [ERROR]- Internal Server Error: /api/user/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 49, in create
+    serializer.save()
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/serializers.py", line 35, in create
+    user = User.objects.create_user(**validated_data)
+TypeError: create_user() got an unexpected keyword argument 'address'
+2022-03-26 17:13:15,772 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:13:15,907 [ERROR]- Internal Server Error: /api/user/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 49, in create
+    serializer.save()
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/serializers.py", line 35, in create
+    user = User.objects.create_user(**validated_data)
+TypeError: create_user() got an unexpected keyword argument 'address'
+2022-03-26 17:13:57,980 [ERROR]- Internal Server Error: /api/user/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 49, in create
+    serializer.save()
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/serializers.py", line 35, in create
+    user = User.objects.create_user(**validated_data)
+TypeError: create_user() got an unexpected keyword argument 'address'
+2022-03-26 17:21:22,886 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:24:01,855 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:24:02,251 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:07,220 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:28:07,228 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:07,702 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:16,473 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:28:16,479 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:16,876 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:41,389 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:41,783 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:57,801 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:28:58,195 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:29:31,873 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:29:40,716 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:29:40,981 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:30:03,445 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:30:03,711 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:30:25,040 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:30:25,331 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:30:38,242 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:30:41,733 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:31:43,404 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:33:44,594 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:33:53,400 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:33:53,405 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:33:53,624 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:34:12,286 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:34:25,119 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:35:58,666 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:35:59,068 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:36:21,128 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:47:38,150 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:48:05,481 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:49:39,420 [WARNING]- Bad Request: /api/login/
+2022-03-26 17:58:44,504 [WARNING]- Bad Request: /api/login/
+2022-03-26 18:13:26,242 [WARNING]- Not Found: /api/user.1
+2022-03-26 18:26:22,211 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-26 18:28:44,325 [WARNING]- Not Found: /api/user/1/
+2022-03-26 18:29:49,728 [WARNING]- Not Found: /api/user/1/
+2022-03-26 18:30:59,049 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-26 18:31:00,190 [WARNING]- Bad Request: /api/login/
+2022-03-26 18:31:00,192 [WARNING]- Bad Request: /api/login/
+2022-03-26 18:31:00,321 [WARNING]- Bad Request: /api/login/
+2022-03-26 18:31:00,327 [WARNING]- Bad Request: /api/user/
+2022-03-26 18:31:00,713 [WARNING]- Not Found: /api/user/1/
+2022-03-26 18:31:00,842 [WARNING]- Bad Request: /api/user/
+2022-03-27 13:56:40,057 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-27 13:56:41,237 [WARNING]- Bad Request: /api/login/
+2022-03-27 13:56:41,240 [WARNING]- Bad Request: /api/login/
+2022-03-27 13:56:41,381 [WARNING]- Bad Request: /api/login/
+2022-03-27 13:56:41,388 [WARNING]- Bad Request: /api/user/
+2022-03-27 13:56:41,820 [WARNING]- Not Found: /api/user/1/
+2022-03-27 13:56:41,987 [WARNING]- Bad Request: /api/user/
+2022-03-27 14:00:02,951 [WARNING]- Not Found: /favicon.ico
+2022-03-27 14:00:05,332 [WARNING]- Not Found: /api/user/
+2022-03-27 14:00:15,997 [WARNING]- Method Not Allowed: /api/login/
