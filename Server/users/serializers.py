@@ -2,13 +2,44 @@ from rest_framework import serializers
 
 from addresses.models import Address
 from addresses.serializers import AddressSerializer
+from django.contrib.auth import get_user_model, authenticate
+from django.utils.translation import ugettext_lazy as _
 from users import models
+from users.models import User, EventManager, EventOwner, Supplier
+from my_models.serializers import MySerializer
+
+
+# -------------------Login-------------------
+class AuthTokenSerializer(serializers.Serializer):
+    """Serializer for the user authentication object"""
+    email = serializers.CharField()
+    password = serializers.CharField(
+        style={'input_type': 'password'},
+        trim_whitespace=False
+    )
+
+    def validate(self, attrs):
+        """Validate and authenticate the user"""
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        user = authenticate(
+            request=self.context.get('request'),
+            username=email,
+            password=password
+        )
+        if not user:
+            msg = _('Unable to authenticate with provided credentials')
+            raise serializers.ValidationError(msg, code='authorization')
+
+        attrs['user'] = user
+        return attrs
+
 
 # -------------------User-------------------
-from users.models import User, EventManager, EventOwner, Supplier
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(MySerializer):
     """Serializes a user profile object"""
 
     address = AddressSerializer()
@@ -19,18 +50,14 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
+                'min_length': 2,
                 'style': {'input_type': 'password'}
             }
         }
 
     def create(self, validated_data):
         """Create and return new user"""
-        user = User.objects.create_user(
-            email=validated_data['email'],
-            name=validated_data['name'],
-            password=validated_data['password'],
-            phone=validated_data['phone']
-            )
+        user = User.objects.create_user(**validated_data)
         if 'address' in validated_data:
             address_data = validated_data.pop('address')
             Address.objects.create(user=user, **address_data)
@@ -59,7 +86,8 @@ class UserSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class EventManagerSerializer(serializers.ModelSerializer):
+# -------------------EventManager-------------------
+class EventManagerSerializer(MySerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -71,7 +99,10 @@ class EventManagerSerializer(serializers.ModelSerializer):
         model = models.EventManager
         fields = '__all__'
 
-class EventOwnerSerializer(serializers.ModelSerializer):
+
+# TODO: Not in use yet
+# -------------------Supplier-------------------
+class EventOwnerSerializer(MySerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -83,7 +114,10 @@ class EventOwnerSerializer(serializers.ModelSerializer):
         model = models.EventOwner
         fields = '__all__'
 
-class SupplierSerializer(serializers.ModelSerializer):
+
+# TODO: Not in use yet
+# -------------------Supplier-------------------
+class SupplierSerializer(MySerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -94,5 +128,3 @@ class SupplierSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Supplier
         fields = '__all__'
-
-

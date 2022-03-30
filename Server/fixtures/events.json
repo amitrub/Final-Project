@@ -7,7 +7,68 @@
         "type": "Wedding",
         "event_name": "Roi & Hadas",
         "date": "2022-09-23",
-        "budget": 300000
+        "budget": 300000,
+        "location": ""
+    }
+},
+{
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+        "event_manager": 1,
+        "type": "Bar Mitzvah",
+        "event_name": "Amit's",
+        "date": "2022-12-12",
+        "budget": 3,
+        "location": "Beer Sheva"
+    }
+},
+{
+    "model": "events.event",
+    "pk": 3,
+    "fields": {
+        "event_manager": 1,
+        "type": "Sweet Sixteen",
+        "event_name": "Rere's",
+        "date": "2011-11-11",
+        "budget": 7,
+        "location": "Timorim"
+    }
+},
+{
+    "model": "events.dummyeventowner",
+    "pk": 1,
+    "fields": {
+        "event": 1,
+        "name": "Roi",
+        "phone": "111111111111"
+    }
+},
+{
+    "model": "events.dummyeventowner",
+    "pk": 2,
+    "fields": {
+        "event": 1,
+        "name": "Hadas",
+        "phone": "22222222222"
+    }
+},
+{
+    "model": "events.dummyeventowner",
+    "pk": 3,
+    "fields": {
+        "event": 2,
+        "name": "Amit",
+        "phone": "33333333333"
+    }
+},
+{
+    "model": "events.dummyeventowner",
+    "pk": 4,
+    "fields": {
+        "event": 3,
+        "name": "Reut",
+        "phone": "444444444444"
     }
 },
 {

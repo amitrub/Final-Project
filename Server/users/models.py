@@ -9,7 +9,7 @@ from django.contrib.auth.models import BaseUserManager
 class UserObjectsManager(BaseUserManager):
     """Manager for user profiles"""
 
-    def create_user(self, email, name, password=None, phone=""):
+    def create_user(self, email, name, password=None, phone="", **kwargs):
         """Create a new user profile"""
         print("----------------------------")
         if not email:
@@ -23,7 +23,7 @@ class UserObjectsManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, name, password, phone=""):
+    def create_superuser(self, email, name, password, phone="", **kwargs):
         """Create and save a new superuser with given details"""
         user = self.create_user(email, name, password, phone)
 
@@ -70,6 +70,7 @@ class EventManager(models.Model):
                                 default= None)
 
 
+# TODO: Not in use yet
 # -------------------EventOwner-------------------
 
 class EventOwner(models.Model):
@@ -78,7 +79,7 @@ class EventOwner(models.Model):
                                 primary_key=True,
                                 default= None)
 
-
+# TODO: Not in use yet
 # -------------------Supplier-------------------
 
 
