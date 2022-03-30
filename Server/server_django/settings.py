@@ -44,9 +44,9 @@ INSTALLED_APPS = [
     'payments',
     'products',
     'tasks',
-    'suppliers',
+    # 'suppliers',
     'meetings',
-    'event_owner'
+    # 'event_owner'
 ]
 
 MIDDLEWARE = [
