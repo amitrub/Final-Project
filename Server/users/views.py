@@ -4,11 +4,13 @@ from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
 from rest_framework.settings import api_settings
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from rest_framework.exceptions import APIException
 
+from events.models import Event, DummySupplier, EventSchedule, DummyEventOwner
 from users import serializers
 from users import models
 from users import permissions
@@ -40,16 +42,6 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email',)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid(raise_exception=False):
-            res = ''
-            for value in serializer.errors.values():
-                res = value[0] + '/n'
-            return Response({"Error": res}, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
-        return Response({'id': serializer.data['id']}, status=status.HTTP_201_CREATED)
-
     def get_queryset(self, *args, **kwargs):
         user_id = self.request.user.id
         try:
@@ -63,8 +55,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def homepage(self, request, pk=None):
-        id = self.request.user.id
-        return Response({'id': id})
+        if not str(request.user.id) == str(pk):
+            raise PermissionDenied(detail={"Error": PermissionDenied.default_detail})
+
+        event_manager = EventManager.objects.get(pk=pk)
+        events = Event.objects.order_by('date').filter(event_manager=event_manager)[:3].values()
+        for event in events:
+            suppliers = DummySupplier.objects.filter(event_id=event['id'])
+            event['suppliers'] = suppliers.values()
+            event_schedule = EventSchedule.objects.filter(event_id=event['id'])
+            event['event_schedules'] = event_schedule.values()
+            event_schedule = DummyEventOwner.objects.filter(event_id=event['id'])
+            event['event_owners'] = event_schedule.values()
+        return Response({'events': events})
 
 
 # -------------------EventManager-------------------
@@ -83,7 +86,7 @@ class EventManagerAPIView(APIView):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=False)
+        serializer.is_valid(raise_exception=True)
         try:
             serializer.save(user=user)
         except Exception:

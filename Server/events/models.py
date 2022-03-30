@@ -54,9 +54,12 @@ class DummySupplier(models.Model):
         related_name='suppliers',
     )
     name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+    job = models.CharField(max_length=255)
     price = models.PositiveIntegerField()
-    advance_pay = models.IntegerField(null=True, blank=True)
-    pay_method = models.CharField(max_length=255, null=True, blank=True)
+    has_paid = models.BooleanField(default=False)
+    # advance_pay = models.IntegerField(null=True, blank=True)
+    # pay_method = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         """Return the model as a string"""

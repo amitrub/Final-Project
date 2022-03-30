@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
 from users import models
 from users.models import User, EventManager, EventOwner, Supplier
+from my_models.serializers import MySerializer
 
 
 # -------------------Login-------------------
@@ -38,7 +39,7 @@ class AuthTokenSerializer(serializers.Serializer):
 # -------------------User-------------------
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(MySerializer):
     """Serializes a user profile object"""
 
     address = AddressSerializer()
@@ -56,12 +57,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create and return new user"""
-        # user = User.objects.create_user(
-        #     email=validated_data['email'],
-        #     name=validated_data['name'],
-        #     password=validated_data['password'],
-        #     phone=validated_data['phone']
-        # )
         user = User.objects.create_user(**validated_data)
         if 'address' in validated_data:
             address_data = validated_data.pop('address')
@@ -92,7 +87,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 # -------------------EventManager-------------------
-class EventManagerSerializer(serializers.ModelSerializer):
+class EventManagerSerializer(MySerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -107,7 +102,7 @@ class EventManagerSerializer(serializers.ModelSerializer):
 
 # TODO: Not in use yet
 # -------------------Supplier-------------------
-class EventOwnerSerializer(serializers.ModelSerializer):
+class EventOwnerSerializer(MySerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -122,7 +117,7 @@ class EventOwnerSerializer(serializers.ModelSerializer):
 
 # TODO: Not in use yet
 # -------------------Supplier-------------------
-class SupplierSerializer(serializers.ModelSerializer):
+class SupplierSerializer(MySerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(

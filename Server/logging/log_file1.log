@@ -409,3 +409,371 @@ Traceback (most recent call last):
   File "/home/amit/.local/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
     return Database.Cursor.execute(self, query, params)
 django.db.utils.IntegrityError: NOT NULL constraint failed: events_dummyeventowner.event_id
+2022-03-30 07:52:16,314 [WARNING]- Method Not Allowed: /api/login/
+2022-03-30 07:52:16,519 [WARNING]- Not Found: /favicon.ico
+2022-03-30 08:01:25,155 [WARNING]- Not Found: /api/events/1/event_owner/1/
+2022-03-30 08:13:28,438 [ERROR]- Internal Server Error: /api/events/1/event_owner/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 426, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2022-03-30 08:14:25,550 [ERROR]- Internal Server Error: /api/events/1/event_owner/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 426, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2022-03-30 08:22:32,098 [WARNING]- Not Found: /api/events/1/supp;ier/
+2022-03-30 08:51:32,506 [ERROR]- Internal Server Error: /api/user/1/homepage/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/home/amit/.local/lib/python3.6/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/renderers.py", line 724, in render
+    context = self.get_context(data, accepted_media_type, renderer_context)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/renderers.py", line 680, in get_context
+    'content': self.get_content(renderer, data, accepted_media_type, renderer_context),
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/renderers.py", line 413, in get_content
+    content = renderer.render(data, accepted_media_type, renderer_context)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/renderers.py", line 103, in render
+    allow_nan=not self.strict, separators=separators
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib/python3.6/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.6/json/encoder.py", line 201, in encode
+    chunks = list(chunks)
+  File "/usr/lib/python3.6/json/encoder.py", line 430, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/usr/lib/python3.6/json/encoder.py", line 404, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.6/json/encoder.py", line 438, in _iterencode
+    yield from _iterencode(o, _current_indent_level)
+  File "/usr/lib/python3.6/json/encoder.py", line 428, in _iterencode
+    yield from _iterencode_list(o, _current_indent_level)
+  File "/usr/lib/python3.6/json/encoder.py", line 325, in _iterencode_list
+    yield from chunks
+  File "/usr/lib/python3.6/json/encoder.py", line 437, in _iterencode
+    o = _default(o)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib/python3.6/json/encoder.py", line 180, in default
+    o.__class__.__name__)
+TypeError: Object of type 'Event' is not JSON serializable
+2022-03-30 08:51:53,589 [ERROR]- Internal Server Error: /api/user/1/homepage/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 68, in homepage
+    events = Event.objects.order_by('date').get(event_manager=event_manager)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/db/models/query.py", line 442, in get
+    num if not limit or num < limit else 'more than %s' % (limit - 1),
+events.models.Event.MultipleObjectsReturned: get() returned more than one Event -- it returned 3!
+2022-03-30 08:52:16,086 [ERROR]- Internal Server Error: /api/user/1/homepage/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 68, in homepage
+    events = Event.objects.order_by('date').all(event_manager=event_manager)
+TypeError: all() got an unexpected keyword argument 'event_manager'
+2022-03-30 08:52:42,081 [ERROR]- Internal Server Error: /api/user/1/homepage/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 68, in homepage
+    events = Event.objects.order_by('date').get(event_manager=event_manager)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/db/models/query.py", line 442, in get
+    num if not limit or num < limit else 'more than %s' % (limit - 1),
+events.models.Event.MultipleObjectsReturned: get() returned more than one Event -- it returned 3!
+2022-03-30 09:00:23,545 [ERROR]- Internal Server Error: /api/user/1/homepage/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 74, in homepage
+    event_schedule = models.DummyEventOwner.objects.filter(event_id=event['id'])
+AttributeError: module 'users.models' has no attribute 'DummyEventOwner'
+2022-03-30 09:09:28,361 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:10:37,566 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:12:27,600 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:12:42,300 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:14:14,935 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:14:44,466 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:15:24,381 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:15:37,280 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:16:17,357 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:16:51,412 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:17:09,309 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:17:29,061 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:18:01,684 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:22:58,596 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:30:18,271 [WARNING]- Bad Request: /api/events/
+2022-03-30 09:38:20,634 [ERROR]- Internal Server Error: /api/events/1/event_schedule/
+2022-03-30 09:38:44,230 [ERROR]- Internal Server Error: /api/events/1/event_schedule/
+2022-03-30 09:42:07,261 [WARNING]- Bad Request: /api/events/1/event_schedule/
+2022-03-30 09:48:20,045 [WARNING]- Bad Request: /api/events/
+2022-03-30 12:02:13,986 [WARNING]- Forbidden: /api/events/
+2022-03-30 12:09:10,021 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:09:11,137 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:09:11,139 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:09:11,264 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:09:11,269 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:09:11,640 [WARNING]- Not Found: /api/user/1/
+2022-03-30 12:09:11,765 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:12:03,530 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:14:49,865 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:14:50,990 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:14:50,992 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:14:51,119 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:14:51,125 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:14:51,526 [WARNING]- Not Found: /api/user/1/
+2022-03-30 12:14:51,652 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:24:24,060 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 12:25:34,738 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 12:33:18,562 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 12:33:18,697 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 12:33:19,224 [WARNING]- Forbidden: /api/events/
+2022-03-30 12:37:03,451 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 12:37:03,589 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 12:37:04,158 [WARNING]- Forbidden: /api/events/
+2022-03-30 12:37:04,726 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:04,990 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:05,127 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:05,260 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:06,353 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:37:07,500 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:07,504 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:07,642 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:37:07,645 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:37:08,036 [WARNING]- Not Found: /api/user/1/
+2022-03-30 12:37:08,164 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:38:36,087 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 12:38:36,215 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 12:38:36,737 [WARNING]- Forbidden: /api/events/
+2022-03-30 12:38:37,760 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:38:38,929 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:38:38,931 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:38:39,067 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:38:39,072 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:38:39,447 [WARNING]- Not Found: /api/user/1/
+2022-03-30 12:38:39,574 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:43:57,744 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 12:43:57,874 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 12:43:58,388 [WARNING]- Forbidden: /api/events/
+2022-03-30 12:43:59,405 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:44:00,522 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:44:00,524 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:44:00,648 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:44:00,654 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:44:01,030 [WARNING]- Not Found: /api/user/1/
+2022-03-30 12:44:01,154 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:46:35,344 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 12:46:35,475 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 12:46:35,982 [WARNING]- Forbidden: /api/events/
+2022-03-30 12:46:36,986 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 12:46:38,115 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:46:38,117 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:46:38,243 [WARNING]- Bad Request: /api/login/
+2022-03-30 12:46:38,248 [WARNING]- Bad Request: /api/user/
+2022-03-30 12:46:38,625 [WARNING]- Not Found: /api/user/1/
+2022-03-30 12:46:38,752 [WARNING]- Bad Request: /api/user/
+2022-03-30 14:50:27,277 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 14:50:27,408 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 14:50:27,937 [WARNING]- Forbidden: /api/events/
+2022-03-30 14:50:28,990 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 14:50:30,212 [WARNING]- Bad Request: /api/login/
+2022-03-30 14:50:30,215 [WARNING]- Bad Request: /api/login/
+2022-03-30 14:50:30,346 [WARNING]- Bad Request: /api/login/
+2022-03-30 14:50:30,351 [WARNING]- Bad Request: /api/user/
+2022-03-30 14:50:30,724 [WARNING]- Not Found: /api/user/1/
+2022-03-30 14:50:30,848 [WARNING]- Bad Request: /api/user/
+2022-03-30 14:53:38,478 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 14:53:38,607 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 14:53:39,118 [WARNING]- Forbidden: /api/events/
+2022-03-30 14:53:40,129 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 14:53:41,236 [WARNING]- Bad Request: /api/login/
+2022-03-30 14:53:41,239 [WARNING]- Bad Request: /api/login/
+2022-03-30 14:53:41,363 [WARNING]- Bad Request: /api/login/
+2022-03-30 14:53:41,368 [WARNING]- Bad Request: /api/user/
+2022-03-30 14:53:41,740 [WARNING]- Not Found: /api/user/1/
+2022-03-30 14:53:41,865 [WARNING]- Bad Request: /api/user/
+2022-03-30 14:55:50,844 [WARNING]- Not Found: /api/user/1/
+2022-03-30 14:57:36,935 [WARNING]- Not Found: /api/user/
+2022-03-30 14:57:40,092 [ERROR]- Internal Server Error: /api/user/
+Traceback (most recent call last):
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/amit/.local/lib/python3.6/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/amit/1.BGU/Final-Project/Git/Final-Project/Server/users/views.py", line 49, in create
+    res = value[0] + '/n'
+KeyError: 0
+2022-03-30 14:58:04,773 [WARNING]- Not Found: /api/user/
+2022-03-30 14:58:07,125 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:01:46,016 [WARNING]- Method Not Allowed: /api/login/
+2022-03-30 15:02:16,474 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:02:50,415 [WARNING]- Forbidden: /api/user/1/event_manager/
+2022-03-30 15:03:54,841 [WARNING]- Bad Request: /api/user/2/event_manager/
+2022-03-30 15:04:30,890 [WARNING]- Bad Request: /api/user/2/event_manager/
+2022-03-30 15:04:57,035 [WARNING]- Bad Request: /api/user/2/event_manager/
+2022-03-30 15:09:34,915 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:14:33,508 [WARNING]- Unauthorized: /api/user/1/homepage/
+2022-03-30 15:16:18,971 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:16:19,636 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:16:20,404 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:16:28,678 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:16:33,118 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:16:51,118 [WARNING]- Method Not Allowed: /api/login/
+2022-03-30 15:17:07,969 [WARNING]- Method Not Allowed: /api/login/
+2022-03-30 15:17:24,557 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:18:18,678 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:18:43,918 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:19:16,299 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:19:22,653 [ERROR]- Internal Server Error: /api/user/1/homepage/
+2022-03-30 15:19:49,241 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 15:19:49,373 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 15:19:49,893 [WARNING]- Forbidden: /api/events/
+2022-03-30 15:19:50,903 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 15:19:52,029 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:19:52,031 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:19:52,154 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:19:52,159 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:19:52,412 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:19:52,536 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:21:21,050 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 15:21:21,184 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 15:21:21,699 [WARNING]- Forbidden: /api/events/
+2022-03-30 15:21:22,732 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 15:21:23,843 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:21:23,846 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:21:23,969 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:21:23,975 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:21:24,348 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:21:24,473 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:21:42,283 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:22:12,226 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:23:15,786 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:24:26,563 [ERROR]- Internal Server Error: /api/user/
+2022-03-30 15:29:03,845 [WARNING]- Bad Request: /api/user/
+2022-03-30 15:29:26,189 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 15:29:26,326 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 15:29:26,865 [WARNING]- Forbidden: /api/events/
+2022-03-30 15:29:27,892 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 15:29:29,031 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:29:29,033 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:29:29,157 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:29:29,162 [WARNING]- Bad Request: /api/user/
+2022-03-30 15:29:29,557 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:29:29,682 [WARNING]- Bad Request: /api/user/
+2022-03-30 15:33:00,063 [WARNING]- Forbidden: /api/user/1/homepage/
+2022-03-30 15:33:30,362 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 15:33:30,492 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 15:33:31,003 [WARNING]- Forbidden: /api/events/
+2022-03-30 15:33:32,007 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 15:33:33,140 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:33:33,142 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:33:33,269 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:33:33,275 [WARNING]- Bad Request: /api/user/
+2022-03-30 15:33:33,649 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:33:33,774 [WARNING]- Bad Request: /api/user/
+2022-03-30 15:34:57,540 [WARNING]- Method Not Allowed: /api/events/1/
+2022-03-30 15:34:57,673 [WARNING]- Unauthorized: /api/events/1/
+2022-03-30 15:34:58,216 [WARNING]- Forbidden: /api/events/
+2022-03-30 15:34:59,231 [WARNING]- Method Not Allowed: /api/user/1/
+2022-03-30 15:35:00,339 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:35:00,341 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:35:00,466 [WARNING]- Bad Request: /api/login/
+2022-03-30 15:35:00,471 [WARNING]- Bad Request: /api/user/
+2022-03-30 15:35:00,843 [WARNING]- Not Found: /api/user/1/
+2022-03-30 15:35:00,968 [WARNING]- Bad Request: /api/user/

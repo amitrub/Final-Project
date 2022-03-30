@@ -20,11 +20,11 @@ event_sub_fields_router = routers.NestedDefaultRouter(
 #     lookup='event'
 # )
 
-# event_sub_fields_router.register(
-#     r'event_schedule',
-#     views.EventScheduleViewSet,
-#     basename='event-event_schedule_router'
-# )
+event_sub_fields_router.register(
+    r'event_schedule',
+    views.EventScheduleViewSet,
+    basename='event-event_schedule_router'
+)
 
 event_sub_fields_router.register(
     r'event_owner',

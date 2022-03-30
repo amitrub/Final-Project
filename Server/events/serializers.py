@@ -1,15 +1,19 @@
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
+from rest_framework import status
 
 from events import models
 
 from events.models import Event, EventSchedule
+from my_models.serializers import MySerializer
 from meetings.models import Meetings
 from meetings.serializers import MeetingSerializer
 
 
 # -------------------EventSchedule-------------------
 
-class EventScheduleSerializer(serializers.ModelSerializer):
+
+class EventScheduleSerializer(MySerializer):
     """Serializer profile feed items"""
 
     event = serializers.SlugRelatedField(
@@ -22,9 +26,10 @@ class EventScheduleSerializer(serializers.ModelSerializer):
         fields = ('id', 'event', 'start_time', 'end_time', 'description')
         # fields = '__all__'
 
+
 # -------------------DummySupplier-------------------
 
-class DummySupplierSerializer(serializers.ModelSerializer):
+class DummySupplierSerializer(MySerializer):
     """Serializer profile feed items"""
 
     event = serializers.SlugRelatedField(
@@ -34,11 +39,17 @@ class DummySupplierSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.DummySupplier
-        fields = ('id', 'event', 'name', 'price', 'advance_pay', 'pay_method')
+        fields = ('id', 'event', 'name', 'phone', 'job', 'price', 'has_paid')
+
+    def is_valid(self, raise_exception=False):
+        valid_data = super().is_valid()
+        if not valid_data and raise_exception:
+            raise APIException(detail={"Error": self.errors}, code=status.HTTP_400_BAD_REQUEST)
+        return valid_data
 
 # -------------------DummyEventOwner-------------------
 
-class DummyEventOwnerSerializer(serializers.ModelSerializer):
+class DummyEventOwnerSerializer(MySerializer):
     """Serializer profile feed items"""
 
     event = serializers.SlugRelatedField(
@@ -50,11 +61,11 @@ class DummyEventOwnerSerializer(serializers.ModelSerializer):
         model = models.DummyEventOwner
         fields = ('id', 'event', 'name', 'phone')
 
+
 # -------------------Event-------------------
 
-class EventSerializer(serializers.ModelSerializer):
-    """Serializer profile feed items"""
-    # suppliers = SupplierSerializer(many=True, required=False)
+class EventSerializer(MySerializer):
+    """Serializer events"""
     # meetings = MeetingSerializer(many=True, required=False)
     event_owners = DummyEventOwnerSerializer(many=True, required=False)
     suppliers = DummySupplierSerializer(many=True, required=False)
@@ -63,7 +74,6 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Event
         fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'event_owners', 'suppliers', 'event_schedules')
-        # fields = ('id', 'event_manager', 'type', 'event_name', 'date', 'budget', 'location', 'event_owners')
         # fields = '__all__'
         extra_kwargs = {
             'event_manager': {
@@ -96,8 +106,6 @@ class EventSerializer(serializers.ModelSerializer):
                 EventSchedule.objects.create(event_id=event.id, **schedule)
         print(event)
         return event
-
-
 
 
 # class MeetingSerializer(serializers.ModelSerializer):
