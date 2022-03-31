@@ -1,2 +1,12 @@
 2022-03-13 11:33:15,184 [WARNING]- Not Found: /
 2022-03-13 11:33:26,206 [WARNING]- Bad Request: /api/payment/
+2022-03-26 17:08:17,572 [WARNING]- Not Found: /
+2022-03-26 17:11:43,652 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:11:52,240 [WARNING]- Bad Request: /api/user/
+2022-03-26 17:12:09,764 [WARNING]- Unauthorized: /api/events/
+2022-03-26 17:17:10,994 [WARNING]- Method Not Allowed: /api/events/3/
+2022-03-26 17:17:29,683 [WARNING]- Not Found: /api/events/5/
+2022-03-26 17:26:56,809 [WARNING]- Not Found: /api/events/13/suppliers
+2022-03-26 17:27:11,697 [WARNING]- Not Found: /api/events/14/supplier/
+2022-03-26 17:42:36,162 [WARNING]- Bad Request: /api/events/11/supplier/
+2022-03-26 17:44:38,552 [WARNING]- Bad Request: /api/events/11/supplier/12/
