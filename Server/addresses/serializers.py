@@ -2,11 +2,13 @@ from rest_framework import serializers
 
 
 from addresses import models
+from my_models.serializers import MySerializer
 
 
 # -------------------Address-------------------
 
-class AddressSerializer(serializers.ModelSerializer):
+
+class AddressSerializer(MySerializer):
     """Serializer profile feed items"""
 
     class Meta:
