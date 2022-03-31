@@ -20,13 +20,13 @@ mkdir -p $SERVER_BASE_PATH/env
 python3 -m venv $SERVER_BASE_PATH/env
 
 # Install python packages
-$SERVER_BASE_PATH/env/bin/pip install -r $SERVER_BASE_PATH/requirements.txt
-$SERVER_BASE_PATH/env/bin/pip install uwsgi==2.0.18
+$SERVER_BASE_PATH/env/bin/pip3 install -r $SERVER_BASE_PATH/requirements.txt
+$SERVER_BASE_PATH/env/bin/pip3 install uwsgi==2.0.18
 
 # Run migrations and collectstatic
 cd $SERVER_BASE_PATH
-$SERVER_BASE_PATH/env/bin/python manage.py migrate
-$SERVER_BASE_PATH/env/bin/python manage.py collectstatic --noinput
+$SERVER_BASE_PATH/env/bin/python3 manage.py migrate
+$SERVER_BASE_PATH/env/bin/python3 manage.py collectstatic --noinput
 
 # Configure supervisor
 cp $SERVER_BASE_PATH/deploy/supervisor_server_django.conf /etc/supervisor/conf.d/server_django.conf

@@ -778,3 +778,8 @@ KeyError: 0
 2022-03-30 15:35:00,843 [WARNING]- Not Found: /api/user/1/
 2022-03-30 15:35:00,968 [WARNING]- Bad Request: /api/user/
 2022-03-31 10:35:04,848 [WARNING]- Not Found: /
+2022-03-31 17:11:09,633 [WARNING]- Not Found: /
+2022-03-31 17:11:09,756 [WARNING]- Not Found: /favicon.ico
+2022-03-31 17:11:19,357 [WARNING]- Not Found: /api/user/
+2022-03-31 17:11:40,562 [WARNING]- Method Not Allowed: /api/login/
+2022-03-31 17:50:03,393 [WARNING]- Not Found: /api/admin
