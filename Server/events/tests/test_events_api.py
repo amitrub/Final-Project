@@ -124,7 +124,7 @@ class PrivateEventApiTests(APITestCase):
 
     def test_retrieve_event_success(self):
         """Test retrieving event for logged in user"""
-        res = self.client.get(UPDATE_SUPPLIER_URL(self.event.id))
+        res = self.client.get(UPDATE_EVENT_URL(self.event.id))
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['event_name'], self.event.event_name)
