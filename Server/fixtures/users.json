@@ -16,6 +16,22 @@
     }
 },
 {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$uE48aW3W5JsRcGbSrH3kUu$8Glnka5Ff7ZVNCIznSUz37mMnS/MYlaN1DibxRKrtsc=",
+        "last_login": null,
+        "is_superuser": true,
+        "email": "admin@gmail.com",
+        "name": "admin",
+        "phone": "",
+        "is_active": true,
+        "is_staff": true,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
     "model": "users.eventmanager",
     "pk": 1,
     "fields": {}

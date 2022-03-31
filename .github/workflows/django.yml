@@ -26,6 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         cd Server
         pip install -r requirements.txt
+    - name: Make migrate
+      run: |
+        cd Server
+        python manage.py migrate
     - name: Run Tests
       run: |
         cd Server
