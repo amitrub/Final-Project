@@ -29,6 +29,7 @@ jobs:
     - name: run migrates
       run: |
         cd Server
+        rm db.sqlite3
         python manage.py makemigrations
         python manage.py migrate
     - name: Run Tests
