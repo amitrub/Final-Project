@@ -777,3 +777,4 @@ KeyError: 0
 2022-03-30 15:35:00,471 [WARNING]- Bad Request: /api/user/
 2022-03-30 15:35:00,843 [WARNING]- Not Found: /api/user/1/
 2022-03-30 15:35:00,968 [WARNING]- Bad Request: /api/user/
+2022-03-31 10:35:04,848 [WARNING]- Not Found: /
