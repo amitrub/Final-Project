@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Colors from "../../../constants/colors";
 import { allEvents, base_url } from "../../../constants/urls";
 import EventEntity from "../../../Entities/EventEntity";
@@ -10,6 +10,7 @@ import UserAuthentication from "../../../global/UserAuthentication";
 const AllEventsPage = (props) => {
   // const params = props.route.params;
   const myContext = useContext(UserAuthentication);
+  const refresh = myContext.refresh;
   const [allEventsData, setAllEventsData] = useState([]);
   const url = base_url + allEvents;
 
@@ -34,12 +35,12 @@ const AllEventsPage = (props) => {
               data[key].id,
               data[key].event_manager,
               data[key].type,
-              // data[key].owners,
+              data[key].event_owners,
               data[key].event_name,
               data[key].date,
               data[key].budget,
               data[key].location,
-              data[key].meetings,
+              data[key].event_schedules,
               data[key].suppliers
             )
           );
@@ -53,14 +54,14 @@ const AllEventsPage = (props) => {
     getData()
       .then((res) => res)
       .catch((error) => console.log(error));
-  }, []);
+  }, [refresh]);
 
   const body = (
-    <View>
+    <ScrollView>
       {allEventsData?.map((previewEvent, index) => {
         return <EventItem key={index} event={previewEvent} />;
       })}
-    </View>
+    </ScrollView>
   );
 
   const AllEventsTitle = (
@@ -69,7 +70,7 @@ const AllEventsPage = (props) => {
       <Entypo
         name="plus"
         size={20}
-        onPress={() => props.navigation.navigate("AddEventOwners")}
+        onPress={() => props.navigation.navigate("AddEventDetails")}
       />
     </View>
   );

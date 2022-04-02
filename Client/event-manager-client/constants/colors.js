@@ -10,6 +10,8 @@ export default {
   orange_task: "#FD8A37",
   blue: "#841584",
   dark_gray: "#545454",
+  html_Silver: "#C0C0C0",
   white: "#FFFFFF",
   background_gray: "#f2f2f2",
+  darkseagreen: "#8fbc8f",
 };

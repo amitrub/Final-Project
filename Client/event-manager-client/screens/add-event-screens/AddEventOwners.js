@@ -1,17 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text, TextInput } from "react-native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import Colors from "react-native/Libraries/NewAppScreen/components/Colors";
 import * as Contacts from "expo-contacts";
 import ContactItem from "../../components/basicComponents/Events/ContactItem";
 import filter from "lodash.filter";
 import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
-  ErrorImportContacts,
   ErrorMessages,
 } from "../../components/basicComponents/others/ErrorScreen";
+import ContactEntity from "../../Entities/ContactEntity";
+import TextTitle from "../../components/basicComponents/others/TextTitle";
+import IconButton from "../../components/basicComponents/buttons/IconButton";
+import OwnerEntity from "../../Entities/OwnerEntity";
+import fetchTimeout from "fetch-timeout";
+import { allEvents, base_url } from "../../constants/urls";
+import {
+  createOneButtonAlert,
+  STATUS_FAILED,
+  STATUS_SUCCESS,
+} from "../../constants/errorHandler";
+import Log from "../../constants/logger";
+import UserAuthentication from "../../global/UserAuthentication";
 
 const AddEventOwners = (props) => {
+  const params = props.route.params;
+  const navigation = props.navigation;
+  const myContext = useContext(UserAuthentication);
   const [allContacts, setAllContacts] = useState([]);
+  const [owners, setOwners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
@@ -25,16 +41,24 @@ const AddEventOwners = (props) => {
         const { status } = res;
         if (status === "granted") {
           Contacts.getContactsAsync({
-            fields: [Contacts.Fields.Emails],
+            // fields: [Contacts.Fields.Emails],
           })
             .then((res) => {
               const { data } = res;
-              const mapData = data.map((contact) => contact.name);
+              const contacts = data.map((c) => {
+                const name = c.name
+                  ? c.name
+                  : c.firstName
+                  ? c.firstName
+                  : "no name";
+                const phone = c.phoneNumbers ? c.phoneNumbers[0].number : "";
+                return new ContactEntity(c.id, name, phone);
+              });
               if (data.length > 0) {
-                setFullData(mapData);
+                setFullData(contacts);
               }
               setIsLoading(false);
-              setAllContacts(mapData);
+              setAllContacts(contacts);
             })
             .catch((err) => {
               setIsLoading(false);
@@ -47,11 +71,54 @@ const AddEventOwners = (props) => {
         setError(err);
       });
   }, []);
+  const onSaveEvent = useCallback(async () => {
+    Log.info("AddEventOwner >> onSaveEvent");
+    debugger;
+    let event = params.event;
+    event.event_owners = owners.map(
+      (ownerContact) =>
+        new OwnerEntity(ownerContact.id, ownerContact.name, ownerContact.phone)
+    );
 
+    setIsLoading(true);
+
+    await fetchTimeout(
+      base_url + allEvents,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+        body: JSON.stringify(event),
+      },
+      5000,
+      "Timeout"
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = "data.Error";
+          createOneButtonAlert(message, "OK", "Add new event failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          const message =
+            "You have successfully added new event. \nPress OK to watch your events";
+          myContext.setRefresh(!myContext.refresh);
+          createOneButtonAlert(message, "OK", "ADD NEW EVENT", () =>
+            navigation.navigate("AllEvents")
+          );
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err);
+        Log.error("AddEventOwner >> onSaveEvent error", err);
+      });
+  }, [owners, navigation]);
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
-
-  function renderHeader() {
+  const renderHeader = () => {
     return (
       <View
         style={{
@@ -59,6 +126,7 @@ const AddEventOwners = (props) => {
           padding: 10,
           marginVertical: 10,
           borderRadius: 40,
+          width: 250,
         }}
       >
         <TextInput
@@ -73,24 +141,51 @@ const AddEventOwners = (props) => {
         />
       </View>
     );
-  }
+  };
   const handleSearch = (text) => {
     const formattedQuery = text.toLowerCase();
-    const filteredData = filter(fullData, (user) =>
-      user?.includes(formattedQuery)
+    const filteredData = filter(fullData, (contact) =>
+      contact.name?.includes(formattedQuery)
     );
     setAllContacts(filteredData);
     setQuery(text);
   };
+  const onSelectOwner = (contact) => {
+    if (contact.isOwner) {
+      contact.isOwner = false;
+      setOwners(owners.filter((o) => o.id !== contact.id));
+    } else {
+      contact.isOwner = true;
+      setOwners([...owners, contact]);
+    }
+  };
 
   return (
     <View style={styles.screen}>
-      <FlatList
-        ListHeaderComponent={renderHeader}
-        data={allContacts}
-        keyExtractor={(item, index) => index}
-        renderItem={({ item }) => <ContactItem contact={item} />}
-      />
+      <TextTitle text={"Choose event owners"} />
+      {renderHeader()}
+      <View
+        style={{
+          height: "70%",
+        }}
+      >
+        <FlatList
+          // ListHeaderComponent={renderHeader}
+          data={allContacts}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item }) => (
+            <ContactItem contact={item} onPress={onSelectOwner} />
+          )}
+        />
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <IconButton
+          onPress={onSaveEvent}
+          icon={"game-controller"}
+          color={Colors.black}
+          iconSize={18}
+        />
+      </View>
     </View>
   );
 };

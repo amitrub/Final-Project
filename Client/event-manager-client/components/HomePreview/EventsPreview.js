@@ -35,12 +35,12 @@ const EventsPreview = (props) => {
               data[key].id,
               data[key].event_manager,
               data[key].type,
-              // data[key].owners,
+              data[key].event_owners,
               data[key].event_name,
               data[key].date,
               data[key].budget,
               data[key].location,
-              data[key].meetings,
+              data[key].event_schedules,
               data[key].suppliers
             )
           );
@@ -70,7 +70,7 @@ const EventsPreview = (props) => {
       <Entypo
         name="dots-three-horizontal"
         size={22}
-        onPress={() => navigation.navigate("AllEvents")}
+        onPress={() => navigation.navigate("Events")}
       />
     </View>
   );
