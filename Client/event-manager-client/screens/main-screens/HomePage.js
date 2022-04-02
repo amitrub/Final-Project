@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import Colors from "../../constants/colors";
 import MeetingsPreview from "../../components/HomePreview/MeetingsPreview";
@@ -6,13 +6,26 @@ import EventsPreview from "../../components/HomePreview/EventsPreview";
 import TasksPreview from "../../components/HomePreview/TasksPreview";
 import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../global/UserAuthentication";
-import { base_url, eventManager } from "../../constants/urls";
+import { base_url, eventManager, homePage } from "../../constants/urls";
 import { STATUS_FAILED, STATUS_SUCCESS } from "../../constants/errorHandler";
+import Log from "../../constants/logger";
+import Loader from "../../components/basicComponents/others/Loader";
+import ErrorScreen, {
+  ErrorMessages,
+} from "../../components/basicComponents/others/ErrorScreen";
 
 const HomePage = (props) => {
   const myContext = useContext(UserAuthentication);
-  console.log("myContext homepage", myContext);
+  const [eventsPreview, setEventsPreview] = React.useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(async () => {
+    await getIsEventManager();
+    await getHomePageData();
+  }, []);
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
   async function postEventManager() {
     await fetch(
       base_url + eventManager(myContext.id),
@@ -65,9 +78,36 @@ const HomePage = (props) => {
       })
       .catch((error) => console.log("onPressRegister error", error));
   }
-  useEffect(async () => {
-    await getIsEventManager();
-  }, []);
+  async function getHomePageData() {
+    await fetch(
+      base_url + homePage(myContext.id),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+      },
+      { timeout: 2000 }
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        console.log(data);
+        if (STATUS_FAILED(res.status)) {
+          const message = data.Error ? data.Error : "";
+          Log.error("GET home page FAILED >> Error: ", message);
+        } else if (STATUS_SUCCESS(res.status)) {
+          if (!data.events) {
+            Log.error("getHomePageData error", error);
+          } else {
+            Log.info("GET home page SUCCESS >> already event-manager");
+            setEventsPreview(data.events);
+          }
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => console.log("onPressRegister error", error));
+  }
 
   return (
     <ScrollView>
@@ -80,7 +120,7 @@ const HomePage = (props) => {
           <MeetingsPreview />
         </View>
         <View style={{ paddingTop: "7%" }}>
-          <EventsPreview />
+          <EventsPreview events={eventsPreview} />
         </View>
         <View style={{ paddingTop: "7%" }}>
           <TasksPreview />

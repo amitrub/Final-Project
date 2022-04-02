@@ -27,6 +27,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-calendars": "^1.1280.0",
     "react-native-contacts": "^7.0.4",
     "react-native-datepicker": "^1.7.2",
     "react-native-element-dropdown": "^1.8.5",
