@@ -51,10 +51,11 @@ const EventsPreview = (props) => {
       .catch((error) => console.log(error));
   }, []);
   useEffect(() => {
-    getData()
-      .then((res) => res)
-      .catch((error) => console.log(error));
-  }, []);
+    // getData()
+    //   .then((res) => res)
+    //   .catch((error) => console.log(error));
+    setPreviewEventsData(props.events);
+  }, [previewEventsData]);
 
   const body = (
     <View>

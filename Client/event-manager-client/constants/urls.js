@@ -7,6 +7,7 @@ export const base_url = remote_base_url;
 //general
 export const api = "/api";
 export const firebaseJson = ".json";
+export const homePage = (user_id) => `/api/user/${user_id}/homepage/`;
 
 //users
 export const register = "/api/user/";
