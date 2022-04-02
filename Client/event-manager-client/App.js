@@ -26,6 +26,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Entypo from "react-native-vector-icons/Entypo";
 import ProfilePage from "./screens/user-profile-screens/ProfilePage";
 import CalendarPage from "./screens/user-profile-screens/CalendarPage";
+import AddEventDetails from "./screens/add-event-screens/AddEventDetails";
 
 enableScreens();
 
@@ -134,6 +135,10 @@ export const HomePageStackScreen = () => {
       <HomePageStack.Screen name="AllEvents" component={AllEventsPage} />
       <HomePageStack.Screen name="Meeting" component={MeetingPage} />
       <HomePageStack.Screen name="Meetings" component={MeetingsPage} />
+      <HomePageStack.Screen
+        name="AddEventDetails"
+        component={AddEventDetails}
+      />
       <HomePageStack.Screen name="AddEventOwners" component={AddEventOwners} />
     </HomePageStack.Navigator>
   );
@@ -148,6 +153,10 @@ export const EventsStackScreen = () => {
       <EventsStack.Screen name="EventPage" component={EventPage} />
       <EventsStack.Screen name="Meeting" component={MeetingPage} />
       <EventsStack.Screen name="Meetings" component={MeetingsPage} />
+      <HomePageStack.Screen
+        name="AddEventDetails"
+        component={AddEventDetails}
+      />
       <EventsStack.Screen name="AddEventOwners" component={AddEventOwners} />
     </EventsStack.Navigator>
   );
@@ -178,13 +187,16 @@ export default function App() {
   const [id, setId] = useState(-1);
   const [token, setToken] = useState("");
   const [name, setName] = useState("guest");
+  const [refresh, setRefresh] = useState(true);
   const userAuth = {
     id: id,
     token: token,
     name: name,
+    refresh: refresh,
     setId: setId,
     setToken: setToken,
     setName: setName,
+    setRefresh: setRefresh,
   };
   if (!dataLoaded) {
     console.log("Uploading data...");

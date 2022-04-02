@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Colors from "../../../constants/colors";
 import DetailEventItem from "../../../components/basicComponents/Events/DetailEventItem";
-import EventDateTitle from "../../../components/basicComponents/EventDateTitle";
+import DateTitle from "../../../components/basicComponents/others/DateTitle";
 import Entypo from "react-native-vector-icons/Entypo";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 
@@ -11,6 +11,8 @@ const EventPage = (props) => {
   const navigation = props.navigation;
 
   const event = params.event;
+  debugger;
+  console.log(event);
   const eventName = `${event.event_name}'s ${event.type}`;
 
   //useEffect - executes after the component rendered
@@ -38,7 +40,7 @@ const EventPage = (props) => {
         {/*</View>*/}
         <View style={styles.screen}>
           <View paddingBottom="4%" paddingTop="15%">
-            <EventDateTitle date={event.date} />
+            <DateTitle date={event.date} />
           </View>
           <View style={styles.listItem}>
             <Text style={styles.text}>{event.location}</Text>
@@ -46,11 +48,16 @@ const EventPage = (props) => {
           <DetailEventItem
             key="3"
             title={"Owners"}
-            items={[event.event_name]}
+            items={event.event_owners.map((eventOwner) => eventOwner.name)}
           />
-          {/*<DetailEventItem key="4" title={"Meetings"} items={event.meetings} />*/}
-          <DetailEventItem key="5" title={"לוז"} items={["רועי", "הדס"]} />
-          <DetailEventItem key="6" title={"צק-ליסט"} items={["רועי", "הדס"]} />
+          <DetailEventItem key="7" title={"Budget"} items={[event.budget]} />
+          {/*<DetailEventItem key="4" title={"Meetings"} items={event.event_schedules} />*/}
+          <DetailEventItem
+            key="5"
+            title={"Event schedule"}
+            items={["Hupa", "Dancing"]}
+          />
+          <DetailEventItem key="6" title={"Tasks"} items={["Dress", "Suite"]} />
         </View>
       </ScrollView>
     </View>

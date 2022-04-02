@@ -21,7 +21,6 @@ import fetchTimeout from "fetch-timeout";
 import Loader from "../others/Loader";
 import ErrorScreen, { ErrorMessages } from "../others/ErrorScreen";
 import { useNavigation } from "@react-navigation/native";
-import HomePage from "../../../screens/main-screens/HomePage";
 import { TabNavigator } from "../../../App";
 
 const LoginInput = (props) => {
@@ -29,13 +28,13 @@ const LoginInput = (props) => {
 
   const navigation = useNavigation();
   const myContext = useContext(UserAuthentication);
-  const [email, setEmail] = React.useState("R@h.com");
+  const [email, setEmail] = React.useState("admin@gmail.com");
   const [password, setPassword] = React.useState("1234");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const emptyLoginInputs = () => {
-    setEmail("R@h.com");
+    setEmail("amitrubin21@gmail.com");
     setPassword("1234");
   };
   const createTwoButtonAlert = (props, message) =>
@@ -63,7 +62,7 @@ const LoginInput = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: email,
+          email: email,
           password: password,
         }),
       },
@@ -74,6 +73,7 @@ const LoginInput = (props) => {
         const data = await res.json();
         if (STATUS_FAILED(res.status)) {
           const message = data.Error ? data.Error : "";
+          console.log(data);
           createOneButtonAlert(message, "OK", "Login failed");
         } else if (STATUS_SUCCESS(res.status)) {
           const message =
