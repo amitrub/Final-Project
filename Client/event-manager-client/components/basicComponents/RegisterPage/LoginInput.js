@@ -38,16 +38,21 @@ const LoginInput = (props) => {
     setPassword("1234");
   };
   const createTwoButtonAlert = (props, message) =>
-    Alert.alert("You are almost there!", message, [
+    Alert.alert("Woohoo!", message, [
       {
         text: "OK",
         onPress: () => {
           Log.info("LoginInput >> Redirect to HomePage");
           navigation.navigate(TabNavigator);
-          props.onLogin();
+          // props.onLogin();
         },
+        style: "default",
       },
-      { text: "Cancel", onPress: () => Log.info("Cancel Pressed") },
+      {
+        text: "Cancel",
+        onPress: () => Log.info("Cancel Pressed"),
+        style: "destructive",
+      },
     ]);
 
   const onPressLogin = useCallback(async () => {
@@ -77,7 +82,7 @@ const LoginInput = (props) => {
           createOneButtonAlert(message, "OK", "Login failed");
         } else if (STATUS_SUCCESS(res.status)) {
           const message =
-            "You have successfully login!\npress OK to your home page";
+            "You have successfully login!\nGo watch your home page";
           myContext.setToken(data.token);
           myContext.setId(data.id);
           myContext.setName(data.name);

@@ -73,7 +73,6 @@ const AddEventOwners = (props) => {
   }, []);
   const onSaveEvent = useCallback(async () => {
     Log.info("AddEventOwner >> onSaveEvent");
-    debugger;
     let event = params.event;
     event.event_owners = owners.map(
       (ownerContact) =>
@@ -102,7 +101,7 @@ const AddEventOwners = (props) => {
           createOneButtonAlert(message, "OK", "Add new event failed");
         } else if (STATUS_SUCCESS(res.status)) {
           const message =
-            "You have successfully added new event. \nPress OK to watch your events";
+            "The event was added successfully! \nGo watch your events";
           myContext.setRefresh(!myContext.refresh);
           createOneButtonAlert(message, "OK", "ADD NEW EVENT", () =>
             navigation.navigate("AllEvents")

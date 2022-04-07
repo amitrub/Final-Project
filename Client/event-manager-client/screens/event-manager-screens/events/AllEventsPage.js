@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
   screen: {
     justifyContent: "center",
     alignItems: "center",
+    height: "99%",
   },
   row: {
     flexDirection: "row",
