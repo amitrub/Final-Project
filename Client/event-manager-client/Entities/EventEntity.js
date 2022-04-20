@@ -26,16 +26,14 @@ class EventEntity {
 
 export default EventEntity;
 
-// class EventEntity {
-//   constructor(
-//       id,
-//       event_manager_id,
-//       type,
-//       owners, <list <owner>>
-//       event_name,
-//       date,
-//       budget,
-//       location,
-//       event_schedule - just in client put empty,
-//       suppliers- just in client put empty
-// )
+export class EditEventEntity {
+  constructor(id, event_manager, type, event_name, date, budget, location) {
+    this.id = id;
+    this.event_manager = event_manager;
+    this.type = type;
+    this.event_name = event_name;
+    this.date = date;
+    this.budget = budget;
+    this.location = location;
+  }
+}

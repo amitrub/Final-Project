@@ -6,7 +6,7 @@ import EventPage from "../../../screens/event-manager-screens/events/EventPage";
 
 const EventItem = (props) => {
   const navigation = useNavigation();
-  console.log(props.event);
+  // console.log(props.event);
 
   return (
     <TouchableOpacity

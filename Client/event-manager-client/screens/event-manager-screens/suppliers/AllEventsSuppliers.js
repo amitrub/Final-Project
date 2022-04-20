@@ -12,8 +12,9 @@ import ErrorScreen, {
 } from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
 
-const AllEventsPage = (props) => {
-  // const params = props.route.params;
+const AllEventsSuppliers = (props) => {
+  const params = props.route.params;
+  const eventId = params.event.id;
   const myContext = useContext(UserAuthentication);
   const refresh = myContext.refresh;
   const [allEventsData, setAllEventsData] = useState([]);
@@ -125,4 +126,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default AllEventsPage;
+export default AllEventsSuppliers;

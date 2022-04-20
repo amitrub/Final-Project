@@ -27,6 +27,8 @@ import Entypo from "react-native-vector-icons/Entypo";
 import ProfilePage from "./screens/user-profile-screens/ProfilePage";
 import CalendarPage from "./screens/user-profile-screens/CalendarPage";
 import AddEventDetails from "./screens/add-event-screens/AddEventDetails";
+import Colors from "./constants/colors";
+import AllEventsSuppliers from "./screens/event-manager-screens/suppliers/AllEventsSuppliers";
 
 enableScreens();
 
@@ -131,7 +133,14 @@ export const HomePageStackScreen = () => {
         }}
       />
       <HomePageStack.Screen name="Tasks" component={TasksPage} />
-      <HomePageStack.Screen name="EventPage" component={EventPage} />
+      <HomePageStack.Screen
+        name="EventPage"
+        component={EventPage}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
+      />
       <HomePageStack.Screen name="AllEvents" component={AllEventsPage} />
       <HomePageStack.Screen name="Meeting" component={MeetingPage} />
       <HomePageStack.Screen name="Meetings" component={MeetingsPage} />
@@ -140,6 +149,10 @@ export const HomePageStackScreen = () => {
         component={AddEventDetails}
       />
       <HomePageStack.Screen name="AddEventOwners" component={AddEventOwners} />
+      <HomePageStack.Screen
+        name="AllEventsSuppliers"
+        component={AllEventsSuppliers}
+      />
     </HomePageStack.Navigator>
   );
 };
@@ -150,14 +163,22 @@ export const EventsStackScreen = () => {
     <EventsStack.Navigator>
       <EventsStack.Screen name="AllEvents" component={AllEventsPage} />
       <EventsStack.Screen name="Tasks" component={TasksPage} />
-      <EventsStack.Screen name="EventPage" component={EventPage} />
+      <EventsStack.Screen
+        name="EventPage"
+        component={EventPage}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
+      />
       <EventsStack.Screen name="Meeting" component={MeetingPage} />
       <EventsStack.Screen name="Meetings" component={MeetingsPage} />
-      <HomePageStack.Screen
-        name="AddEventDetails"
-        component={AddEventDetails}
-      />
+      <EventsStack.Screen name="AddEventDetails" component={AddEventDetails} />
       <EventsStack.Screen name="AddEventOwners" component={AddEventOwners} />
+      <EventsStack.Screen
+        name="AllEventsSuppliers"
+        component={AllEventsSuppliers}
+      />
     </EventsStack.Navigator>
   );
 };
@@ -166,7 +187,7 @@ const ProfileStack = createNativeStackNavigator();
 export const ProfileStackScreen = () => {
   return (
     <ProfileStack.Navigator>
-      <EventsStack.Screen name="ProfilePage" component={ProfilePage} />
+      <ProfileStack.Screen name="ProfilePage" component={ProfilePage} />
     </ProfileStack.Navigator>
   );
 };
@@ -175,7 +196,7 @@ const CalendarStack = createNativeStackNavigator();
 export const CalendarStackScreen = () => {
   return (
     <CalendarStack.Navigator>
-      <EventsStack.Screen name="CalendarPage" component={CalendarPage} />
+      <CalendarStack.Screen name="CalendarPage" component={CalendarPage} />
     </CalendarStack.Navigator>
   );
 };

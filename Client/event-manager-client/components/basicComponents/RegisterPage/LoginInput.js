@@ -78,7 +78,7 @@ const LoginInput = (props) => {
         const data = await res.json();
         if (STATUS_FAILED(res.status)) {
           const message = data.Error ? data.Error : "";
-          console.log(data);
+          // console.log(data);
           createOneButtonAlert(message, "OK", "Login failed");
         } else if (STATUS_SUCCESS(res.status)) {
           const message =
