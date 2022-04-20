@@ -36,7 +36,7 @@ const DatePickerInput = (props) => {
               },
               dateText: {
                 fontSize: 17,
-                color: Colors.background_gray,
+                color: Colors.dark_gray,
               },
             }}
             onDateChange={(date) => props.setDate(date)}

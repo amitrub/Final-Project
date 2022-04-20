@@ -16,14 +16,17 @@ import ErrorScreen, {
 
 const HomePage = (props) => {
   const myContext = useContext(UserAuthentication);
+  const refresh = myContext.refresh;
+
   const [eventsPreview, setEventsPreview] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(async () => {
+    setIsLoading(true);
     await getIsEventManager();
     await getHomePageData();
-  }, []);
+  }, [refresh]);
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
   async function postEventManager() {
@@ -92,7 +95,7 @@ const HomePage = (props) => {
     )
       .then(async (res) => {
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         if (STATUS_FAILED(res.status)) {
           const message = data.Error ? data.Error : "";
           Log.error("GET home page FAILED >> Error: ", message);

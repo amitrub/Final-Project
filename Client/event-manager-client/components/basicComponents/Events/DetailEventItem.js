@@ -1,25 +1,30 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Colors from "../../../constants/colors";
 import Entypo from "react-native-vector-icons/Entypo";
 
 const DetailEventItem = (props) => (
-  <View>
-    <View style={styles.icons}>
-      <Entypo name="edit" size={16} />
-      <Entypo name="plus" size={16} />
-    </View>
+  <TouchableOpacity style={{ padding: 10 }} onPress={props.onPress}>
     <View style={styles.listItem}>
-      <Text>{props.title} </Text>
+      <View style={styles.icons}>
+        <Entypo name="edit" size={16} />
+      </View>
+      <Text style={{}}>{props.title} </Text>
       <View style={styles.row}>
-        {props.items.map((item, index) => (
+        {props.items?.map((item, index) => (
           <View key={index} style={styles.listItemSmall}>
             <Text style={styles.whiteText}>{item}</Text>
           </View>
         ))}
       </View>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

@@ -22,3 +22,13 @@ export const allMeetings = "/api/allMeetings/";
 //events
 export const previewEvents = "/api/previewEvents/";
 export const allEvents = "/api/events/";
+export const getEvent = (eventId) => `/api/events/${eventId}/`;
+
+//events_owners
+export const addEventOwner = (eventId) => `/api/events/${eventId}/event_owner/`;
+
+//events_suppliers
+export const getOrPostEventSuppliers = (eventId) =>
+  `/api/events/${eventId}/supplier/`; //GET + POST
+export const getOrPutSupplier = (eventId, supplierId) =>
+  `/api/events/${eventId}/supplier/${supplierId}/`; //GET + PUT

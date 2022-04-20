@@ -13,7 +13,12 @@ import TextTitle from "../../components/basicComponents/others/TextTitle";
 import IconButton from "../../components/basicComponents/buttons/IconButton";
 import OwnerEntity from "../../Entities/OwnerEntity";
 import fetchTimeout from "fetch-timeout";
-import { allEvents, base_url } from "../../constants/urls";
+import {
+  addEventOwner,
+  allEvents,
+  base_url,
+  getEvent,
+} from "../../constants/urls";
 import {
   createOneButtonAlert,
   STATUS_FAILED,
@@ -21,11 +26,13 @@ import {
 } from "../../constants/errorHandler";
 import Log from "../../constants/logger";
 import UserAuthentication from "../../global/UserAuthentication";
+import { EditEventEntity } from "../../Entities/EventEntity";
 
 const AddEventOwners = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
+
   const [allContacts, setAllContacts] = useState([]);
   const [owners, setOwners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,8 +64,26 @@ const AddEventOwners = (props) => {
               if (data.length > 0) {
                 setFullData(contacts);
               }
-              setIsLoading(false);
               setAllContacts(contacts);
+
+              // debugger;
+              // const paramsOwners = params.event.event_owners;
+              // if (paramsOwners && paramsOwners.length > 0) {
+              //   let contactOwners = paramsOwners.map(
+              //     (po) => new ContactEntity(po.id, po.name, po.phone, true)
+              //   );
+              //   setOwners(contactOwners);
+              //   const ownersIds = contactOwners.map((o) => o.id);
+              //   let updatedContactOwners = allContacts.map((c) => {
+              //     if (ownersIds.includes(c.id)) {
+              //       return new ContactEntity(c.id, c.name, c.phone, true);
+              //     } else {
+              //       return c;
+              //     }
+              //   });
+              //   setAllContacts(updatedContactOwners);
+              // }
+              setIsLoading(false);
             })
             .catch((err) => {
               setIsLoading(false);
@@ -71,18 +96,15 @@ const AddEventOwners = (props) => {
         setError(err);
       });
   }, []);
-  const onSaveEvent = useCallback(async () => {
-    Log.info("AddEventOwner >> onSaveEvent");
-    let event = params.event;
-    event.event_owners = owners.map(
-      (ownerContact) =>
-        new OwnerEntity(ownerContact.id, ownerContact.name, ownerContact.phone)
-    );
 
-    setIsLoading(true);
+  async function onSave(newOwners) {
+    Log.info("AddEventOwner >> onSaveEvent >> onSave (New event)");
+    let event = params.event;
+    event.event_owners = newOwners;
+    const url = base_url + allEvents;
 
     await fetchTimeout(
-      base_url + allEvents,
+      url,
       {
         method: "POST",
         headers: {
@@ -100,23 +122,137 @@ const AddEventOwners = (props) => {
           const message = "data.Error";
           createOneButtonAlert(message, "OK", "Add new event failed");
         } else if (STATUS_SUCCESS(res.status)) {
+          myContext.setRefresh(!myContext.refresh);
           const message =
             "The event was added successfully! \nGo watch your events";
-          myContext.setRefresh(!myContext.refresh);
           createOneButtonAlert(message, "OK", "ADD NEW EVENT", () =>
             navigation.navigate("AllEvents")
           );
         }
-        setIsLoading(false);
       })
       .catch((err) => {
         setIsLoading(false);
         setError(err);
-        Log.error("AddEventOwner >> onSaveEvent error", err);
+        Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
       });
+  }
+  async function onSaveEditEventOwners(newOwners) {
+    Log.info("AddEventOwner >> onSaveEvent >> onSaveEditEventOwners");
+    let event = params.event;
+    let editEvent = new EditEventEntity(
+      event.id,
+      event.event_manager,
+      event.type,
+      event.event_name,
+      event.date,
+      event.budget,
+      event.location
+    );
+    const urlEditEvent = base_url + getEvent(event.id);
+    const urlEditOwnerEvent = base_url + addEventOwner(event.id);
+    async function addNewOwnerRequest(owner) {
+      console.log(urlEditOwnerEvent);
+      console.log(owner.name);
+      console.log(owner.phone);
+
+      await fetchTimeout(
+        urlEditOwnerEvent,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+          },
+          body: JSON.stringify({
+            name: owner.name,
+            phone: owner.phone,
+          }),
+        },
+        5000,
+        "Timeout"
+      )
+        .then(async (res) => {
+          const data = await res.json();
+          if (STATUS_FAILED(res.status)) {
+            const message = data.toString();
+            createOneButtonAlert(message, "OK", "add New Owner Request failed");
+            return false;
+          } else if (STATUS_SUCCESS(res.status)) {
+            return true;
+          }
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setError(err);
+          Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
+          return false;
+        });
+    }
+
+    await fetchTimeout(
+      urlEditEvent,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+        body: JSON.stringify(editEvent),
+      },
+      5000,
+      "Timeout"
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = "data.Error";
+          createOneButtonAlert(message, "OK", "EDIT event failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          let ownersSucceeded = true;
+          for (const owner of newOwners) {
+            if (!ownersSucceeded) break;
+            addNewOwnerRequest(owner).then((res) => {
+              ownersSucceeded = ownersSucceeded && !!res;
+            });
+          }
+
+          //----------------------------------------------------------
+          if (ownersSucceeded) {
+            myContext.setRefresh(!myContext.refresh);
+            const message = "Owners updated!";
+            createOneButtonAlert(message, "OK", "", () => navigation.pop());
+          } else {
+            createOneButtonAlert(
+              "Owners didn't updated successfully!",
+              "OK",
+              "Edit owners error!",
+              () => navigation.pop()
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err);
+        Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
+      });
+  }
+  const onSaveEvent = useCallback(async () => {
+    setIsLoading(true);
+    const newOwners = owners.map(
+      (ownerContact) =>
+        new OwnerEntity(ownerContact.id, ownerContact.name, ownerContact.phone)
+    );
+
+    if (params.editMode) {
+      await onSaveEditEventOwners(newOwners);
+    } else {
+      await onSave(newOwners);
+    }
+
+    setIsLoading(false);
   }, [owners, navigation]);
-  if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
+
   const renderHeader = () => {
     return (
       <View
@@ -158,6 +294,9 @@ const AddEventOwners = (props) => {
       setOwners([...owners, contact]);
     }
   };
+
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
 
   return (
     <View style={styles.screen}>

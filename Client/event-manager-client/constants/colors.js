@@ -14,4 +14,5 @@ export default {
   white: "#FFFFFF",
   background_gray: "#f2f2f2",
   darkseagreen: "#8fbc8f",
+  blueBright: "#2196F3",
 };
