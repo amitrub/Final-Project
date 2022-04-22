@@ -30,6 +30,7 @@ import AddEventDetails from "./screens/add-event-screens/AddEventDetails";
 import Colors from "./constants/colors";
 import AllEventsSuppliers from "./screens/event-manager-screens/suppliers/AllEventsSuppliers";
 import SupplierPage from "./screens/event-manager-screens/suppliers/SupplierPage";
+import AddSupplierContact from "./screens/event-manager-screens/suppliers/AddSupplierContact";
 
 enableScreens();
 
@@ -49,6 +50,11 @@ const fetchFonts = () => {
     "alef-regular": require("./assets/fonts/Alef-Regular.ttf"),
     "alef-bold": require("./assets/fonts/Alef-Bold.ttf"),
   });
+};
+
+const emptyHeader = {
+  headerTransparent: true,
+  headerTitle: "",
 };
 
 const WelcomeStack = createNativeStackNavigator();
@@ -137,38 +143,47 @@ export const HomePageStackScreen = () => {
       <HomePageStack.Screen
         name="EventPage"
         component={EventPage}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
       />
-      <HomePageStack.Screen name="AllEvents" component={AllEventsPage} />
-      <HomePageStack.Screen name="Meeting" component={MeetingPage} />
-      <HomePageStack.Screen name="Meetings" component={MeetingsPage} />
+      <HomePageStack.Screen
+        name="AllEvents"
+        component={AllEventsPage}
+        options={emptyHeader}
+      />
+      <HomePageStack.Screen
+        name="Meeting"
+        component={MeetingPage}
+        options={emptyHeader}
+      />
+      <HomePageStack.Screen
+        name="Meetings"
+        component={MeetingsPage}
+        options={emptyHeader}
+      />
       <HomePageStack.Screen
         name="AddEventDetails"
         component={AddEventDetails}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
       />
-      <HomePageStack.Screen name="AddEventOwners" component={AddEventOwners} />
+      <HomePageStack.Screen
+        name="AddEventOwners"
+        component={AddEventOwners}
+        options={emptyHeader}
+      />
       <HomePageStack.Screen
         name="AllEventsSuppliers"
         component={AllEventsSuppliers}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
       />
       <HomePageStack.Screen
         name="SupplierPage"
         component={SupplierPage}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
+      />
+      <HomePageStack.Screen
+        name="AddSupplierContact"
+        component={AddSupplierContact}
+        options={emptyHeader}
       />
     </HomePageStack.Navigator>
   );
@@ -178,42 +193,51 @@ const EventsStack = createNativeStackNavigator();
 export const EventsStackScreen = () => {
   return (
     <EventsStack.Navigator>
-      <EventsStack.Screen name="AllEvents" component={AllEventsPage} />
-      <EventsStack.Screen name="Tasks" component={TasksPage} />
+      <EventsStack.Screen
+        name="AllEvents"
+        component={AllEventsPage}
+        options={emptyHeader}
+      />
+      <EventsStack.Screen
+        name="Tasks"
+        component={TasksPage}
+        options={emptyHeader}
+      />
       <EventsStack.Screen
         name="EventPage"
         component={EventPage}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
       />
-      <EventsStack.Screen name="Meeting" component={MeetingPage} />
-      <EventsStack.Screen name="Meetings" component={MeetingsPage} />
+      <EventsStack.Screen
+        name="Meeting"
+        component={MeetingPage}
+        options={emptyHeader}
+      />
+      <EventsStack.Screen
+        name="Meetings"
+        component={MeetingsPage}
+        options={emptyHeader}
+      />
       <EventsStack.Screen
         name="AddEventDetails"
         component={AddEventDetails}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
       />
       <EventsStack.Screen name="AddEventOwners" component={AddEventOwners} />
       <EventsStack.Screen
         name="AllEventsSuppliers"
         component={AllEventsSuppliers}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
       />
       <EventsStack.Screen
         name="SupplierPage"
         component={SupplierPage}
-        options={{
-          headerTransparent: true,
-          headerTitle: "",
-        }}
+        options={emptyHeader}
+      />
+      <EventsStack.Screen
+        name="AddSupplierContact"
+        component={AddSupplierContact}
+        options={emptyHeader}
       />
     </EventsStack.Navigator>
   );

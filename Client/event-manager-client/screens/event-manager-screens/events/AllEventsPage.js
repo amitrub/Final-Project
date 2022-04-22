@@ -77,10 +77,10 @@ const AllEventsPage = (props) => {
   );
   const AllEventsTitle = (
     <View style={styles.row}>
-      <Text style={styles.mainTitle}>Events</Text>
+      <Text style={styles.mainTitle}>All Events</Text>
       <Entypo
         name="plus"
-        size={20}
+        size={24}
         onPress={() => props.navigation.navigate("AddEventDetails")}
       />
     </View>
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "99%",
+    paddingTop: "15%",
   },
   row: {
     flexDirection: "row",
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginTop: 30,
     width: 500,
-    padding: 15,
+    padding: 25,
   },
   textTitle: {
     fontFamily: "alef-regular",
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     color: Colors.text_black,
     fontFamily: "alef-bold",
-    fontSize: 18,
+    fontSize: 24,
     fontStyle: "normal",
     fontWeight: "700",
     lineHeight: 25,

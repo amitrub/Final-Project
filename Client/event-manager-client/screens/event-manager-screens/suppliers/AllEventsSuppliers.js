@@ -20,6 +20,7 @@ import SupplierItem from "../../../components/basicComponents/suppliers/Supplier
 
 const AllEventsSuppliers = (props) => {
   const params = props.route.params;
+  const navigation = props.navigation;
   const eventId = params.eventId;
   const eventName = params.eventName;
   const myContext = useContext(UserAuthentication);
@@ -92,8 +93,12 @@ const AllEventsSuppliers = (props) => {
         </View>
         <Entypo
           name="plus"
-          size={22}
-          // onPress={() => props.navigation.navigate("AddEventDetails")}
+          size={24}
+          onPress={() => {
+            navigation.navigate("AddSupplierContact", {
+              eventId: eventId,
+            });
+          }}
         />
       </View>
     );
@@ -126,13 +131,13 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontFamily: "alef-regular",
-    fontSize: 18,
+    fontSize: 20,
     textAlign: "left",
   },
   mainTitle: {
     color: Colors.text_black,
     fontFamily: "alef-bold",
-    fontSize: 22,
+    fontSize: 24,
     fontStyle: "normal",
     fontWeight: "700",
     lineHeight: 25,

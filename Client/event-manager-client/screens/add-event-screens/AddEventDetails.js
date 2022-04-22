@@ -46,8 +46,10 @@ const AddEventDetails = (props) => {
 
   return (
     <ScrollView>
-      <View style={styles.screen}>
-        <DropdownComponent label={"event type"} onPress={setType} />
+      <View style={[styles.screen]}>
+        <View style={{ paddingTop: 60 }}>
+          <DropdownComponent label={"event type"} onPress={setType} />
+        </View>
         <TextInput
           style={styles.input}
           onChangeText={setEventName}
