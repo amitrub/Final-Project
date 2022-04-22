@@ -44,6 +44,8 @@ const EventPage = (props) => {
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
   const refresh = myContext.refresh;
+  const event_id = params.event.id;
+  const url = base_url + getEvent(event_id);
 
   const [event, setEvent] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -58,9 +60,6 @@ const EventPage = (props) => {
   const [editDate, setEditDate] = useState("");
   const [editLocation, setEditLocation] = useState("");
   const [editBudget, setEditBudget] = useState(0);
-
-  const event_id = params.event.id;
-  const url = base_url + getEvent(event_id);
 
   const getData = useCallback(async () => {
     await fetch(
@@ -362,7 +361,8 @@ const EventPage = (props) => {
         items={["DJ", "Photographer"]}
         onPress={() =>
           navigation.navigate("AllEventsSuppliers", {
-            event: event,
+            eventId: event.id,
+            eventName: event.event_name,
           })
         }
       />

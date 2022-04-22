@@ -1,7 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Colors from "../../../constants/colors";
-import { allEvents, base_url } from "../../../constants/urls";
+import {
+  allEvents,
+  base_url,
+  getOrPostEventSuppliers,
+} from "../../../constants/urls";
 import EventEntity from "../../../Entities/EventEntity";
 import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -11,16 +15,19 @@ import ErrorScreen, {
   ErrorMessages,
 } from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
+import SupplierEntity from "../../../Entities/SupplierEntity";
+import SupplierItem from "../../../components/basicComponents/suppliers/SupplierItem";
 
 const AllEventsSuppliers = (props) => {
   const params = props.route.params;
-  const eventId = params.event.id;
+  const eventId = params.eventId;
+  const eventName = params.eventName;
   const myContext = useContext(UserAuthentication);
   const refresh = myContext.refresh;
-  const [allEventsData, setAllEventsData] = useState([]);
+  const [eventSuppliersData, setEventSuppliersData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const url = base_url + allEvents;
+  const url = base_url + getOrPostEventSuppliers(eventId);
 
   const getData = useCallback(async () => {
     await fetch(
@@ -36,31 +43,27 @@ const AllEventsSuppliers = (props) => {
     )
       .then(async (res) => {
         const data = await res.json();
-        const loadedEvents = [];
+        const loadedSuppliers = [];
         for (const key in data) {
-          loadedEvents.push(
-            new EventEntity(
+          loadedSuppliers.push(
+            new SupplierEntity(
               data[key].id,
-              data[key].event_manager,
-              data[key].type,
-              data[key].event_owners,
-              data[key].event_name,
-              data[key].date,
-              data[key].budget,
-              data[key].location,
-              data[key].event_schedules,
-              data[key].suppliers
+              data[key].name,
+              data[key].phone,
+              data[key].job,
+              data[key].price,
+              data[key].has_paid
             )
           );
         }
 
-        setAllEventsData(loadedEvents);
+        setEventSuppliersData(loadedSuppliers);
         setIsLoading(false);
       })
       .catch((err) => {
         setIsLoading(false);
         setError(err);
-        Log.error("AllEventsPage >> getData >> error", err);
+        Log.error("AllEventsSuppliers >> getData >> error", err);
       });
   }, []);
   useEffect(() => {
@@ -68,31 +71,40 @@ const AllEventsSuppliers = (props) => {
     getData()
       .then((res) => res)
       .catch((error) => Log.Error(error));
-  }, [refresh]);
-  const body = (
-    <ScrollView>
-      {allEventsData?.map((previewEvent, index) => {
-        return <EventItem key={index} event={previewEvent} />;
-      })}
-    </ScrollView>
-  );
-  const AllEventsTitle = (
-    <View style={styles.row}>
-      <Text style={styles.mainTitle}>Events</Text>
-      <Entypo
-        name="plus"
-        size={20}
-        onPress={() => props.navigation.navigate("AddEventDetails")}
-      />
-    </View>
-  );
+  }, [eventId, refresh]);
+  const body = () => {
+    return (
+      <ScrollView>
+        {eventSuppliersData?.map((supplier, index) => {
+          return (
+            <SupplierItem key={index} supplier={supplier} eventId={eventId} />
+          );
+        })}
+      </ScrollView>
+    );
+  };
+  const title = () => {
+    return (
+      <View style={styles.row}>
+        <View style={{ paddingBottom: "5%" }}>
+          <Text style={styles.mainTitle}>My Suppliers</Text>
+          <Text style={styles.textTitle}>{eventName}</Text>
+        </View>
+        <Entypo
+          name="plus"
+          size={22}
+          // onPress={() => props.navigation.navigate("AddEventDetails")}
+        />
+      </View>
+    );
+  };
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   return (
     <View style={styles.screen}>
-      {AllEventsTitle}
-      {body}
+      {title()}
+      {body()}
     </View>
   );
 };
@@ -102,24 +114,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "99%",
+    paddingTop: "20%",
   },
   row: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
     marginTop: 30,
-    width: 500,
+    width: 450,
     padding: 15,
   },
   textTitle: {
     fontFamily: "alef-regular",
-    fontSize: 14,
+    fontSize: 18,
     textAlign: "left",
   },
   mainTitle: {
     color: Colors.text_black,
     fontFamily: "alef-bold",
-    fontSize: 18,
+    fontSize: 22,
     fontStyle: "normal",
     fontWeight: "700",
     lineHeight: 25,

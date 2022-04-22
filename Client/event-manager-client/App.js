@@ -29,6 +29,7 @@ import CalendarPage from "./screens/user-profile-screens/CalendarPage";
 import AddEventDetails from "./screens/add-event-screens/AddEventDetails";
 import Colors from "./constants/colors";
 import AllEventsSuppliers from "./screens/event-manager-screens/suppliers/AllEventsSuppliers";
+import SupplierPage from "./screens/event-manager-screens/suppliers/SupplierPage";
 
 enableScreens();
 
@@ -147,11 +148,27 @@ export const HomePageStackScreen = () => {
       <HomePageStack.Screen
         name="AddEventDetails"
         component={AddEventDetails}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
       />
       <HomePageStack.Screen name="AddEventOwners" component={AddEventOwners} />
       <HomePageStack.Screen
         name="AllEventsSuppliers"
         component={AllEventsSuppliers}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
+      />
+      <HomePageStack.Screen
+        name="SupplierPage"
+        component={SupplierPage}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
       />
     </HomePageStack.Navigator>
   );
@@ -173,11 +190,30 @@ export const EventsStackScreen = () => {
       />
       <EventsStack.Screen name="Meeting" component={MeetingPage} />
       <EventsStack.Screen name="Meetings" component={MeetingsPage} />
-      <EventsStack.Screen name="AddEventDetails" component={AddEventDetails} />
+      <EventsStack.Screen
+        name="AddEventDetails"
+        component={AddEventDetails}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
+      />
       <EventsStack.Screen name="AddEventOwners" component={AddEventOwners} />
       <EventsStack.Screen
         name="AllEventsSuppliers"
         component={AllEventsSuppliers}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
+      />
+      <EventsStack.Screen
+        name="SupplierPage"
+        component={SupplierPage}
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
       />
     </EventsStack.Navigator>
   );
