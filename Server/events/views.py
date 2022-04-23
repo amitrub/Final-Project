@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.models import User
+from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -9,7 +10,7 @@ from rest_framework.exceptions import NotFound
 from events import serializers
 from events import models
 from events import permissions
-from events.models import Event, EventSchedule
+from events.models import Event, EventSchedule, DummyEventOwner
 from users.models import EventManager
 from rest_framework.response import Response
 
@@ -83,6 +84,7 @@ class EventViewSet(viewsets.ModelViewSet):
     #         return Response(response, status=status.HTTP_400_BAD_REQUEST)
     #     return response
 
+
 # -------------------DummyEventOwner-------------------
 
 class DummyEventOwnerViewSet(viewsets.ModelViewSet):
@@ -100,7 +102,40 @@ class DummyEventOwnerViewSet(viewsets.ModelViewSet):
         return sub_event_get_queryset(self, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
-        return sub_event_create(self, request, *args, **kwargs)
+        is_many = isinstance(request.data, list)
+        if not is_many:
+            return sub_event_create(self, request, *args, **kwargs)
+        else:
+            event_id = self.kwargs.get("event_pk")
+            try:
+                event = Event.objects.get(pk=event_id)
+            except Event.DoesNotExist:
+                raise NotFound('A event with this id does not exist')
+            serializer = self.get_serializer(data=request.data, many=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(event=event)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def put(self, request, *args, **kwargs):
+        event_id = self.kwargs.get("event_pk")
+        DummyEventOwner.objects.filter(event_id=event_id).delete()
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            raise NotFound('A event with this id does not exist')
+        serializer = self.get_serializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(event=event)
+        list = []
+        for event_owner in request.data:
+            event_owner_new = DummyEventOwner.objects.create(**event_owner, event_id=event_id)
+            list.append(event_owner_new)
+        event.event_owners.set(list)
+        event.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 # -------------------DummySupplier-------------------
 
@@ -112,9 +147,17 @@ class DummySupplierViewSet(viewsets.ModelViewSet):
     )
     authentication_classes = (TokenAuthentication,)
     permission_classes = (
-      #  permissions.UpdateOwnEventSchedule,
+        #  permissions.UpdateOwnEventSchedule,
         IsAuthenticated,
     )
+
+    # def get_queryset(self, *args, **kwargs):
+    #     event_id = self.kwargs.get("event_pk")
+    #     try:
+    #         event = Event.objects.get(pk=event_id)
+    #     except Event.DoesNotExist:
+    #         raise NotFound('A event with this id does not exist')
+    #     return self.queryset.filter(event=event).values('id', 'name', 'phone', 'job', 'price', 'has_paid')
 
     def get_queryset(self, *args, **kwargs):
         return sub_event_get_queryset(self, *args, **kwargs)
@@ -143,13 +186,15 @@ class EventScheduleViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         return sub_event_create(self, request, *args, **kwargs)
 
+
 def sub_event_get_queryset(self, *args, **kwargs):
     event_id = self.kwargs.get("event_pk")
     try:
         event = Event.objects.get(pk=event_id)
     except Event.DoesNotExist:
         raise NotFound('A event with this id does not exist')
-    return self.queryset.filter(event=event)
+    return self.queryset.filter(event_id=event_id)
+
 
 def sub_event_create(self, request, *args, **kwargs):
     event_id = self.kwargs.get("event_pk")
