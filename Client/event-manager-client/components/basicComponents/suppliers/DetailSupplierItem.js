@@ -9,29 +9,28 @@ import {
 import Colors from "../../../constants/colors";
 import Entypo from "react-native-vector-icons/Entypo";
 
-const DetailEventItem = (props) => {
+const DetailSupplierItem = (props) => {
   const onPressProp = props.onPress
     ? props.onPress
-    : () => console.log("DetailEventItem didn't get onPressProp");
+    : () => console.log("DetailSupplierItem didn't get onPressProp");
   const titleProp = props.title;
-  const itemsProp = props.items;
+  const valueProp = props.value;
 
   return (
     <TouchableOpacity style={{ padding: 10 }} onPress={onPressProp}>
       <View style={styles.listItem}>
-        {/*<View style={styles.icons}>*/}
-        {/*  <Entypo name="edit" size={16} />*/}
-        {/*</View>*/}
-        <Text style={{ fontFamily: "alef-regular", fontSize: 14, padding: 2 }}>
+        <Text style={{ fontFamily: "alef-regular", fontSize: 16 }}>
           {titleProp}{" "}
         </Text>
-        <View style={styles.row}>
-          {itemsProp?.map((item, index) => (
-            <View key={index} style={styles.listItemSmall}>
-              <Text style={styles.whiteText}>{item}</Text>
-            </View>
-          ))}
-        </View>
+        <Text
+          style={{
+            fontFamily: "alef-regular",
+            fontSize: 24,
+            fontWeight: "bold",
+          }}
+        >
+          {valueProp}{" "}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -44,9 +43,9 @@ const styles = StyleSheet.create({
   },
   listItem: {
     backgroundColor: Colors.button_gray,
-    borderRadius: 150,
-    height: 63,
-    width: 270,
+    borderRadius: 24,
+    height: 70,
+    width: 300,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -75,4 +74,4 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
 });
-export default DetailEventItem;
+export default DetailSupplierItem;

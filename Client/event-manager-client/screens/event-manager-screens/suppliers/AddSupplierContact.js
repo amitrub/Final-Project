@@ -2,39 +2,41 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import Colors from "react-native/Libraries/NewAppScreen/components/Colors";
 import * as Contacts from "expo-contacts";
-import ContactItem from "../../components/basicComponents/Events/ContactItem";
+import ContactItem from "../../../components/basicComponents/Events/ContactItem";
 import filter from "lodash.filter";
-import Loader from "../../components/basicComponents/others/Loader";
+import Loader from "../../../components/basicComponents/others/Loader";
 import ErrorScreen, {
   ErrorMessages,
-} from "../../components/basicComponents/others/ErrorScreen";
-import ContactEntity from "../../Entities/ContactEntity";
-import TextTitle from "../../components/basicComponents/others/TextTitle";
-import IconButton from "../../components/basicComponents/buttons/IconButton";
-import OwnerEntity from "../../Entities/OwnerEntity";
+} from "../../../components/basicComponents/others/ErrorScreen";
+import ContactEntity from "../../../Entities/ContactEntity";
+import TextTitle from "../../../components/basicComponents/others/TextTitle";
+import IconButton from "../../../components/basicComponents/buttons/IconButton";
+import OwnerEntity from "../../../Entities/OwnerEntity";
 import fetchTimeout from "fetch-timeout";
 import {
   addEventOwner,
   allEvents,
   base_url,
   getEvent,
-} from "../../constants/urls";
+  getOrPostEventSuppliers,
+} from "../../../constants/urls";
 import {
   createOneButtonAlert,
   STATUS_FAILED,
   STATUS_SUCCESS,
-} from "../../constants/errorHandler";
-import Log from "../../constants/logger";
-import UserAuthentication from "../../global/UserAuthentication";
-import { EditEventEntity } from "../../Entities/EventEntity";
+} from "../../../constants/errorHandler";
+import Log from "../../../constants/logger";
+import UserAuthentication from "../../../global/UserAuthentication";
+import { EditEventEntity } from "../../../Entities/EventEntity";
 
-const AddEventOwners = (props) => {
+const AddSupplierContact = (props) => {
   const params = props.route.params;
+  const eventId = params.eventId;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
 
   const [allContacts, setAllContacts] = useState([]);
-  const [owners, setOwners] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
@@ -225,7 +227,7 @@ const AddEventOwners = (props) => {
             createOneButtonAlert(
               "Owners didn't updated successfully!",
               "OK",
-              "Edit owners error!",
+              "Edit suppliers error!",
               () => navigation.pop()
             );
           }
@@ -239,19 +241,72 @@ const AddEventOwners = (props) => {
   }
   const onSaveEvent = useCallback(async () => {
     setIsLoading(true);
-    const newOwners = owners.map(
-      (ownerContact) =>
-        new OwnerEntity(ownerContact.id, ownerContact.name, ownerContact.phone)
-    );
 
-    if (params.editMode) {
-      await onSaveEditEventOwners(newOwners);
-    } else {
-      await onSave(newOwners);
+    if (suppliers.length !== 1) {
+      return createOneButtonAlert(
+        "You can select one contact in each add supplier process",
+        "OK",
+        "Add new supplier",
+        () => setIsLoading(false)
+      );
     }
 
+    const supplierToAdd = suppliers[0];
+    Log.info("AddSupplier >> onSaveEvent");
+    const url = base_url + getOrPostEventSuppliers(eventId);
+
+    await fetchTimeout(
+      url,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+        body: JSON.stringify({
+          name: supplierToAdd.name,
+          phone: supplierToAdd.phone,
+          job: "Choose supplier job",
+          price: 0,
+          has_paid: false,
+        }),
+      },
+      5000,
+      "Timeout"
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          Log.error("AddSupplier >> onSaveEvent >> failed with error: ", data);
+          setSuppliers([]);
+          const message = "data.Error";
+          createOneButtonAlert(message, "OK", "Add supplier contact failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          myContext.setRefresh(!myContext.refresh);
+          createOneButtonAlert(
+            "Contact has been chosen, fill supplier details and save it",
+            "Great!",
+            "Add supplier",
+            () => {
+              navigation.pop();
+              setIsLoading(false);
+              navigation.navigate("SupplierPage", {
+                eventId: eventId,
+                supplierId: data.id,
+              });
+            }
+          );
+        }
+      })
+      .catch((err) => {
+        Log.error("AddSupplier >> onSaveEvent >> failed with error: ", err);
+        setSuppliers([]);
+        setIsLoading(false);
+        setError(err);
+      });
+
     setIsLoading(false);
-  }, [owners, navigation]);
+  }, [suppliers, navigation]);
 
   const renderHeader = () => {
     return (
@@ -288,10 +343,10 @@ const AddEventOwners = (props) => {
   const onSelectOwner = (contact) => {
     if (contact.isOwner) {
       contact.isOwner = false;
-      setOwners(owners.filter((o) => o.id !== contact.id));
+      setSuppliers(suppliers.filter((o) => o.id !== contact.id));
     } else {
       contact.isOwner = true;
-      setOwners([...owners, contact]);
+      setSuppliers([...suppliers, contact]);
     }
   };
 
@@ -300,7 +355,7 @@ const AddEventOwners = (props) => {
 
   return (
     <View style={[styles.screen, { paddingTop: "20%" }]}>
-      <TextTitle text={"Choose event owners"} />
+      <TextTitle text={"Choose contact to be supplier:"} />
       {renderHeader()}
       <View
         style={{
@@ -372,4 +427,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddEventOwners;
+export default AddSupplierContact;
