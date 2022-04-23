@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.models import User
+from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -150,13 +151,16 @@ class DummySupplierViewSet(viewsets.ModelViewSet):
         IsAuthenticated,
     )
 
+    # def get_queryset(self, *args, **kwargs):
+    #     event_id = self.kwargs.get("event_pk")
+    #     try:
+    #         event = Event.objects.get(pk=event_id)
+    #     except Event.DoesNotExist:
+    #         raise NotFound('A event with this id does not exist')
+    #     return self.queryset.filter(event=event).values('id', 'name', 'phone', 'job', 'price', 'has_paid')
+
     def get_queryset(self, *args, **kwargs):
-        event_id = self.kwargs.get("event_pk")
-        try:
-            event = Event.objects.get(pk=event_id)
-        except Event.DoesNotExist:
-            raise NotFound('A event with this id does not exist')
-        return self.queryset.filter(event=event).values('id', 'name', 'phone', 'job', 'price', 'has_paid')
+        return sub_event_get_queryset(self, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         return sub_event_create(self, request, *args, **kwargs)
@@ -189,7 +193,7 @@ def sub_event_get_queryset(self, *args, **kwargs):
         event = Event.objects.get(pk=event_id)
     except Event.DoesNotExist:
         raise NotFound('A event with this id does not exist')
-    return self.queryset.filter(event=event)
+    return self.queryset.filter(event_id=event_id)
 
 
 def sub_event_create(self, request, *args, **kwargs):
