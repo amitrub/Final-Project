@@ -299,7 +299,7 @@ const AddEventOwners = (props) => {
   if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { paddingTop: "20%" }]}>
       <TextTitle text={"Choose event owners"} />
       {renderHeader()}
       <View

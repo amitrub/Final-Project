@@ -30,6 +30,7 @@ import UserAuthentication from "../../../global/UserAuthentication";
 import { base_url, getEvent, getOrPutSupplier } from "../../../constants/urls";
 import {
   createOneButtonAlert,
+  createTwoButtonAlert,
   STATUS_FAILED,
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
@@ -40,6 +41,7 @@ import { EditEventEntity } from "../../../Entities/EventEntity";
 import fetchTimeout from "fetch-timeout";
 import DetailSupplierItem from "../../../components/basicComponents/suppliers/DetailSupplierItem";
 import call from "react-native-phone-call";
+import { TabNavigator } from "../../../App";
 
 const SupplierPage = (props) => {
   const navigation = props.navigation;
@@ -92,7 +94,7 @@ const SupplierPage = (props) => {
               <View style={styles.rowIcon}>
                 <View style={{ paddingLeft: 15 }}>
                   <Entypo
-                    name={"info"}
+                    name={"edit"}
                     size={20}
                     color={Colors.blueBack}
                     onPress={() =>
@@ -113,6 +115,49 @@ const SupplierPage = (props) => {
       .catch((error) => Log.Error(error));
   }, [navigation, refresh]);
 
+  const deleteSupplier = async () => {
+    Log.info(`SupplierPage >> delete supplier >> url: ${url}`);
+    const onPressYes = async () => {
+      setIsLoading(true);
+      await fetch(
+        url,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+          },
+        },
+        { timeout: 2000 }
+      )
+        .then(async (res) => {
+          Log.info("SupplierPage >> delete supplier >> then");
+          // const data = await res.json();
+          createOneButtonAlert(
+            "The supplier deleted successfully",
+            "OK",
+            "Delete suppliers",
+            () => {
+              myContext.setRefresh(!myContext.refresh);
+              navigation.pop();
+              setIsLoading(false);
+            }
+          );
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setError(err);
+          Log.error("SupplierPage >> delete supplier >> error", err);
+        });
+    };
+    createTwoButtonAlert(
+      "Are you sure you want to delete this supplier?",
+      "Yes",
+      "No",
+      "Delete supplier",
+      onPressYes
+    );
+  };
   const cancelModalButton = (closeModalFunc) => {
     return (
       <Pressable
@@ -213,11 +258,7 @@ const SupplierPage = (props) => {
             name={"trash"}
             size={24}
             color={"black"}
-            onPress={() => {
-              createOneButtonAlert(
-                "<< Delete supplier from event >>\nnot implemented"
-              );
-            }}
+            onPress={() => deleteSupplier()}
           />
         </View>
         <Text style={styles.h1}>{supplier.name}</Text>

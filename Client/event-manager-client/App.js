@@ -223,7 +223,11 @@ export const EventsStackScreen = () => {
         component={AddEventDetails}
         options={emptyHeader}
       />
-      <EventsStack.Screen name="AddEventOwners" component={AddEventOwners} />
+      <EventsStack.Screen
+        name="AddEventOwners"
+        component={AddEventOwners}
+        options={emptyHeader}
+      />
       <EventsStack.Screen
         name="AllEventsSuppliers"
         component={AllEventsSuppliers}

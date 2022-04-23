@@ -30,6 +30,7 @@ import UserAuthentication from "../../../global/UserAuthentication";
 import { base_url, getEvent } from "../../../constants/urls";
 import {
   createOneButtonAlert,
+  createTwoButtonAlert,
   STATUS_FAILED,
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
@@ -38,6 +39,7 @@ import DatePickerInput from "../../../components/basicComponents/inputs/DatePick
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
 import fetchTimeout from "fetch-timeout";
+import DetailItem from "../../../components/basicComponents/others/DetailItem";
 
 const EventPage = (props) => {
   const params = props.route.params;
@@ -88,9 +90,9 @@ const EventPage = (props) => {
       headerRight: () => {
         return (
           <Entypo
-            name={"info"}
+            name={"edit"}
             size={20}
-            color={"black"}
+            color={Colors.blueBack}
             onPress={() =>
               createOneButtonAlert(
                 "Tap on any of the event details to edit it and save it when finished",
@@ -125,7 +127,49 @@ const EventPage = (props) => {
       </Pressable>
     );
   };
-
+  const deleteEvent = async () => {
+    Log.info(`EventPage >> delete event >> url: ${url}`);
+    const onPressYes = async () => {
+      setIsLoading(true);
+      await fetch(
+        url,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+          },
+        },
+        { timeout: 2000 }
+      )
+        .then(async (res) => {
+          Log.info("EventPage >> delete event >> then");
+          // const data = await res.json();
+          createOneButtonAlert(
+            "The event deleted successfully",
+            "OK",
+            "Delete event",
+            () => {
+              myContext.setRefresh(!myContext.refresh);
+              navigation.pop();
+              setIsLoading(false);
+            }
+          );
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setError(err);
+          Log.error("EventPage >> delete event >> error", err);
+        });
+    };
+    createTwoButtonAlert(
+      "Are you sure you want to delete this event?",
+      "Yes",
+      "No",
+      "Delete event",
+      onPressYes
+    );
+  };
   const editTitleModal = () => {
     return (
       <Modal
@@ -287,13 +331,23 @@ const EventPage = (props) => {
 
   const titleComponent = () => {
     return (
-      <TouchableOpacity
-        onPress={() => setTitleModalVisible(!titleModalVisible)}
-      >
-        <View style={{ paddingTop: "28%" }}>
-          <Text style={styles.h1}>{event.event_name}</Text>
+      <View style={[{ paddingTop: "28%" }, styles.rowTitle]}>
+        <View style={{ paddingTop: 3 }}>
+          <Entypo
+            name={"trash"}
+            size={24}
+            color={"black"}
+            onPress={() => deleteEvent()}
+          />
         </View>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setTitleModalVisible(!titleModalVisible)}
+        >
+          <View>
+            <Text style={styles.h1}>{event.event_name}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
   const dateComponent = () => {
@@ -307,13 +361,11 @@ const EventPage = (props) => {
   };
   const locationComponent = () => {
     return (
-      <TouchableOpacity
+      <DetailItem
+        title={"location"}
+        value={event.location}
         onPress={() => setLocationModalVisible(!locationModalVisible)}
-      >
-        <View style={styles.listItem}>
-          <Text style={styles.text}>{event.location}</Text>
-        </View>
-      </TouchableOpacity>
+      />
     );
   };
   const ownersComponent = () => {
@@ -333,13 +385,10 @@ const EventPage = (props) => {
   };
   const budgetComponent = () => {
     return (
-      <DetailEventItem
-        key="7"
-        title={"Budget"}
-        items={[event.budget]}
-        onPress={() => {
-          setBudgetModalVisible(!budgetModalVisible);
-        }}
+      <DetailItem
+        title={"budget"}
+        value={`${event.budget} ₪`}
+        onPress={() => setBudgetModalVisible(!budgetModalVisible)}
       />
     );
   };
@@ -355,10 +404,9 @@ const EventPage = (props) => {
   };
   const suppliersComponent = () => {
     return (
-      <DetailEventItem
-        key="6"
-        title={"Suppliers"}
-        items={["DJ", "Photographer"]}
+      <DetailItem
+        title={"click to manage"}
+        value={"Suppliers"}
         onPress={() =>
           navigation.navigate("AllEventsSuppliers", {
             eventId: event.id,
@@ -429,10 +477,10 @@ const EventPage = (props) => {
           {titleComponent()}
           {dateComponent()}
           {locationComponent()}
-          {ownersComponent()}
           {budgetComponent()}
-          {eventScheduleComponent()}
           {suppliersComponent()}
+          {ownersComponent()}
+          {eventScheduleComponent()}
           <View style={{ marginTop: 20 }}>
             <IconButton
               onPress={onSaveEvent}
@@ -546,6 +594,17 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     display: "flex",
+  },
+  rowTitle: {
+    width: 230,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: 0,
+    margin: 0,
+    display: "flex",
+    position: "relative",
+    right: 55,
   },
 });
 

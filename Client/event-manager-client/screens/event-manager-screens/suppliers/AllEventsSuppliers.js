@@ -66,7 +66,7 @@ const AllEventsSuppliers = (props) => {
         setError(err);
         Log.error("AllEventsSuppliers >> getData >> error", err);
       });
-  }, []);
+  }, [refresh]);
   useEffect(() => {
     setIsLoading(true);
     getData()
@@ -144,4 +144,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
 export default AllEventsSuppliers;
