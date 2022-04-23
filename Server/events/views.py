@@ -106,7 +106,6 @@ class DummyEventOwnerViewSet(viewsets.ModelViewSet):
             return sub_event_create(self, request, *args, **kwargs)
         else:
             event_id = self.kwargs.get("event_pk")
-            DummyEventOwner.objects.filter(event_id=event_id).delete()
             try:
                 event = Event.objects.get(pk=event_id)
             except Event.DoesNotExist:
@@ -127,6 +126,12 @@ class DummyEventOwnerViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save(event=event)
+        list = []
+        for event_owner in request.data:
+            event_owner_new = DummyEventOwner.objects.create(**event_owner, event_id=event_id)
+            list.append(event_owner_new)
+        event.event_owners.set(list)
+        event.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -146,7 +151,12 @@ class DummySupplierViewSet(viewsets.ModelViewSet):
     )
 
     def get_queryset(self, *args, **kwargs):
-        return sub_event_get_queryset(self, *args, **kwargs)
+        event_id = self.kwargs.get("event_pk")
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            raise NotFound('A event with this id does not exist')
+        return self.queryset.filter(event=event).values('id', 'name', 'phone', 'job', 'price', 'has_paid')
 
     def create(self, request, *args, **kwargs):
         return sub_event_create(self, request, *args, **kwargs)
