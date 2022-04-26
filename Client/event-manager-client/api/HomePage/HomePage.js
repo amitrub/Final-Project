@@ -70,7 +70,6 @@ export async function postEventManager(myContext) {
     )
       .then(async (res) => {
         const data = await res.json();
-        // console.log(data);
         if (STATUS_FAILED(res.status)) {
           const message = data.Error ? data.Error : "";
           Log.error("GET home page FAILED >> Error: ", message);

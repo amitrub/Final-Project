@@ -1,17 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import * as meetingsActions from "../../store/actions/meetings";
-// import * as PropTypes from "prop-types";
+import { View, Text } from "react-native";
 import MeetingItem from "../basicComponents/MeetingItem";
 import Entypo from "react-native-vector-icons/Entypo";
 import {
   base_url,
   firebaseJson,
-  previewMeetings,
   previewMeetingsCapitlP,
 } from "../../constants/urls";
-import EventEntity from "../../Entities/EventEntity";
 import MeetingEntity from "../../Entities/MeetingEntity";
 import { useNavigation } from "@react-navigation/native";
 import { MeetingsPreviewStyles } from '../../Styles/styles'

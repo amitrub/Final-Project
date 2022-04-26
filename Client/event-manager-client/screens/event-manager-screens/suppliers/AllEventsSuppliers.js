@@ -1,13 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import Colors from "../../../constants/colors";
+import { View, Text, ScrollView } from "react-native";
 import {
-  allEvents,
   base_url,
   getOrPostEventSuppliers,
 } from "../../../constants/urls";
-import EventEntity from "../../../Entities/EventEntity";
-import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../../global/UserAuthentication";
 import Loader from "../../../components/basicComponents/others/Loader";
@@ -17,6 +13,7 @@ import ErrorScreen, {
 import Log from "../../../constants/logger";
 import SupplierEntity from "../../../Entities/SupplierEntity";
 import SupplierItem from "../../../components/basicComponents/suppliers/SupplierItem";
+import { AllEventsSuppliersStyles as styles } from "../../../Styles/styles"
 
 const AllEventsSuppliers = (props) => {
   const params = props.route.params;
@@ -113,36 +110,5 @@ const AllEventsSuppliers = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: "99%",
-    paddingTop: "20%",
-  },
-  row: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    marginTop: 30,
-    width: 450,
-    padding: 15,
-  },
-  textTitle: {
-    fontFamily: "alef-regular",
-    fontSize: 20,
-    textAlign: "left",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 24,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-});
 
 export default AllEventsSuppliers;
