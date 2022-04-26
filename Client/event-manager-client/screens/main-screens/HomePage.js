@@ -10,7 +10,7 @@ import ErrorScreen, {
   ErrorMessages,
 } from "../../components/basicComponents/others/ErrorScreen";
 import { getHomePageData, getIsEventManager } from '../../api/HomePage/HomePage'
-import {HomePageStyles} from "../../Styles/HomePage";
+import {HomePageStyles} from "../../Styles/styles";
 
 const HomePage = () => {
   const myContext = useContext(UserAuthentication);

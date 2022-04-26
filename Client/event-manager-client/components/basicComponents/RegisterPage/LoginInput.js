@@ -34,8 +34,8 @@ const LoginInput = (props) => {
   const [error, setError] = useState(null);
 
   const emptyLoginInputs = () => {
-    setEmail("amitrubin21@gmail.com");
-    setPassword("1234");
+    setEmail("");
+    setPassword("");
   };
   const createTwoButtonAlert = (props, message) =>
     Alert.alert("Woohoo!", message, [

@@ -2,7 +2,7 @@ import {base_url, eventManager, homePage} from "../../constants/urls";
 import {STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import Log from "../../constants/logger";
 
-export async function postEventManager() {
+export async function postEventManager(myContext) {
     await fetch(
       base_url + eventManager(myContext.id),
       {
@@ -45,7 +45,7 @@ export async function postEventManager() {
           console.log("GET is-event-manager FAILED >> Error: ", message);
         } else if (STATUS_SUCCESS(res.status)) {
           if (!data.is_event_manager) {
-            await postEventManager();
+            await postEventManager(myContext);
           } else {
             console.log(
               "GET is-event-manager SUCCESS >> already event-manager"
