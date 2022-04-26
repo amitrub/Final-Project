@@ -1,0 +1,6 @@
+1. find the payment more easily, add has paid button to my supplier page
+2. maybe refactor to 1 stack
+3. remove pop up after login
+4. change the login to new page and navigation
+5. to do login in the main page, if user doesn't exist to register
+6. add support in adding bit approve on payments (pictures)

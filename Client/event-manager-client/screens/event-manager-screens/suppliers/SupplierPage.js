@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import {
-  Alert,
+  Alert, Linking,
   Modal,
   Pressable,
   ScrollView,
@@ -347,6 +347,12 @@ const SupplierPage = (props) => {
           color={Colors.black}
           iconSize={18}
         />
+        <IconButton
+            onPress={onPressBit}
+            icon={"credit"}
+            color={Colors.black}
+            iconSize={16}
+        />
       </View>
     );
   };
@@ -386,6 +392,20 @@ const SupplierPage = (props) => {
         Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
       });
   };
+  const bitUrl = "https://bitpay.co.il/app/";
+  const onPressBit = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    console.log(bitUrl)
+    const supported = await Linking.canOpenURL(bitUrl);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(bitUrl);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${bitUrl}`);
+    }
+  }, [bitUrl]);
   const onSaveSupplier = async () => {
     setIsLoading(true);
     const url = base_url + getOrPutSupplier(event_id, supplierId);
@@ -539,7 +559,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   row: {
-    width: 200,
+    width: "85%",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
