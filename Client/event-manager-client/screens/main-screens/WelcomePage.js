@@ -5,7 +5,8 @@ import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Colors from "../../constants/colors";
 import Log from "../../constants/logger";
 import LoginInput from "../../components/basicComponents/RegisterPage/LoginInput";
-import * as Google from 'expo-google-app-auth'
+import * as Google from 'expo-google-app-auth';
+
 
 const WelcomePage = (props) => {
   Log.info("Welcome Page >> loading");
@@ -18,7 +19,7 @@ const WelcomePage = (props) => {
   const SignIngoogle = () => {
     const config = {
       iosClientId: '281217241179-9vvln5etsdo6k1tq26ajbka5tsqhucr9.apps.googleusercontent.com',
-      androidClientId: 'eb:9c:60:0d:c3:d3:9d:ed:18:6d:b0:28:a9:35:b8:2d:7d:3b:39:33',
+      androidClientId: '281217241179-0l1u9546ujv8qkkd7khflc262cutcl2a.apps.googleusercontent.com',
       scopes:['profile','email']
     };
 
@@ -26,12 +27,12 @@ const WelcomePage = (props) => {
         .logInAsync(config)
         .then((result)=>
         {
-          console.log("helllllo")
+          console.log(result)
           const{type,user} = result;
           if(type==='success'){
             const {email,name,photourl} = user;
             setTimeout(() => props.navigation.navigate("Welcome"), {email,name,photourl},1000)
-            props.navigation.navigate("Register");
+            props.navigation.navigate("Welcome");
           }
           else {
             console.log("error");
