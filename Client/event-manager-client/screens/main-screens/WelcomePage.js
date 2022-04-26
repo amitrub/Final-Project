@@ -11,6 +11,7 @@ import * as Google from 'expo-google-app-auth';
 const WelcomePage = (props) => {
   Log.info("Welcome Page >> loading");
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoginGoogle, setIsLoginGoogle] = useState(false)
 
   const onPressRegister = () => {
     props.navigation.navigate("Register");
@@ -30,8 +31,9 @@ const WelcomePage = (props) => {
           console.log(result)
           const{type,user} = result;
           if(type==='success'){
+            setIsLoginGoogle(!isLoginGoogle);
             const {email,name,photourl} = user;
-            setTimeout(() => props.navigation.navigate("Welcome"), {email,name,photourl},1000)
+            setTimeout(() => props.navigation.navigate("Welcome"), {email,name, photourl},1000)
             props.navigation.navigate("Welcome");
           }
           else {
