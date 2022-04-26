@@ -5,6 +5,7 @@ import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Colors from "../../constants/colors";
 import Log from "../../constants/logger";
 import LoginInput from "../../components/basicComponents/RegisterPage/LoginInput";
+import * as Google from 'expo-google-app-auth'
 
 const WelcomePage = (props) => {
   Log.info("Welcome Page >> loading");
@@ -13,6 +14,34 @@ const WelcomePage = (props) => {
   const onPressRegister = () => {
     props.navigation.navigate("Register");
   };
+
+  const SignIngoogle = () => {
+    const config = {
+      iosClientId: '281217241179-9vvln5etsdo6k1tq26ajbka5tsqhucr9.apps.googleusercontent.com',
+      androidClientId: 'eb:9c:60:0d:c3:d3:9d:ed:18:6d:b0:28:a9:35:b8:2d:7d:3b:39:33',
+      scopes:['profile','email']
+    };
+
+    Google
+        .logInAsync(config)
+        .then((result)=>
+        {
+          console.log("helllllo")
+          const{type,user} = result;
+          if(type==='success'){
+            const {email,name,photourl} = user;
+            setTimeout(() => props.navigation.navigate("Welcome"), {email,name,photourl},1000)
+            props.navigation.navigate("Register");
+          }
+          else {
+            console.log("error");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+  };
+
   const onPressLogin = () => {
     setIsLogin(!isLogin);
   };
@@ -35,12 +64,16 @@ const WelcomePage = (props) => {
               <TitleButton text={"Register"} onPress={onPressRegister} />
               <TitleButton
                 text={"Sign-in with Google"}
-                onPress={onPressRegister}
+                onPress={SignIngoogle}
+              />
+              <TitleButton
+                  text={"Reut"}
+                  onPress={SignIngoogle}
               />
             </View>
           </View>
         ) : (
-          <LoginInput onLogin={onPressLogin} />
+          <LoginInput onLogin={SignIngoogle} />
         )}
       </View>
     </ScrollView>
