@@ -14,6 +14,7 @@ import {
 import EventEntity from "../../Entities/EventEntity";
 import MeetingEntity from "../../Entities/MeetingEntity";
 import { useNavigation } from "@react-navigation/native";
+import { MeetingsPreviewStyles } from '../../Styles/styles'
 
 // MeetingItem.propTypes = { meeting: PropTypes.any };
 const MeetingsPreview = (props) => {
@@ -68,8 +69,8 @@ const MeetingsPreview = (props) => {
   );
 
   const previewTitle = (
-    <View style={styles.row}>
-      <Text style={styles.textTitle}>Today's meetings</Text>
+    <View style={MeetingsPreviewStyles.row}>
+      <Text style={MeetingsPreviewStyles.textTitle}>Today's meetings</Text>
       <Entypo
         name="dots-three-horizontal"
         size={22}
@@ -79,32 +80,11 @@ const MeetingsPreview = (props) => {
   );
 
   return (
-    <View style={styles.screen}>
+    <View style={MeetingsPreviewStyles.screen}>
       {previewTitle}
       {body}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  row: {
-    width: 300,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-  },
-  textTitle: {
-    fontFamily: "alef-regular",
-    fontSize: 14,
-    textAlign: "left",
-  },
-});
 
 export default MeetingsPreview;

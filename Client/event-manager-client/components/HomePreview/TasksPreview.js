@@ -4,13 +4,14 @@ import Colors from "../../constants/colors";
 import Entypo from "react-native-vector-icons/Entypo";
 import MeetingItem from "../basicComponents/MeetingItem";
 import { useNavigation } from "@react-navigation/native";
+import {TasksPreviewStyles} from "../../Styles/styles";
 
-const TasksPreview = (props) => {
+const TasksPreview = () => {
   const navigation = useNavigation();
 
   const previewTitle = (
-    <View style={styles.row}>
-      <Text style={styles.textTitle}>Today's tasks</Text>
+    <View style={TasksPreviewStyles.row}>
+      <Text style={TasksPreviewStyles.textTitle}>Today's tasks</Text>
       <Entypo
         name="dots-three-horizontal"
         size={22}
@@ -25,27 +26,11 @@ const TasksPreview = (props) => {
   );
 
   return (
-    <View style={styles.screen}>
+    <View style={TasksPreviewStyles.screen}>
       {previewTitle}
       {body}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  row: {
-    width: 300,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-  },
-});
 
 export default TasksPreview;
