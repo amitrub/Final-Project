@@ -2,22 +2,16 @@ import React, { useCallback } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   ScrollView,
   TextInput,
   Button,
 } from "react-native";
 import Log from "../../constants/logger";
-import Colors from "../../constants/colors";
 import RegisterUser from "../../Entities/Users/RegisterUser";
 import Address from "../../Entities/Users/Address";
-import { base_url, register } from "../../constants/urls";
-import {
-  createOneButtonAlert,
-  STATUS_FAILED,
-  STATUS_SUCCESS,
-} from "../../constants/errorHandler";
+import {RegisterPageStyles} from "../../Styles/styles";
+import {registerUserRequest} from "../../api/RegisterPage/RegisterPageApi";
 
 const RegisterPage = (props) => {
   Log.info("Register Page >> loading");
@@ -48,89 +42,61 @@ const RegisterPage = (props) => {
       new Address(country, city, street, number)
     );
     Log.info("onPressRegister >> POST Register");
-
-    await fetch(
-      base_url + register,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      },
-      { timeout: 2000 }
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        if (STATUS_FAILED(res.status)) {
-          const message = data.Error ? data.Error : "";
-          createOneButtonAlert(message, "OK", "Registration Failed");
-        } else if (STATUS_SUCCESS(res.status)) {
-          const message = "You have successfully registered!\nplease LOGIN";
-          createOneButtonAlert(message, "OK", "Registration Succeeded", () =>
-            props.navigation.navigate("Welcome")
-          );
-          emptyRegisterInputs();
-        }
-      })
-      .catch((error) => {
-        createOneButtonAlert("Server is soooo slow, you should check it...");
-        Log.error("onPressRegister error", error);
-      });
+    registerUserRequest(user, emptyRegisterInputs)
   }, [email, password, fullName, phone, city, country, number, street]);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={RegisterPageStyles.screen}>
       <ScrollView>
         <View>
           <View style={{ paddingTop: "15%" }}>
-            <Text style={styles.mainTitle}>SIGN UP</Text>
+            <Text style={RegisterPageStyles.mainTitle}>SIGN UP</Text>
           </View>
           <SafeAreaView>
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setEmail}
               value={email}
               placeholder={"Email address"}
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setFullName}
               value={fullName}
               placeholder={"Full Name"}
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setPassword}
               value={password}
               placeholder="password"
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setPhone}
               value={phone}
               placeholder={"Phone Number"}
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setCountry}
               value={country}
               placeholder={"Country"}
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setCity}
               value={city}
               placeholder={"City"}
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setStreet}
               value={street}
               placeholder={"Street"}
             />
             <TextInput
-              style={styles.input}
+              style={RegisterPageStyles.input}
               onChangeText={setNumber}
               value={number.toString()}
               placeholder="number"
@@ -149,30 +115,5 @@ const RegisterPage = (props) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 18,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    padding: 10,
-    width: 250,
-    backgroundColor: Colors.background_gray,
-    borderBottomColor: "#000000",
-    borderBottomWidth: 1,
-  },
-});
 
 export default RegisterPage;
