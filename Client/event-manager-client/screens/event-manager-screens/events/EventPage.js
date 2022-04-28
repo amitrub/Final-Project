@@ -12,7 +12,6 @@ import {
   Modal,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -30,9 +29,6 @@ import UserAuthentication from "../../../global/UserAuthentication";
 import { base_url, getEvent } from "../../../constants/urls";
 import {
   createOneButtonAlert,
-  createTwoButtonAlert,
-  STATUS_FAILED,
-  STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
 import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
@@ -40,6 +36,8 @@ import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
 import fetchTimeout from "fetch-timeout";
 import DetailItem from "../../../components/basicComponents/others/DetailItem";
+import { EventPageStyles as styles } from '../../../Styles/styles'
+import {deleteEventRequest, editEventRequest, fetchEvent} from "../../../api/EventPage/EventsPageApi";
 
 const EventPage = (props) => {
   const params = props.route.params;
@@ -64,6 +62,7 @@ const EventPage = (props) => {
   const [editBudget, setEditBudget] = useState(0);
 
   const getData = useCallback(async () => {
+      // await fetchEvent(myContext, setEvent, setIsLoading, setError)
     await fetch(
       url,
       {
@@ -127,49 +126,7 @@ const EventPage = (props) => {
       </Pressable>
     );
   };
-  const deleteEvent = async () => {
-    Log.info(`EventPage >> delete event >> url: ${url}`);
-    const onPressYes = async () => {
-      setIsLoading(true);
-      await fetch(
-        url,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${myContext.token}`,
-          },
-        },
-        { timeout: 2000 }
-      )
-        .then(async (res) => {
-          Log.info("EventPage >> delete event >> then");
-          // const data = await res.json();
-          createOneButtonAlert(
-            "The event deleted successfully",
-            "OK",
-            "Delete event",
-            () => {
-              myContext.setRefresh(!myContext.refresh);
-              navigation.pop();
-              setIsLoading(false);
-            }
-          );
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          setError(err);
-          Log.error("EventPage >> delete event >> error", err);
-        });
-    };
-    createTwoButtonAlert(
-      "Are you sure you want to delete this event?",
-      "Yes",
-      "No",
-      "Delete event",
-      onPressYes
-    );
-  };
+
   const editTitleModal = () => {
     return (
       <Modal
@@ -337,7 +294,7 @@ const EventPage = (props) => {
             name={"trash"}
             size={24}
             color={"black"}
-            onPress={() => deleteEvent()}
+            onPress={() => deleteEventRequest(event_id, myContext, setIsLoading, setError, navigation)}
           />
         </View>
         <TouchableOpacity
@@ -428,39 +385,7 @@ const EventPage = (props) => {
       event.budget,
       event.location
     );
-    const urlEditEvent = base_url + getEvent(event.id);
-    await fetchTimeout(
-      urlEditEvent,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
-        },
-        body: JSON.stringify(editEvent),
-      },
-      5000,
-      "Timeout"
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        if (STATUS_FAILED(res.status)) {
-          const message = "data.Error";
-          createOneButtonAlert(message, "OK", "EDIT event failed");
-        } else if (STATUS_SUCCESS(res.status)) {
-          // myContext.setRefresh(!myContext.refresh);
-          const message = "event updated!";
-          createOneButtonAlert(message, "OK", "", () => {
-            myContext.setRefresh(!myContext.refresh);
-            navigation.navigate("HomePage");
-          });
-        }
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
-      });
+    editEventRequest(editEvent, event.id, myContext, setIsLoading, setError, navigation)
   };
 
   if (isLoading) return <Loader />;
@@ -494,118 +419,5 @@ const EventPage = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 30,
-    fontStyle: "normal",
-    fontWeight: "400",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  listItem: {
-    backgroundColor: Colors.button_gray,
-    borderRadius: 150,
-    height: 40,
-    width: 150,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  text: {
-    fontFamily: "alef-regular",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  h1: {
-    position: "relative",
-    padding: 0,
-    margin: 0,
-    fontFamily: "alef-bold",
-    fontWeight: "400",
-    fontSize: 30,
-    color: Colors.text_black,
-    textAlign: "center",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonCancel: {
-    backgroundColor: Colors.dark_gray,
-  },
-  buttonUpdate: {
-    backgroundColor: Colors.darkseagreen,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontSize: 20,
-  },
-  input: {
-    fontFamily: "alef-regular",
-    fontSize: 14,
-    height: 40,
-    margin: 12,
-    padding: 10,
-    width: 250,
-    backgroundColor: Colors.white,
-    borderBottomColor: "#000000",
-    borderBottomWidth: 1,
-  },
-  row: {
-    width: 150,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-  },
-  rowTitle: {
-    width: 230,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-    position: "relative",
-    right: 55,
-  },
-});
 
 export default EventPage;

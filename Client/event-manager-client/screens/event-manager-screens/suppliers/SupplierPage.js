@@ -8,18 +8,14 @@ import React, {
   useState,
 } from "react";
 import {
-  Alert,
+  Alert, Linking,
   Modal,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
-import DetailEventItem from "../../../components/basicComponents/Events/DetailEventItem";
-import DateTitle from "../../../components/basicComponents/others/DateTitle";
 import Entypo from "react-native-vector-icons/Entypo";
 import Loader from "../../../components/basicComponents/others/Loader";
 import ErrorScreen, {
@@ -27,7 +23,7 @@ import ErrorScreen, {
 } from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
-import { base_url, getEvent, getOrPutSupplier } from "../../../constants/urls";
+import { base_url, getOrPutSupplier } from "../../../constants/urls";
 import {
   createOneButtonAlert,
   createTwoButtonAlert,
@@ -35,13 +31,11 @@ import {
   STATUS_SUCCESS,
 } from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
-import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import { EditEventEntity } from "../../../Entities/EventEntity";
 import fetchTimeout from "fetch-timeout";
 import DetailSupplierItem from "../../../components/basicComponents/suppliers/DetailSupplierItem";
 import call from "react-native-phone-call";
-import { TabNavigator } from "../../../App";
+import { SupplierPageStyles as styles } from '../../../Styles/styles'
 
 const SupplierPage = (props) => {
   const navigation = props.navigation;
@@ -74,7 +68,6 @@ const SupplierPage = (props) => {
     )
       .then(async (res) => {
         const data = await res.json();
-        console.log(data);
         setSupplier(data);
       })
       .catch((err) => {
@@ -347,6 +340,12 @@ const SupplierPage = (props) => {
           color={Colors.black}
           iconSize={18}
         />
+        <IconButton
+            onPress={onPressBit}
+            icon={"credit"}
+            color={Colors.black}
+            iconSize={16}
+        />
       </View>
     );
   };
@@ -386,6 +385,20 @@ const SupplierPage = (props) => {
         Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
       });
   };
+  const bitUrl = "https://bitpay.co.il/app/";
+  const onPressBit = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    console.log(bitUrl)
+    const supported = await Linking.canOpenURL(bitUrl);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(bitUrl);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${bitUrl}`);
+    }
+  }, [bitUrl]);
   const onSaveSupplier = async () => {
     setIsLoading(true);
     const url = base_url + getOrPutSupplier(event_id, supplierId);
@@ -443,128 +456,5 @@ const SupplierPage = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  screenPadding: {
-    paddingTop: "35%",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 30,
-    fontStyle: "normal",
-    fontWeight: "400",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  listItem: {
-    backgroundColor: Colors.button_gray,
-    borderRadius: 150,
-    height: 40,
-    width: 150,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  text: {
-    fontFamily: "alef-regular",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  h1: {
-    position: "relative",
-    padding: 0,
-    margin: 0,
-    fontFamily: "alef-bold",
-    fontWeight: "400",
-    fontSize: 32,
-    color: Colors.text_black,
-    textAlign: "center",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonCancel: {
-    backgroundColor: Colors.dark_gray,
-  },
-  buttonUpdate: {
-    backgroundColor: Colors.darkseagreen,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontSize: 20,
-  },
-  input: {
-    fontFamily: "alef-regular",
-    fontSize: 14,
-    height: 40,
-    margin: 12,
-    padding: 10,
-    width: 250,
-    backgroundColor: Colors.white,
-    borderBottomColor: "#000000",
-    borderBottomWidth: 1,
-  },
-  row: {
-    width: 200,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-  },
-  rowTitle: {
-    width: 320,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-  },
-  rowIcon: {
-    // width: 150,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-  },
-});
 
 export default SupplierPage;

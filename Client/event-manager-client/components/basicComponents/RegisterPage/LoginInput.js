@@ -32,10 +32,11 @@ const LoginInput = (props) => {
   const [password, setPassword] = React.useState("1234");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [googleSubmiting,setGoogleSubmitting] = useState(false);
 
   const emptyLoginInputs = () => {
-    setEmail("amitrubin21@gmail.com");
-    setPassword("1234");
+    setEmail("");
+    setPassword("");
   };
   const createTwoButtonAlert = (props, message) =>
     Alert.alert("Woohoo!", message, [
@@ -78,7 +79,6 @@ const LoginInput = (props) => {
         const data = await res.json();
         if (STATUS_FAILED(res.status)) {
           const message = data.Error ? data.Error : "";
-          // console.log(data);
           createOneButtonAlert(message, "OK", "Login failed");
         } else if (STATUS_SUCCESS(res.status)) {
           const message =
