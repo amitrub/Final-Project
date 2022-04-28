@@ -1,8 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import Colors from "../../../constants/colors";
-import { allEvents, base_url } from "../../../constants/urls";
-import EventEntity from "../../../Entities/EventEntity";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, ScrollView } from "react-native";
 import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../../global/UserAuthentication";
@@ -11,63 +8,23 @@ import ErrorScreen, {
   ErrorMessages,
 } from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
+import { AllEventsPageStyles as styles } from '../../../Styles/styles'
+import {fetchAllEvents} from "../../../api/AllEventsPage/AllEventsPageApi";
 
 const AllEventsPage = (props) => {
-  // const params = props.route.params;
   const myContext = useContext(UserAuthentication);
   const refresh = myContext.refresh;
   const [allEventsData, setAllEventsData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const url = base_url + allEvents;
 
-  const getData = useCallback(async () => {
-    await fetch(
-      url,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
-        },
-      },
-      { timeout: 2000 }
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        const loadedEvents = [];
-        for (const key in data) {
-          loadedEvents.push(
-            new EventEntity(
-              data[key].id,
-              data[key].event_manager,
-              data[key].type,
-              data[key].event_owners,
-              data[key].event_name,
-              data[key].date,
-              data[key].budget,
-              data[key].location,
-              data[key].event_schedules,
-              data[key].suppliers
-            )
-          );
-        }
-
-        setAllEventsData(loadedEvents);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        Log.error("AllEventsPage >> getData >> error", err);
-      });
-  }, []);
   useEffect(() => {
     setIsLoading(true);
-    getData()
+    fetchAllEvents(myContext, setAllEventsData, setIsLoading, setError)
       .then((res) => res)
       .catch((error) => Log.Error(error));
   }, [refresh]);
+
   const body = (
     <ScrollView>
       {allEventsData?.map((previewEvent, index) => {
@@ -96,34 +53,4 @@ const AllEventsPage = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: "99%",
-    paddingTop: "15%",
-  },
-  row: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    marginTop: 30,
-    width: 500,
-    padding: 25,
-  },
-  textTitle: {
-    fontFamily: "alef-regular",
-    fontSize: 14,
-    textAlign: "left",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 24,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-});
 export default AllEventsPage;

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { FlatList, StyleSheet, TextInput, View } from "react-native";
+import { FlatList, TextInput, View } from "react-native";
 import Colors from "react-native/Libraries/NewAppScreen/components/Colors";
 import * as Contacts from "expo-contacts";
 import ContactItem from "../../../components/basicComponents/Events/ContactItem";
@@ -11,7 +11,6 @@ import ErrorScreen, {
 import ContactEntity from "../../../Entities/ContactEntity";
 import TextTitle from "../../../components/basicComponents/others/TextTitle";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import OwnerEntity from "../../../Entities/OwnerEntity";
 import fetchTimeout from "fetch-timeout";
 import {
   addEventOwner,
@@ -28,6 +27,7 @@ import {
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
 import { EditEventEntity } from "../../../Entities/EventEntity";
+import { AddSupplierContactStyles as styles } from "../../../Styles/styles"
 
 const AddSupplierContact = (props) => {
   const params = props.route.params;
@@ -153,10 +153,6 @@ const AddSupplierContact = (props) => {
     const urlEditEvent = base_url + getEvent(event.id);
     const urlEditOwnerEvent = base_url + addEventOwner(event.id);
     async function addNewOwnerRequest(owner) {
-      console.log(urlEditOwnerEvent);
-      console.log(owner.name);
-      console.log(owner.phone);
-
       await fetchTimeout(
         urlEditOwnerEvent,
         {
@@ -363,7 +359,6 @@ const AddSupplierContact = (props) => {
         }}
       >
         <FlatList
-          // ListHeaderComponent={renderHeader}
           data={allContacts}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => (
@@ -382,49 +377,5 @@ const AddSupplierContact = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 18,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    width: 250,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f8f8",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 20,
-    color: "#101010",
-    marginTop: 60,
-    fontWeight: "700",
-  },
-  listItem: {
-    marginTop: 10,
-    padding: 20,
-    alignItems: "center",
-    backgroundColor: "#fff",
-    width: "100%",
-  },
-  listItemText: {
-    fontSize: 18,
-  },
-});
 
 export default AddSupplierContact;

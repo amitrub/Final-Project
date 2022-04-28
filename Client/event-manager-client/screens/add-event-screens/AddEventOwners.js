@@ -27,6 +27,7 @@ import {
 import Log from "../../constants/logger";
 import UserAuthentication from "../../global/UserAuthentication";
 import { EditEventEntity } from "../../Entities/EventEntity";
+import { AddEventOwnersStyles as styles } from '../../Styles/styles'
 
 const AddEventOwners = (props) => {
   const params = props.route.params;
@@ -151,10 +152,6 @@ const AddEventOwners = (props) => {
     const urlEditEvent = base_url + getEvent(event.id);
     const urlEditOwnerEvent = base_url + addEventOwner(event.id);
     async function addNewOwnerRequest(owner) {
-      console.log(urlEditOwnerEvent);
-      console.log(owner.name);
-      console.log(owner.phone);
-
       await fetchTimeout(
         urlEditOwnerEvent,
         {
@@ -308,7 +305,6 @@ const AddEventOwners = (props) => {
         }}
       >
         <FlatList
-          // ListHeaderComponent={renderHeader}
           data={allContacts}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => (
@@ -327,49 +323,5 @@ const AddEventOwners = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 18,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    width: 250,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f8f8",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 20,
-    color: "#101010",
-    marginTop: 60,
-    fontWeight: "700",
-  },
-  listItem: {
-    marginTop: 10,
-    padding: 20,
-    alignItems: "center",
-    backgroundColor: "#fff",
-    width: "100%",
-  },
-  listItemText: {
-    fontSize: 18,
-  },
-});
 
 export default AddEventOwners;
