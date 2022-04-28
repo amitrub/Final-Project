@@ -28,6 +28,7 @@ import Log from "../../constants/logger";
 import UserAuthentication from "../../global/UserAuthentication";
 import { EditEventEntity } from "../../Entities/EventEntity";
 import { AddEventOwnersStyles as styles } from '../../Styles/styles'
+import {fetchContacts} from "../../api/Contacts/ContactsApi";
 
 const AddEventOwners = (props) => {
   const params = props.route.params;
@@ -42,60 +43,7 @@ const AddEventOwners = (props) => {
   const [fullData, setFullData] = useState([]);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    Contacts.requestPermissionsAsync()
-      .then((res) => {
-        const { status } = res;
-        if (status === "granted") {
-          Contacts.getContactsAsync({
-            // fields: [Contacts.Fields.Emails],
-          })
-            .then((res) => {
-              const { data } = res;
-              const contacts = data.map((c) => {
-                const name = c.name
-                  ? c.name
-                  : c.firstName
-                  ? c.firstName
-                  : "no name";
-                const phone = c.phoneNumbers ? c.phoneNumbers[0].number : "";
-                return new ContactEntity(c.id, name, phone);
-              });
-              if (data.length > 0) {
-                setFullData(contacts);
-              }
-              setAllContacts(contacts);
-
-              // debugger;
-              // const paramsOwners = params.event.event_owners;
-              // if (paramsOwners && paramsOwners.length > 0) {
-              //   let contactOwners = paramsOwners.map(
-              //     (po) => new ContactEntity(po.id, po.name, po.phone, true)
-              //   );
-              //   setOwners(contactOwners);
-              //   const ownersIds = contactOwners.map((o) => o.id);
-              //   let updatedContactOwners = allContacts.map((c) => {
-              //     if (ownersIds.includes(c.id)) {
-              //       return new ContactEntity(c.id, c.name, c.phone, true);
-              //     } else {
-              //       return c;
-              //     }
-              //   });
-              //   setAllContacts(updatedContactOwners);
-              // }
-              setIsLoading(false);
-            })
-            .catch((err) => {
-              setIsLoading(false);
-              setError(err);
-            });
-        }
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-      });
+      fetchContacts(setFullData, setAllContacts, setIsLoading, setError)
   }, []);
 
   async function onSave(newOwners) {
