@@ -68,7 +68,11 @@ export const WelcomeStackScreen = () => {
           headerShown: false,
         }}
       />
-      <WelcomeStack.Screen name="Register" component={RegisterPage} />
+      <WelcomeStack.Screen
+        name="Register"
+        component={RegisterPage}
+        options={emptyHeader}
+      />
       <WelcomeStack.Screen
         name="TabNavigator"
         component={TabNavigator}

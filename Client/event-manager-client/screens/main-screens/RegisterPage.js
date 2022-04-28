@@ -10,8 +10,9 @@ import {
 import Log from "../../constants/logger";
 import RegisterUser from "../../Entities/Users/RegisterUser";
 import Address from "../../Entities/Users/Address";
-import {RegisterPageStyles} from "../../Styles/styles";
-import {registerUserRequest} from "../../api/RegisterPage/RegisterPageApi";
+import { RegisterPageStyles } from "../../Styles/styles";
+import { registerUserRequest } from "../../api/RegisterPage/RegisterPageApi";
+import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 
 const RegisterPage = (props) => {
   Log.info("Register Page >> loading");
@@ -42,17 +43,14 @@ const RegisterPage = (props) => {
       new Address(country, city, street, number)
     );
     Log.info("onPressRegister >> POST Register");
-    registerUserRequest(user, emptyRegisterInputs)
+    await registerUserRequest(user, emptyRegisterInputs);
   }, [email, password, fullName, phone, city, country, number, street]);
 
   return (
     <SafeAreaView style={RegisterPageStyles.screen}>
       <ScrollView>
         <View>
-          <View style={{ paddingTop: "15%" }}>
-            <Text style={RegisterPageStyles.mainTitle}>SIGN UP</Text>
-          </View>
-          <SafeAreaView>
+          <View style={{ paddingTop: 60, paddingBottom: 30 }}>
             <TextInput
               style={RegisterPageStyles.input}
               onChangeText={setEmail}
@@ -102,14 +100,9 @@ const RegisterPage = (props) => {
               placeholder="number"
               keyboardType="numeric"
             />
-          </SafeAreaView>
+          </View>
 
-          <Button
-            onPress={onPressRegister}
-            title="Register"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-          />
+          <TitleButton text={"Sign Up"} onPress={onPressRegister} />
         </View>
       </ScrollView>
     </SafeAreaView>
