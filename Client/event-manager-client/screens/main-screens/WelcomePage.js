@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import { View, Text, ScrollView } from "react-native";
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
@@ -8,13 +8,19 @@ import { WelcomePageStyles } from "../../Styles/styles";
 // import * as Google from 'expo-google-app-auth';
 import * as Google from 'expo-google-app-auth';
 import axios from "axios";
+import UserAuthentication from "../../global/UserAuthentication";
+import {useNavigation} from "@react-navigation/native";
 
 const WelcomePage = (props) => {
   Log.info("Welcome Page >> loading");
   const [isLogin, setIsLogin] = useState(false);
-
+  const myContext = useContext(UserAuthentication);
   const onPressRegister = () => {
     props.navigation.navigate("Register");
+  };
+
+  const CalenderGoogle = () => {
+    props.navigation.navigate("Calender");
   };
 
   const onPressLogin = () => {
@@ -27,6 +33,7 @@ const WelcomePage = (props) => {
     //   androidClientId: '281217241179-0l1u9546ujv8qkkd7khflc262cutcl2a.apps.googleusercontent.com',
     //   scopes: ['profile', 'email', 'password']
     // };
+
     const config = {
       iosClientId: '778478932854-ikdla5g4ui7m5l4kldpnoi5s41h4vsab.apps.googleusercontent.com',
       androidClientId: '778478932854-87k01g95uoenf62miqepo97nmv5d9au6.apps.googleusercontent.com',
@@ -58,6 +65,9 @@ const WelcomePage = (props) => {
       headers: {Authorization: `Bearer ${accessToken}`},
     }).then(async (res) =>{
       const data = await res.json();
+      myContext.setIsGoogle(true);
+      myContext.setAccessToken(accessToken);
+      myContext.setEmail(user.email)
       console.log(data)
     });
     // if (type === 'success') {
@@ -111,6 +121,10 @@ const WelcomePage = (props) => {
               <TitleButton
                   text={"Sign-in with Google"}
                   onPress={SignInGoogle}
+              />
+              <TitleButton
+                  text={"Google Calender"}
+                  onPress={CalenderGoogle}
               />
             </View>
           </View>

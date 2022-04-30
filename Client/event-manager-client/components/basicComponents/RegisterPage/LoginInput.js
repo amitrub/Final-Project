@@ -32,7 +32,6 @@ const LoginInput = (props) => {
   const [password, setPassword] = React.useState("1234");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [googleSubmiting,setGoogleSubmitting] = useState(false);
 
   const emptyLoginInputs = () => {
     setEmail("");

@@ -69,6 +69,7 @@ export const WelcomeStackScreen = () => {
         }}
       />
       <WelcomeStack.Screen name="Register" component={RegisterPage} />
+      <WelcomeStack.Screen name="Calender" component={CalendarStackScreen} />
       <WelcomeStack.Screen
         name="TabNavigator"
         component={TabNavigator}
@@ -273,6 +274,9 @@ export default function App() {
   const [token, setToken] = useState("");
   const [name, setName] = useState("guest");
   const [refresh, setRefresh] = useState(true);
+  const [isGoogle, setIsGoogle] = useState(false);
+  const [accessToken,setAccessToken] = useState("");
+  const [email,setEmail] = useState("");
   const userAuth = {
     id: id,
     token: token,
@@ -282,6 +286,12 @@ export default function App() {
     setToken: setToken,
     setName: setName,
     setRefresh: setRefresh,
+    setAccessToken : setAccessToken,
+    accessToken: accessToken,
+    setIsGoogle: setIsGoogle,
+    isGoogle : isGoogle,
+    email:email,
+    setEmail:setEmail
   };
   if (!dataLoaded) {
     console.log("Uploading data...");
