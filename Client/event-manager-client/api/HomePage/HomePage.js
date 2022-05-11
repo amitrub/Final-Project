@@ -1,17 +1,22 @@
-import {base_url, eventManager, homePage} from "../../constants/urls";
+import {base_url, eventManager, getEvent, homePage} from "../../constants/urls";
 import {STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
-import Log from "../../constants/logger";
+import Log, {logApiRequest} from "../../constants/logger";
+
 
 export async function postEventManager(myContext) {
-    await fetch(
-      base_url + eventManager(myContext.id),
-      {
+    let functionName = "postEventManager";
+    let url = base_url + eventManager(myContext.id);
+    let request = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
         },
-      },
+    }
+    logApiRequest(functionName, url, request)
+    await fetch(
+      url,
+      request,
       { timeout: 2000 }
     )
       .then(async (res) => {
@@ -27,15 +32,19 @@ export async function postEventManager(myContext) {
   }
 
   export async function getIsEventManager(myContext) {
-    await fetch(
-      base_url + eventManager(myContext.id),
-      {
+    let functionName = "getIsEventManager";
+    let url = base_url + eventManager(myContext.id);
+    let request = {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
         },
-      },
+    }
+    logApiRequest(functionName, url, request)
+    await fetch(
+      url,
+      request,
       { timeout: 2000 }
     )
       .then(async (res) => {
@@ -57,15 +66,19 @@ export async function postEventManager(myContext) {
   }
 
   export async function getHomePageData(myContext, setEventsPreview, setIsLoading) {
+    let functionName = "getHomePageData";
+    let url = base_url + homePage(myContext.id);
+    let request = {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${myContext.token}`,
+          },
+      }
+    logApiRequest(functionName, url, request)
     await fetch(
-      base_url + homePage(myContext.id),
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
-        },
-      },
+      url,
+      request,
       { timeout: 2000 }
     )
       .then(async (res) => {
