@@ -1,17 +1,22 @@
-import {base_url, register} from "../../constants/urls";
+import {base_url, eventManager, register} from "../../constants/urls";
 import {createOneButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
-import Log from "../../constants/logger";
+import Log, {logApiRequest} from "../../constants/logger";
+
 
 export async function registerUserRequest (user, emptyRegisterInputs) {
-    await fetch(
-      base_url + register,
-      {
+    let functionName = "registerUserRequest";
+    let url = base_url + register;
+    let request = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(user),
-      },
+    }
+    logApiRequest(functionName, url, request)
+    await fetch(
+      url,
+      request,
       { timeout: 2000 }
     )
       .then(async (res) => {

@@ -1,18 +1,21 @@
 import EventEntity from "../../Entities/EventEntity";
-import Log from "../../constants/logger";
-import {allEvents, base_url} from "../../constants/urls";
+import Log, {logApiRequest} from "../../constants/logger";
+import {allEvents, base_url, getEvent} from "../../constants/urls";
 
 export async function fetchAllEvents (myContext, setAllEventsData, setIsLoading, setError) {
-    const url = base_url + allEvents;
-    await fetch(
-      url,
-      {
+    let functionName = "fetchAllEvents";
+    let url = base_url + allEvents;
+    let request = {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
         },
-      },
+    }
+    logApiRequest(functionName, url, request);
+    await fetch(
+      url,
+      request,
       { timeout: 2000 }
     )
       .then(async (res) => {
