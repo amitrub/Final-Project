@@ -12,7 +12,6 @@ import ContactEntity from "../../Entities/ContactEntity";
 import TextTitle from "../../components/basicComponents/others/TextTitle";
 import IconButton from "../../components/basicComponents/buttons/IconButton";
 import OwnerEntity from "../../Entities/OwnerEntity";
-import fetchTimeout from "fetch-timeout";
 import {
   addEventOwner,
   allEvents,
@@ -104,7 +103,7 @@ const AddEventOwners = (props) => {
     event.event_owners = newOwners;
     const url = base_url + allEvents;
 
-    await fetchTimeout(
+    await fetch(
       url,
       {
         method: "POST",
@@ -114,8 +113,7 @@ const AddEventOwners = (props) => {
         },
         body: JSON.stringify(event),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();
@@ -152,7 +150,7 @@ const AddEventOwners = (props) => {
     const urlEditEvent = base_url + getEvent(event.id);
     const urlEditOwnerEvent = base_url + addEventOwner(event.id);
     async function addNewOwnerRequest(owner) {
-      await fetchTimeout(
+      await fetch(
         urlEditOwnerEvent,
         {
           method: "POST",
@@ -165,8 +163,7 @@ const AddEventOwners = (props) => {
             phone: owner.phone,
           }),
         },
-        5000,
-        "Timeout"
+          { timeout: 5000 }
       )
         .then(async (res) => {
           const data = await res.json();
@@ -186,7 +183,7 @@ const AddEventOwners = (props) => {
         });
     }
 
-    await fetchTimeout(
+    await fetch(
       urlEditEvent,
       {
         method: "PATCH",
@@ -196,8 +193,7 @@ const AddEventOwners = (props) => {
         },
         body: JSON.stringify(editEvent),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();

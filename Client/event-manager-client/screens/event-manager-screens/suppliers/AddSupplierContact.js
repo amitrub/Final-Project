@@ -11,7 +11,6 @@ import ErrorScreen, {
 import ContactEntity from "../../../Entities/ContactEntity";
 import TextTitle from "../../../components/basicComponents/others/TextTitle";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import fetchTimeout from "fetch-timeout";
 import {
   addEventOwner,
   allEvents,
@@ -105,7 +104,7 @@ const AddSupplierContact = (props) => {
     event.event_owners = newOwners;
     const url = base_url + allEvents;
 
-    await fetchTimeout(
+    await fetch(
       url,
       {
         method: "POST",
@@ -115,8 +114,7 @@ const AddSupplierContact = (props) => {
         },
         body: JSON.stringify(event),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();
@@ -153,7 +151,7 @@ const AddSupplierContact = (props) => {
     const urlEditEvent = base_url + getEvent(event.id);
     const urlEditOwnerEvent = base_url + addEventOwner(event.id);
     async function addNewOwnerRequest(owner) {
-      await fetchTimeout(
+      await fetch(
         urlEditOwnerEvent,
         {
           method: "POST",
@@ -166,8 +164,7 @@ const AddSupplierContact = (props) => {
             phone: owner.phone,
           }),
         },
-        5000,
-        "Timeout"
+          { timeout: 5000 }
       )
         .then(async (res) => {
           const data = await res.json();
@@ -187,7 +184,7 @@ const AddSupplierContact = (props) => {
         });
     }
 
-    await fetchTimeout(
+    await fetch(
       urlEditEvent,
       {
         method: "PATCH",
@@ -197,8 +194,7 @@ const AddSupplierContact = (props) => {
         },
         body: JSON.stringify(editEvent),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();
@@ -251,7 +247,7 @@ const AddSupplierContact = (props) => {
     Log.info("AddSupplier >> onSaveEvent");
     const url = base_url + getOrPostEventSuppliers(eventId);
 
-    await fetchTimeout(
+    await fetch(
       url,
       {
         method: "POST",
@@ -267,8 +263,7 @@ const AddSupplierContact = (props) => {
           has_paid: false,
         }),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();

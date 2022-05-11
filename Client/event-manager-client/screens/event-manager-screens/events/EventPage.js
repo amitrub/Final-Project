@@ -34,7 +34,6 @@ import Colors from "../../../constants/colors";
 import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
-import fetchTimeout from "fetch-timeout";
 import DetailItem from "../../../components/basicComponents/others/DetailItem";
 import { EventPageStyles as styles } from '../../../Styles/styles'
 import {deleteEventRequest, editEventRequest, fetchEvent} from "../../../api/EventPage/EventsPageApi";

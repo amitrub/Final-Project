@@ -1,0 +1,16 @@
+import React from 'react';
+import renderer from 'react-test-renderer';
+
+import App from '../App';
+
+test('adds 1 + 2 to equal 3', () => {
+    expect(1).toBe(1);
+});
+
+// describe('<App />', () => {
+//     it('has 1 child', () => {
+//         const tree = renderer.create(<App />).toJSON();
+//         console.log(tree.children.length)
+//         expect(tree.children.length).toBe(1);
+//     });
+// });

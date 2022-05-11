@@ -1,7 +1,6 @@
 import Log, {logApiRequest} from "../../constants/logger";
 import {base_url, getEvent, register} from "../../constants/urls";
 import {createOneButtonAlert, createTwoButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
-import fetchTimeout from "fetch-timeout";
 
 export async function fetchEvent (myContext, setEvent, setIsLoading, setError) {
     let functionName = "fetchEvent";
@@ -89,11 +88,10 @@ export async function editEventRequest (editEvent, event_id, myContext, setIsLoa
         body: JSON.stringify(editEvent),
     }
     logApiRequest(functionName, url, request);
-    await fetchTimeout(
+    await fetch(
         url,
         request,
-        5000,
-        "Timeout"
+        { timeout: 5000 }
     )
         .then(async (res) => {
             const data = await res.json();

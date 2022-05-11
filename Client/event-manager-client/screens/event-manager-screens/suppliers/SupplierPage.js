@@ -32,7 +32,6 @@ import {
 } from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import fetchTimeout from "fetch-timeout";
 import DetailSupplierItem from "../../../components/basicComponents/suppliers/DetailSupplierItem";
 import call from "react-native-phone-call";
 import { SupplierPageStyles as styles } from '../../../Styles/styles'
@@ -353,7 +352,7 @@ const SupplierPage = (props) => {
   const onPay = async () => {
     setIsLoading(true);
     const url = base_url + getOrPutSupplier(event_id, supplierId);
-    await fetchTimeout(
+    await fetch(
       url,
       {
         method: "PATCH",
@@ -363,8 +362,7 @@ const SupplierPage = (props) => {
         },
         body: JSON.stringify({ has_paid: true }),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();
@@ -402,7 +400,7 @@ const SupplierPage = (props) => {
   const onSaveSupplier = async () => {
     setIsLoading(true);
     const url = base_url + getOrPutSupplier(event_id, supplierId);
-    await fetchTimeout(
+    await fetch(
       url,
       {
         method: "PATCH",
@@ -412,8 +410,7 @@ const SupplierPage = (props) => {
         },
         body: JSON.stringify({ job: supplier.job, price: supplier.price }),
       },
-      5000,
-      "Timeout"
+        { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();

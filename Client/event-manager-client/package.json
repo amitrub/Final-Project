@@ -7,7 +7,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.2.0",
@@ -21,6 +25,8 @@
     "expo-google-app-auth": "~8.3.0",
     "expo-status-bar": "~1.2.0",
     "fetch-timeout": "^0.0.2",
+    "jest": "^26.6.3",
+    "jest-expo": "^45.0.1",
     "lodash.filter": "^4.6.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -48,7 +54,8 @@
     "@babel/core": "^7.12.9",
     "expo-google-app-auth": "^10.0.0",
     "prettier": "^2.5.1",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "react-test-renderer": "18"
   },
   "private": true
 }

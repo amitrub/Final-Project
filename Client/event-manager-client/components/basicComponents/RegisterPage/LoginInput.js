@@ -17,7 +17,6 @@ import {
 } from "../../../constants/errorHandler";
 import UserAuthentication from "../../../global/UserAuthentication";
 import Log from "../../../constants/logger";
-import fetchTimeout from "fetch-timeout";
 import Loader from "../others/Loader";
 import ErrorScreen, { ErrorMessages } from "../others/ErrorScreen";
 import { useNavigation } from "@react-navigation/native";
@@ -60,7 +59,7 @@ const LoginInput = (props) => {
     Log.info("onPressLogin >> POST Login");
     setIsLoading(true);
 
-    await fetchTimeout(
+    await fetch(
       base_url + login,
       {
         method: "POST",
@@ -72,8 +71,7 @@ const LoginInput = (props) => {
           password: password,
         }),
       },
-      5000,
-      "Timeout"
+      { timeout: 5000 }
     )
       .then(async (res) => {
         const data = await res.json();
