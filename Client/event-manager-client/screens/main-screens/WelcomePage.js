@@ -37,7 +37,7 @@ const WelcomePage = (props) => {
   const [error, setError] = useState(null);
 
   const onPressRegister = () => {
-    props.navigation.navigate("Register");
+    navigation.navigate("RegisterPage");
   };
   const emptyLoginInputs = () => {
     setEmail("");
@@ -59,7 +59,7 @@ const WelcomePage = (props) => {
           password: password,
         }),
       },
-      5000,
+      1000,
       "Timeout"
     )
       .then(async (res) => {
@@ -71,8 +71,15 @@ const WelcomePage = (props) => {
           myContext.setToken(data.token);
           myContext.setId(data.id);
           myContext.setName(data.name);
-          emptyLoginInputs();
-          navigation.navigate(TabNavigator);
+          createOneButtonAlert(
+            "Login succeeded",
+            "OK",
+            "Login succeeded",
+            () => {
+              emptyLoginInputs();
+              navigation.navigate(TabNavigator);
+            }
+          );
         }
         setIsLoading(false);
       })

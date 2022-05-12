@@ -69,7 +69,7 @@ export const WelcomeStackScreen = () => {
         }}
       />
       <WelcomeStack.Screen
-        name="Register"
+        name="RegisterPage"
         component={RegisterPage}
         options={emptyHeader}
       />

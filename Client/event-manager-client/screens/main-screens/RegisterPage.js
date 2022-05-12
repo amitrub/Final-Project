@@ -43,7 +43,9 @@ const RegisterPage = (props) => {
       new Address(country, city, street, number)
     );
     Log.info("onPressRegister >> POST Register");
-    await registerUserRequest(user, emptyRegisterInputs);
+    registerUserRequest(user, emptyRegisterInputs)
+      .then((r) => r)
+      .catch((e) => console.log(e));
   }, [email, password, fullName, phone, city, country, number, street]);
 
   return (
