@@ -30,3 +30,12 @@ Log.debug("Debug config message");
 Log.info({ message: "info config!" });
 
 export default Log;
+
+export function logApiRequest(functionName, url, request) {
+  console.log("------------------------------------------")
+  console.log("Function Name: " + functionName)
+  console.log("Url: " + url)
+  console.log("Request: " + JSON.stringify(request, null, 4))
+  console.log("------------------------------------------")
+
+}

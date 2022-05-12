@@ -1,19 +1,22 @@
-import Log from "../../constants/logger";
-import {base_url, getEvent} from "../../constants/urls";
+import Log, {logApiRequest} from "../../constants/logger";
+import {base_url, getEvent, register} from "../../constants/urls";
 import {createOneButtonAlert, createTwoButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import fetchTimeout from "fetch-timeout";
 
 export async function fetchEvent (myContext, setEvent, setIsLoading, setError) {
-    const url = base_url + getEvent(event_id);
+    let functionName = "fetchEvent";
+    let url = base_url + getEvent(event_id);
+    let request = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+        },
+    }
+    logApiRequest(functionName, url, request)
     await fetch(
             url,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Token ${myContext.token}`,
-              },
-            },
+            request,
             { timeout: 2000 }
           )
             .then(async (res) => {
@@ -28,19 +31,21 @@ export async function fetchEvent (myContext, setEvent, setIsLoading, setError) {
 }
 
 export async function deleteEventRequest (event_id, myContext, setIsLoading, setError, navigation) {
-    const url = base_url + getEvent(event_id);
-    Log.info(`EventPage >> delete event >> url: ${url}`);
+    let functionName = "deleteEventRequest";
+    let url = base_url + getEvent(event_id);
+    let request = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+        },
+    }
+    logApiRequest(functionName, url, request)
     const onPressYes = async () => {
       setIsLoading(true);
       await fetch(
         url,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${myContext.token}`,
-          },
-        },
+        request,
         { timeout: 2000 }
       )
         .then(async (res) => {
@@ -73,17 +78,20 @@ export async function deleteEventRequest (event_id, myContext, setIsLoading, set
   };
 
 export async function editEventRequest (editEvent, event_id, myContext, setIsLoading, setError, navigation) {
-    const urlEditEvent = base_url + getEvent(event_id);
-    await fetchTimeout(
-        urlEditEvent,
-        {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Token ${myContext.token}`,
-            },
-            body: JSON.stringify(editEvent),
+    let functionName = "editEventRequest";
+    let url = base_url + getEvent(event_id);
+    let request = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
         },
+        body: JSON.stringify(editEvent),
+    }
+    logApiRequest(functionName, url, request);
+    await fetchTimeout(
+        url,
+        request,
         5000,
         "Timeout"
     )
