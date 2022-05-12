@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 import Colors from "../constants/colors";
 
 // ------------ MAIN SCREENS -------------
@@ -65,6 +65,28 @@ export const WelcomePageStyles = StyleSheet.create({
     fontWeight: "700",
     lineHeight: 25,
     textAlign: "center",
+  },
+  // mainTitle: {
+  //   color: Colors.text_black,
+  //   fontFamily: "alef-bold",
+  //   fontSize: 18,
+  //   fontStyle: "normal",
+  //   fontWeight: "700",
+  //   lineHeight: 25,
+  //   textAlign: "center",
+  // },
+  input: {
+    height: 45,
+    width: "100%",
+    backgroundColor: Colors.background_gray,
+    borderBottomColor: "#000000",
+    borderBottomWidth: 1,
+    fontSize: 18,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
   },
 });
 

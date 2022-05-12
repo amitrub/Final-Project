@@ -1,4 +1,4 @@
-import {base_url, eventManager, register} from "../../constants/urls";
+import {base_url, register} from "../../constants/urls";
 import {createOneButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import Log, {logApiRequest} from "../../constants/logger";
 
