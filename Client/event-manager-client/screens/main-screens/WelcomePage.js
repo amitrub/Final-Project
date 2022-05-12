@@ -13,7 +13,7 @@ import Log from "../../constants/logger";
 import LoginInput from "../../components/basicComponents/RegisterPage/LoginInput";
 import { WelcomePageStyles } from "../../Styles/styles";
 // import * as Google from 'expo-google-app-auth';
-import * as Google from 'expo-google-app-auth';
+import * as Google from "expo-google-app-auth";
 import axios from "axios";
 import { WelcomePageStyles as styles } from "../../Styles/styles";
 import Loader from "../../components/basicComponents/others/Loader";
@@ -105,37 +105,43 @@ const WelcomePage = (props) => {
     //   scopes: ['profile', 'email', 'password']
     // };
     const config = {
-      iosClientId: '778478932854-ikdla5g4ui7m5l4kldpnoi5s41h4vsab.apps.googleusercontent.com',
-      androidClientId: '778478932854-87k01g95uoenf62miqepo97nmv5d9au6.apps.googleusercontent.com',
+      iosClientId:
+        "778478932854-ikdla5g4ui7m5l4kldpnoi5s41h4vsab.apps.googleusercontent.com",
+      androidClientId:
+        "778478932854-87k01g95uoenf62miqepo97nmv5d9au6.apps.googleusercontent.com",
       scopes: [
-          // 'profile',
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/userinfo.email',
-          // 'https://www.googleapis.com/auth/user.birthday.read',
-          // 'https://www.googleapis.com/auth/user.addresses.read',
-          // 'https://www.googleapis.com/auth/user.gender.read',
-          // 'https://www.googleapis.com/auth/user.phonenumbers.read',
-          // 'https://www.googleapis.com/auth/contacts.readonly',
-          'https://www.googleapis.com/auth/calendar.readonly'
-          // 'email'
-      ]
+        // 'profile',
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        // 'https://www.googleapis.com/auth/user.birthday.read',
+        // 'https://www.googleapis.com/auth/user.addresses.read',
+        // 'https://www.googleapis.com/auth/user.gender.read',
+        // 'https://www.googleapis.com/auth/user.phonenumbers.read',
+        // 'https://www.googleapis.com/auth/contacts.readonly',
+        "https://www.googleapis.com/auth/calendar.readonly",
+        // 'email'
+      ],
     };
-    const {accessToken, idToken, refreshToken, type, user} = await Google.logInAsync(config);
+    const { accessToken, idToken, refreshToken, type, user } =
+      await Google.logInAsync(config);
     console.log(accessToken);
     console.log(idToken);
     console.log(refreshToken);
     console.log(type);
     console.log(user);
     console.log("-----------");
-    await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
-    // await fetch('https://www.googleapis.com/userinfo/v2/me', {
-    // await fetch('https://people.googleapis.com/v1/people/me', {
-    // await fetch('https://people.googleapis.com/v1/people/me?personFields=birthdays,addresses,phoneNumbers,genders', {
-      method: "GET",
-      headers: {Authorization: `Bearer ${accessToken}`},
-    }).then(async (res) =>{
+    await fetch(
+      "https://www.googleapis.com/calendar/v3/users/me/calendarList",
+      {
+        // await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        // await fetch('https://people.googleapis.com/v1/people/me', {
+        // await fetch('https://people.googleapis.com/v1/people/me?personFields=birthdays,addresses,phoneNumbers,genders', {
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    ).then(async (res) => {
       const data = await res.json();
-      console.log(data)
+      console.log(data);
     });
     // if (type === 'success') {
     //   // Then you can use the Google REST API
@@ -176,11 +182,9 @@ const WelcomePage = (props) => {
           <View style={{ paddingTop: "10%" }}>
             <LogoImage />
           </View>
-
           <View style={{ paddingTop: "15%" }}>
             <Text style={styles.mainTitle}>ONE APP SHOW</Text>
           </View>
-
           <View style={{ paddingTop: "7%", paddingBottom: "7%" }}>
             <SafeAreaView style={{ paddingRight: 30, marginBottom: 25 }}>
               <TextInput
@@ -208,11 +212,11 @@ const WelcomePage = (props) => {
                   Sign Up!
                 </Text>
               </Pressable>
-
+            </View>
             <View style={{ paddingTop: "15%" }}>
               <TitleButton
-                  text={"Sign-in with Google"}
-                  onPress={SignInGoogle}
+                text={"Sign-in with Google"}
+                onPress={SignInGoogle}
               />
             </View>
           </View>
