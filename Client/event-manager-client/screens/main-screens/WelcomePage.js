@@ -10,11 +10,8 @@ import {
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Log from "../../constants/logger";
-import LoginInput from "../../components/basicComponents/RegisterPage/LoginInput";
-import { WelcomePageStyles } from "../../Styles/styles";
 // import * as Google from 'expo-google-app-auth';
 import * as Google from "expo-google-app-auth";
-import axios from "axios";
 import { WelcomePageStyles as styles } from "../../Styles/styles";
 import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
@@ -22,15 +19,8 @@ import ErrorScreen, {
 } from "../../components/basicComponents/others/ErrorScreen";
 import { useNavigation } from "@react-navigation/native";
 import UserAuthentication from "../../global/UserAuthentication";
-import fetchTimeout from "fetch-timeout";
-import { base_url, login } from "../../constants/urls";
-import {
-  createOneButtonAlert,
-  STATUS_FAILED,
-  STATUS_SUCCESS,
-} from "../../constants/errorHandler";
 import Colors from "../../constants/colors";
-import { TabNavigator } from "../../App";
+import {useLoginRequest} from "../../api/WelcomePage/LoginApi";
 
 const WelcomePage = (props) => {
   Log.info("Welcome Page >> loading");
@@ -51,48 +41,7 @@ const WelcomePage = (props) => {
   const onPressLogin = useCallback(async () => {
     Log.info("onPressLogin >> POST Login");
     setIsLoading(true);
-
-    await fetchTimeout(
-      base_url + login,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      },
-      1000,
-      "Timeout"
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        if (STATUS_FAILED(res.status)) {
-          const message = data.Error ? data.Error : "data.Error";
-          createOneButtonAlert(message, "OK", "Login failed");
-        } else if (STATUS_SUCCESS(res.status)) {
-          myContext.setToken(data.token);
-          myContext.setId(data.id);
-          myContext.setName(data.name);
-          createOneButtonAlert(
-            "Login succeeded",
-            "OK",
-            "Login succeeded",
-            () => {
-              emptyLoginInputs();
-              navigation.navigate(TabNavigator);
-            }
-          );
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        Log.error("onPressLogin error", err);
-      });
+    useLoginRequest(myContext, email, password, setIsLoading, setError, navigation, emptyLoginInputs)
   }, [email, password]);
 
   if (isLoading) return <Loader />;

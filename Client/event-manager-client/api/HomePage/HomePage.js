@@ -1,4 +1,4 @@
-import {base_url, eventManager, getEvent, homePage} from "../../constants/urls";
+import {base_url, eventManager, homePage} from "../../constants/urls";
 import {STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import Log, {logApiRequest} from "../../constants/logger";
 

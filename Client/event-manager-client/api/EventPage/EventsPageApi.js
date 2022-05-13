@@ -1,5 +1,5 @@
 import Log, {logApiRequest} from "../../constants/logger";
-import {base_url, getEvent, register} from "../../constants/urls";
+import {addEventOwner, allEvents, base_url, getEvent,} from "../../constants/urls";
 import {createOneButtonAlert, createTwoButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import fetchTimeout from "fetch-timeout";
 
@@ -114,4 +114,129 @@ export async function editEventRequest (editEvent, event_id, myContext, setIsLoa
             setError(err);
             Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
         });
+}
+
+export async function addEventOwnerRequest(myContext, event, setIsLoading, setError, navigation) {
+    const url = base_url + allEvents;
+
+    await fetchTimeout(
+      url,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+        body: JSON.stringify(event),
+      },
+      5000,
+      "Timeout"
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = "data.Error";
+          createOneButtonAlert(message, "OK", "Add new event failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          myContext.setRefresh(!myContext.refresh);
+          const message =
+            "The event was added successfully! \nGo watch your events";
+          createOneButtonAlert(message, "OK", "ADD NEW EVENT", () =>
+            navigation.navigate("AllEvents")
+          );
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err);
+        Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
+      });
+}
+
+export async function editEventOwnersRequest(myContext, editEvent, setIsLoading, setError, navigation) {
+
+    const urlEditEvent = base_url + getEvent(editEvent.id);
+    const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
+    async function addNewOwnerRequest(owner) {
+      await fetchTimeout(
+        urlEditOwnerEvent,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+          },
+          body: JSON.stringify({
+            name: owner.name,
+            phone: owner.phone,
+          }),
+        },
+        5000,
+        "Timeout"
+      )
+        .then(async (res) => {
+          const data = await res.json();
+          if (STATUS_FAILED(res.status)) {
+            const message = data.toString();
+            createOneButtonAlert(message, "OK", "add New Owner Request failed");
+            return false;
+          } else if (STATUS_SUCCESS(res.status)) {
+            return true;
+          }
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setError(err);
+          Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
+          return false;
+        });
+    }
+
+    await fetchTimeout(
+      urlEditEvent,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myContext.token}`,
+        },
+        body: JSON.stringify(editEvent),
+      },
+      5000,
+      "Timeout"
+    )
+      .then(async (res) => {
+        const data = await res.json();
+        if (STATUS_FAILED(res.status)) {
+          const message = "data.Error";
+          createOneButtonAlert(message, "OK", "EDIT event failed");
+        } else if (STATUS_SUCCESS(res.status)) {
+          let ownersSucceeded = true;
+          for (const owner of newOwners) {
+            if (!ownersSucceeded) break;
+            addNewOwnerRequest(owner).then((res) => {
+              ownersSucceeded = ownersSucceeded && !!res;
+            });
+          }
+
+          //----------------------------------------------------------
+          if (ownersSucceeded) {
+            myContext.setRefresh(!myContext.refresh);
+            const message = "Owners updated!";
+            createOneButtonAlert(message, "OK", "", () => navigation.pop());
+          } else {
+            createOneButtonAlert(
+              "Owners didn't updated successfully!",
+              "OK",
+              "Edit owners error!",
+              () => navigation.pop()
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setError(err);
+        Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
+      });
 }

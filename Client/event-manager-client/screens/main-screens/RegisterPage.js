@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   ScrollView,
   TextInput,
-  Button,
 } from "react-native";
 import Log from "../../constants/logger";
 import RegisterUser from "../../Entities/Users/RegisterUser";
@@ -43,7 +42,7 @@ const RegisterPage = (props) => {
       new Address(country, city, street, number)
     );
     Log.info("onPressRegister >> POST Register");
-    registerUserRequest(user, emptyRegisterInputs)
+    registerUserRequest(user, emptyRegisterInputs, props.navigation)
       .then((r) => r)
       .catch((e) => console.log(e));
   }, [email, password, fullName, phone, city, country, number, street]);

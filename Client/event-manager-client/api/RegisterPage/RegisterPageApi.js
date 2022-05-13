@@ -3,7 +3,7 @@ import {createOneButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constan
 import Log, {logApiRequest} from "../../constants/logger";
 
 
-export async function registerUserRequest (user, emptyRegisterInputs) {
+export async function registerUserRequest (user, emptyRegisterInputs, navigation) {
     let functionName = "registerUserRequest";
     let url = base_url + register;
     let request = {
@@ -27,7 +27,7 @@ export async function registerUserRequest (user, emptyRegisterInputs) {
         } else if (STATUS_SUCCESS(res.status)) {
           const message = "You have successfully registered!\nplease LOGIN";
           createOneButtonAlert(message, "OK", "Registration Succeeded", () =>
-            props.navigation.navigate("Welcome")
+            navigation.navigate("Welcome")
           );
           emptyRegisterInputs();
         }
