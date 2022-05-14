@@ -1,9 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
-import {
-  base_url,
-  getOrPostEventSuppliers,
-} from "../../../constants/urls";
 import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../../global/UserAuthentication";
 import Loader from "../../../components/basicComponents/others/Loader";
@@ -11,9 +7,9 @@ import ErrorScreen, {
   ErrorMessages,
 } from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
-import SupplierEntity from "../../../Entities/SupplierEntity";
 import SupplierItem from "../../../components/basicComponents/suppliers/SupplierItem";
 import { AllEventsSuppliersStyles as styles } from "../../../Styles/styles"
+import {fetchEventSuppliers} from "../../../api/Suppliers/AllEventsSuppliersApi";
 
 const AllEventsSuppliers = (props) => {
   const params = props.route.params;
@@ -25,44 +21,9 @@ const AllEventsSuppliers = (props) => {
   const [eventSuppliersData, setEventSuppliersData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const url = base_url + getOrPostEventSuppliers(eventId);
 
   const getData = useCallback(async () => {
-    await fetch(
-      url,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
-        },
-      },
-      { timeout: 2000 }
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        const loadedSuppliers = [];
-        for (const key in data) {
-          loadedSuppliers.push(
-            new SupplierEntity(
-              data[key].id,
-              data[key].name,
-              data[key].phone,
-              data[key].job,
-              data[key].price,
-              data[key].has_paid
-            )
-          );
-        }
-
-        setEventSuppliersData(loadedSuppliers);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        Log.error("AllEventsSuppliers >> getData >> error", err);
-      });
+    fetchEventSuppliers(eventId, myContext, setEventSuppliersData, setIsLoading, setError)
   }, [refresh]);
   useEffect(() => {
     setIsLoading(true);

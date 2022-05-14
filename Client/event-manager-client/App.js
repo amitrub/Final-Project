@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { enableScreens } from "react-native-screens";
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import { Provider } from "react-redux";
-import ReduxThunk from "redux-thunk";
-import mealsReducer from "./store/reducers/meals";
-import usersReducer from "./store/reducers/users";
-import meetingsReducer from "./store/reducers/meetings";
-import eventsReducer from "./store/reducers/events";
 import UserAuthentication from "./global/UserAuthentication";
 import WelcomePage from "./screens/main-screens/WelcomePage";
 import RegisterPage from "./screens/main-screens/RegisterPage";
@@ -27,21 +19,11 @@ import Entypo from "react-native-vector-icons/Entypo";
 import ProfilePage from "./screens/user-profile-screens/ProfilePage";
 import CalendarPage from "./screens/user-profile-screens/CalendarPage";
 import AddEventDetails from "./screens/add-event-screens/AddEventDetails";
-import Colors from "./constants/colors";
 import AllEventsSuppliers from "./screens/event-manager-screens/suppliers/AllEventsSuppliers";
 import SupplierPage from "./screens/event-manager-screens/suppliers/SupplierPage";
 import AddSupplierContact from "./screens/event-manager-screens/suppliers/AddSupplierContact";
 
 enableScreens();
-
-const rootReducer = combineReducers({
-  meals: mealsReducer,
-  users: usersReducer,
-  meetings: meetingsReducer,
-  events: eventsReducer,
-});
-
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -300,17 +282,10 @@ export default function App() {
 
   return (
     <UserAuthentication.Provider value={userAuth}>
-      <Provider store={store}>
         <NavigationContainer>
           <WelcomeStackScreen />
         </NavigationContainer>
-      </Provider>
     </UserAuthentication.Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-});
