@@ -10,8 +10,8 @@ export const handleLoading = () => {
   if (myContext.isLoading) return <Loader />;
 };
 
-export function handleError() {
+export const handleError = () => {
   const myContext = useContext(UserAuthentication);
   if (myContext.error)
     return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
-}
+};
