@@ -256,6 +256,15 @@ export async function addEventScheduleRequest(
   meetingToAdd
 ) {
   const url = base_url + postEventSchedule(eventId);
+  const {
+    token,
+    refresh,
+    setRefresh,
+    error,
+    setError,
+    isLoading,
+    setIsLoading,
+  } = myContext;
 
   await fetchTimeout(
     url,
@@ -263,7 +272,7 @@ export async function addEventScheduleRequest(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+        Authorization: `Token ${token}`,
       },
       body: JSON.stringify(meetingToAdd),
     },
@@ -280,14 +289,14 @@ export async function addEventScheduleRequest(
           "Add Event Schedule Request failed"
         );
       } else if (STATUS_SUCCESS(res.status)) {
-        myContext.setRefresh(!myContext.refresh);
+        setRefresh(!refresh);
         const message = "Event Schedule was added successfully!";
         createOneButtonAlert(message, "OK", "ADD Event schedule", () => {});
       }
     })
     .catch((err) => {
-      myContext.setIsLoading(false);
-      myContext.setError(err);
+      setIsLoading(false);
+      setError(err);
       Log.error("addEventScheduleRequest  >> failed with error: ", err);
     });
 }
@@ -295,9 +304,18 @@ export async function addEventScheduleRequest(
 export async function getEventScheduleRequest(
   myContext,
   eventId,
-  setEventSchedulesData
+  setEventSchedulesData,
+  setEventSchedulesByDate
 ) {
-  const { error, setError, isLoading, setIsLoading } = myContext;
+  const {
+    token,
+    refresh,
+    setRefresh,
+    error,
+    setError,
+    isLoading,
+    setIsLoading,
+  } = myContext;
   const url = base_url + postEventSchedule(eventId);
   await fetch(
     url,
@@ -305,7 +323,7 @@ export async function getEventScheduleRequest(
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+        Authorization: `Token ${token}`,
       },
     },
     { timeout: 2000 }
@@ -328,6 +346,21 @@ export async function getEventScheduleRequest(
       }
 
       setEventSchedulesData(loadedEventSchedules);
+
+      let dict = {};
+      loadedEventSchedules.forEach((eventSchedule) => {
+        let date = eventSchedule.start_time.split("T")[0];
+        if (dict.hasOwnProperty(date)) {
+          let list = dict[date];
+          list.push(eventSchedule);
+          dict[date] = list;
+        } else {
+          dict[date] = [eventSchedule];
+        }
+      });
+      console.log("dict ", dict);
+      setEventSchedulesByDate(dict);
+
       setIsLoading(false);
     })
     .catch((err) => {

@@ -7,10 +7,14 @@ import Log from "../../constants/logger";
 const EventMeetingItem = (props) => {
   function getNameLetters(name) {
     let splitName = name?.split(" ");
-    if (!splitName) return "";
     if (splitName.length < 2) {
-      return "XX";
+      if (splitName.length === 1) {
+        return splitName[0][0].toUpperCase();
+      } else {
+        return "Bla";
+      }
     }
+    if (!splitName) return "";
     return splitName[0][0].toUpperCase() + splitName[1][0].toUpperCase();
   }
   function getHour(itemTime) {
@@ -59,7 +63,7 @@ const EventMeetingItem = (props) => {
               </Text>
             </View>
             <Avatar.Text
-              label={"<3"}
+              label={getNameLetters(item.description)}
               backgroundColor={
                 "#" + Math.floor(Math.random() * 16777215).toString(16)
               }

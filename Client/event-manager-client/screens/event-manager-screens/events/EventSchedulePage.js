@@ -38,7 +38,7 @@ const EventSchedulePage = (props) => {
   const myContext = useContext(UserAuthentication);
   const { refresh, error, setError, isLoading, setIsLoading } = myContext;
   const [eventSchedulesData, setEventSchedulesData] = useState([]);
-  const url = base_url + postEventSchedule(eventId);
+  const [eventSchedulesByDate, setEventSchedulesByDate] = useState({});
 
   const [meetingToAdd, setMeetingToAdd] = useState(
     new EventScheduleEntity("", "", "")
@@ -49,9 +49,13 @@ const EventSchedulePage = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const getData = useCallback(async () => {
-    console.log("url", url);
-    await getEventScheduleRequest(myContext, eventId, setEventSchedulesData);
-  }, [refresh]);
+    await getEventScheduleRequest(
+      myContext,
+      eventId,
+      setEventSchedulesData,
+      setEventSchedulesByDate
+    );
+  }, [eventSchedulesData, refresh]);
   useEffect(() => {
     setIsLoading(true);
     getData()
@@ -59,6 +63,72 @@ const EventSchedulePage = (props) => {
       .catch((error) => Log.Error(error));
   }, [eventId, refresh]);
   const addMeetingModal = () => {
+    function getPresaleUpdateButton() {
+      return (
+        <Pressable
+          style={[EventPageStyles.button, EventPageStyles.buttonUpdate]}
+          onPress={async () => {
+            function isValidTime(meetingTime) {
+              let split = meetingTime?.split(" ");
+              if (split.length !== 2) {
+                return false;
+              }
+              let currDate = split[0];
+              let currTime = split[1];
+              return currDate.length === 10 && currTime.length === 5;
+            }
+
+            function resetFields() {
+              setMeetingDescription("");
+              setMeetingStartTime("");
+              setMeetingEndTime("");
+            }
+
+            if (isValidTime(meetingStartTime) && isValidTime(meetingEndTime)) {
+              let tmp = meetingToAdd;
+              meetingToAdd.description = meetingDescription;
+              meetingToAdd.start_time = meetingStartTime;
+              meetingToAdd.end_time = meetingEndTime;
+              setMeetingToAdd(tmp);
+              await addEventScheduleRequest(myContext, eventId, meetingToAdd);
+              resetFields();
+              setModalVisible(!modalVisible);
+            } else {
+              createOneButtonAlert(
+                "please enter start and end time on [yyyy-mm-dd hh:mm] format"
+              );
+            }
+          }}
+        >
+          <Text style={EventPageStyles.textStyle}>Update</Text>
+        </Pressable>
+      );
+    }
+    function getEventSchedulerInputs() {
+      return (
+        <>
+          <TextInput
+            style={EventPageStyles.input}
+            onChangeText={setMeetingStartTime}
+            value={meetingStartTime}
+            placeholder={"start time [yyyy-mm-dd hh:mm]"}
+          />
+          <TextInput
+            style={EventPageStyles.input}
+            onChangeText={setMeetingEndTime}
+            value={meetingEndTime}
+            placeholder={"end time [yyyy-mm-dd hh:mm]"}
+          />
+          <TextInput
+            style={EventPageStyles.input}
+            onChangeText={setMeetingDescription}
+            value={meetingDescription}
+            placeholder={"description"}
+          />
+        </>
+      );
+    }
+
     return (
       <Modal
         animationType="slide"
@@ -72,62 +142,9 @@ const EventSchedulePage = (props) => {
         <View style={EventPageStyles.centeredView}>
           <View style={EventPageStyles.modalView}>
             <Text style={EventPageStyles.modalText}>Add schedule item</Text>
-            <TextInput
-              style={EventPageStyles.input}
-              onChangeText={setMeetingStartTime}
-              value={meetingStartTime}
-              placeholder={"start time [yyyy-mm-dd hh:mm]"}
-            />
-            <TextInput
-              style={EventPageStyles.input}
-              onChangeText={setMeetingEndTime}
-              value={meetingEndTime}
-              placeholder={"end time [yyyy-mm-dd hh:mm]"}
-            />
-            <TextInput
-              style={EventPageStyles.input}
-              onChangeText={setMeetingDescription}
-              value={meetingDescription}
-              placeholder={"description"}
-            />
+            {getEventSchedulerInputs()}
             <View style={EventPageStyles.row}>
-              <Pressable
-                style={[EventPageStyles.button, EventPageStyles.buttonUpdate]}
-                onPress={async () => {
-                  function isValidTime(meetingTime) {
-                    let split = meetingTime?.split(" ");
-                    if (split.length !== 2) {
-                      return false;
-                    }
-                    let currDate = split[0];
-                    let currTime = split[1];
-                    return currDate.length === 10 && currTime.length === 5;
-                  }
-
-                  if (
-                    isValidTime(meetingStartTime) &&
-                    isValidTime(meetingEndTime)
-                  ) {
-                    let tmp = meetingToAdd;
-                    meetingToAdd.description = meetingDescription;
-                    meetingToAdd.start_time = meetingStartTime;
-                    meetingToAdd.end_time = meetingEndTime;
-                    setMeetingToAdd(tmp);
-                    await addEventScheduleRequest(
-                      myContext,
-                      eventId,
-                      meetingToAdd
-                    );
-                    setModalVisible(!modalVisible);
-                  } else {
-                    createOneButtonAlert(
-                      "please enter start and end time on [yyyy-mm-dd hh:mm] format"
-                    );
-                  }
-                }}
-              >
-                <Text style={EventPageStyles.textStyle}>Update</Text>
-              </Pressable>
+              {getPresaleUpdateButton()}
               {cancelModalButton(() => setModalVisible(!modalVisible))}
             </View>
           </View>
@@ -138,12 +155,25 @@ const EventSchedulePage = (props) => {
   const body = () => {
     return (
       <ScrollView>
-        {eventSchedulesData.length === 0 ? (
+        {eventSchedulesData.length === 0 || eventSchedulesByDate.size === 0 ? (
           <Text>Add meetings to your schedule!</Text>
         ) : (
-          eventSchedulesData?.map((meetingItem, index) => {
-            return <EventMeetingItem key={index} item={meetingItem} />;
-          })
+          Object.keys(eventSchedulesByDate)
+            .sort((str1, str2) => {
+              return str1 > str2;
+            })
+            .map((date) => {
+              return (
+                <View style={{ width: 350, margin: 10 }}>
+                  <Text style={[styles.textTitle, { fontSize: 20 }]}>
+                    {date}
+                  </Text>
+                  {eventSchedulesByDate[date]?.map((meetingItem, index) => {
+                    return <EventMeetingItem key={index} item={meetingItem} />;
+                  })}
+                </View>
+              );
+            })
         )}
       </ScrollView>
     );
