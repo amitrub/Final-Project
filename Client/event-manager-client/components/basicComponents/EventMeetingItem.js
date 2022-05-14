@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Avatar, Card } from "react-native-paper";
-import { EventScheduleStyle } from "../../Styles/styles";
+import { EventScheduleStyle } from "../../styles/styles";
 import Log from "../../constants/logger";
 
 const EventMeetingItem = (props) => {
@@ -21,7 +21,7 @@ const EventMeetingItem = (props) => {
     try {
       return itemTime.split("T")[1].slice(0, 5);
     } catch (e) {
-      Log.error("EventMeetingItem >> getHour >> error", e);
+      Log.warn("EventMeetingItem >> getHour >> error", e);
       return "00:00";
     }
   }

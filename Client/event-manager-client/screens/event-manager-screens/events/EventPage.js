@@ -45,7 +45,8 @@ const EventPage = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-  const { token, setIsLoading, setError, refresh } = myContext;
+  const { token, isLoading, setIsLoading, error, setError, refresh } =
+    myContext;
   const event_id = params.event.id;
   const url = base_url + getEvent(event_id);
 

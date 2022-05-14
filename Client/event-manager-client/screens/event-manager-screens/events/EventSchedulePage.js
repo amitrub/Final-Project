@@ -18,7 +18,7 @@ import Log from "../../../constants/logger";
 import {
   AllEventsPageStyles as styles,
   EventPageStyles,
-} from "../../../Styles/styles";
+} from "../../../styles/styles";
 import { base_url, postEventSchedule } from "../../../constants/urls";
 import EventMeetingItem from "../../../components/basicComponents/EventMeetingItem";
 import cancelModalButton from "../../../components/basicComponents/buttons/CancelModalButton";
