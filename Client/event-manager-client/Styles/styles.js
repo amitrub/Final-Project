@@ -598,3 +598,29 @@ export const TasksPageStyles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+// ----------- EVENT-SCHEDULE ------------
+
+export const EventScheduleStyle = StyleSheet.create({
+  timeText: {
+    color: Colors.text_black,
+    fontFamily: "alef-regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: "400",
+  },
+  nameText: {
+    color: Colors.text_black,
+    fontFamily: "alef-bold",
+    fontSize: 18,
+    fontStyle: "normal",
+    fontWeight: "700",
+  },
+  descriptionText: {
+    color: Colors.dark_gray,
+    fontFamily: "alef-regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: "500",
+  },
+});

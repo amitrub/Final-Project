@@ -27,17 +27,18 @@ import ErrorScreen, {
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
 import { base_url, getEvent } from "../../../constants/urls";
-import {
-  createOneButtonAlert,
-} from "../../../constants/errorHandler";
+import { createOneButtonAlert } from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
 import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
-import fetchTimeout from "fetch-timeout";
 import DetailItem from "../../../components/basicComponents/others/DetailItem";
-import { EventPageStyles as styles } from '../../../Styles/styles'
-import {deleteEventRequest, editEventRequest, fetchEvent} from "../../../api/EventPage/EventsPageApi";
+import { EventPageStyles as styles } from "../../../Styles/styles";
+import {
+  deleteEventRequest,
+  editEventRequest,
+} from "../../../api/EventPage/EventsPageApi";
+import cancelModalButton from "../../../components/basicComponents/buttons/CancelModalButton";
 
 const EventPage = (props) => {
   const params = props.route.params;
@@ -62,7 +63,7 @@ const EventPage = (props) => {
   const [editBudget, setEditBudget] = useState(0);
 
   const getData = useCallback(async () => {
-      // await fetchEvent(myContext, setEvent, setIsLoading, setError)
+    // await fetchEvent(myContext, setEvent, setIsLoading, setError)
     await fetch(
       url,
       {
@@ -115,17 +116,6 @@ const EventPage = (props) => {
       })
       .catch((error) => Log.Error(error));
   }, [navigation, refresh]);
-
-  const cancelModalButton = (closeModalFunc) => {
-    return (
-      <Pressable
-        style={[styles.button, styles.buttonCancel]}
-        onPress={closeModalFunc}
-      >
-        <Text style={styles.textStyle}>Cancel</Text>
-      </Pressable>
-    );
-  };
 
   const editTitleModal = () => {
     return (
@@ -351,11 +341,16 @@ const EventPage = (props) => {
   };
   const eventScheduleComponent = () => {
     return (
-      <DetailEventItem
-        key="5"
-        title={"Event schedule"}
-        items={["Hupa", "Dancing"]}
-        onPress={() => {}}
+      <DetailItem
+        title={"click to manage"}
+        value={"Event Schedule"}
+        onPress={() =>
+          navigation.navigate("EventSchedulePage", {
+            eventId: event.id,
+            eventName: event.event_name,
+            event_schedules: event.event_schedules,
+          })
+        }
       />
     );
   };
@@ -384,7 +379,7 @@ const EventPage = (props) => {
       event.budget,
       event.location
     );
-    await editEventRequest(myContext, editEvent, event.id, navigation)
+    await editEventRequest(myContext, editEvent, event.id, navigation);
   };
 
   if (isLoading) return <Loader />;
