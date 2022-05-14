@@ -28,8 +28,7 @@ const WelcomePage = (props) => {
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("admin@gmail.com");
   const [password, setPassword] = React.useState("1234");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+
 
   const onPressRegister = () => {
     navigation.navigate("RegisterPage");
@@ -40,12 +39,11 @@ const WelcomePage = (props) => {
   };
   const onPressLogin = useCallback(async () => {
     Log.info("onPressLogin >> POST Login");
-    setIsLoading(true);
-    useLoginRequest(myContext, email, password, setIsLoading, setError, navigation, emptyLoginInputs)
+    useLoginRequest(myContext, email, password, navigation, emptyLoginInputs)
   }, [email, password]);
 
-  if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
+  if (myContext.isLoading) return <Loader />;
+  if (myContext.error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   const SignInGoogle = async () => {
     // const config = {

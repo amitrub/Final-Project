@@ -4,7 +4,8 @@ import {createOneButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constan
 import {TabNavigator} from "../../App";
 import Log from "../../constants/logger";
 
-export async function useLoginRequest(myContext, email, password,setIsLoading, setError, navigation, emptyLoginInputs) {
+export async function useLoginRequest(myContext, email, password, navigation, emptyLoginInputs) {
+    myContext.setIsLoading(true);
      await fetchTimeout(
       base_url + login,
       {
@@ -39,11 +40,11 @@ export async function useLoginRequest(myContext, email, password,setIsLoading, s
             }
           );
         }
-        setIsLoading(false);
+        myContext.setIsLoading(false);
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err);
+        myContext.setIsLoading(false);
+        myContext.setError(err);
         Log.error("onPressLogin error", err);
       });
 }

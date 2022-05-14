@@ -3,7 +3,7 @@ import {addEventOwner, allEvents, base_url, getEvent,} from "../../constants/url
 import {createOneButtonAlert, createTwoButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import fetchTimeout from "fetch-timeout";
 
-export async function fetchEvent (myContext, setEvent, setIsLoading, setError) {
+export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
     let functionName = "fetchEvent";
     let url = base_url + getEvent(event_id);
     let request = {
@@ -30,7 +30,7 @@ export async function fetchEvent (myContext, setEvent, setIsLoading, setError) {
             });
 }
 
-export async function deleteEventRequest (event_id, myContext, setIsLoading, setError, navigation) {
+export async function deleteEventRequest(myContext, event_id, navigation) {
     let functionName = "deleteEventRequest";
     let url = base_url + getEvent(event_id);
     let request = {
@@ -42,7 +42,7 @@ export async function deleteEventRequest (event_id, myContext, setIsLoading, set
     }
     logApiRequest(functionName, url, request)
     const onPressYes = async () => {
-      setIsLoading(true);
+      myContext.setIsLoading(true);
       await fetch(
         url,
         request,
@@ -58,13 +58,13 @@ export async function deleteEventRequest (event_id, myContext, setIsLoading, set
             () => {
               myContext.setRefresh(!myContext.refresh);
               navigation.pop();
-              setIsLoading(false);
+              myContext.setIsLoading(false);
             }
           );
         })
         .catch((err) => {
-          setIsLoading(false);
-          setError(err);
+          myContext.setIsLoading(false);
+          myContext.setError(err);
           Log.error("EventPage >> delete event >> error", err);
         });
     };
@@ -77,7 +77,8 @@ export async function deleteEventRequest (event_id, myContext, setIsLoading, set
     );
   };
 
-export async function editEventRequest (editEvent, event_id, myContext, setIsLoading, setError, navigation) {
+export async function editEventRequest(myContext, editEvent, event_id, navigation) {
+
     let functionName = "editEventRequest";
     let url = base_url + getEvent(event_id);
     let request = {
@@ -88,6 +89,7 @@ export async function editEventRequest (editEvent, event_id, myContext, setIsLoa
         },
         body: JSON.stringify(editEvent),
     }
+    myContext.setIsLoading(true);
     logApiRequest(functionName, url, request);
     await fetchTimeout(
         url,
@@ -110,13 +112,13 @@ export async function editEventRequest (editEvent, event_id, myContext, setIsLoa
             }
         })
         .catch((err) => {
-            setIsLoading(false);
-            setError(err);
+            myContext.setIsLoading(false);
+            myContext.setError(err);
             Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
         });
 }
 
-export async function addEventOwnerRequest(myContext, event, setIsLoading, setError, navigation) {
+export async function addEventOwnerRequest(myContext, event, navigation) {
     const url = base_url + allEvents;
 
     await fetchTimeout(
@@ -147,13 +149,13 @@ export async function addEventOwnerRequest(myContext, event, setIsLoading, setEr
         }
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err);
+        myContext.setIsLoading(false);
+        myContext.setError(err);
         Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
       });
 }
 
-export async function editEventOwnersRequest(myContext, editEvent, setIsLoading, setError, navigation) {
+export async function editEventOwnersRequest(myContext, editEvent, newOwners, navigation) {
 
     const urlEditEvent = base_url + getEvent(editEvent.id);
     const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
@@ -185,8 +187,8 @@ export async function editEventOwnersRequest(myContext, editEvent, setIsLoading,
           }
         })
         .catch((err) => {
-          setIsLoading(false);
-          setError(err);
+          myContext.setIsLoading(false);
+          myContext.setError(err);
           Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
           return false;
         });
@@ -235,8 +237,8 @@ export async function editEventOwnersRequest(myContext, editEvent, setIsLoading,
         }
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err);
+        myContext.setIsLoading(false);
+        myContext.setError(err);
         Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
       });
 }

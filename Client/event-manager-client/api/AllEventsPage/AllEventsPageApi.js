@@ -2,7 +2,8 @@ import EventEntity from "../../Entities/EventEntity";
 import Log, {logApiRequest} from "../../constants/logger";
 import {allEvents, base_url, getEvent} from "../../constants/urls";
 
-export async function fetchAllEvents (myContext, setAllEventsData, setIsLoading, setError) {
+export async function fetchAllEvents (myContext, setAllEventsData) {
+    myContext.setIsLoading(true);
     let functionName = "fetchAllEvents";
     let url = base_url + allEvents;
     let request = {
@@ -39,11 +40,11 @@ export async function fetchAllEvents (myContext, setAllEventsData, setIsLoading,
         }
 
         setAllEventsData(loadedEvents);
-        setIsLoading(false);
+        myContext.setIsLoading(false);
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err);
+        myContext.setIsLoading(false);
+        myContext.setError(err);
         Log.error("AllEventsPage >> getData >> error", err);
       });
   };
