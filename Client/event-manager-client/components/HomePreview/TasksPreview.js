@@ -1,10 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Colors from "../../constants/colors";
 import Entypo from "react-native-vector-icons/Entypo";
 import MeetingItem from "../basicComponents/MeetingItem";
 import { useNavigation } from "@react-navigation/native";
-import {TasksPreviewStyles} from "../../Styles/styles";
+import { TasksPreviewStyles } from "../../styles/styles";
 
 const TasksPreview = () => {
   const navigation = useNavigation();

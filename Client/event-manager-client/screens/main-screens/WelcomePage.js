@@ -12,7 +12,7 @@ import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Log from "../../constants/logger";
 // import * as Google from 'expo-google-app-auth';
 import * as Google from "expo-google-app-auth";
-import { WelcomePageStyles as styles } from "../../Styles/styles";
+import { WelcomePageStyles as styles } from "../../styles/styles";
 import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
   ErrorMessages,

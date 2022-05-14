@@ -39,18 +39,18 @@ export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
 }
 
 export async function deleteEventRequest(myContext, event_id, navigation) {
-  let functionName = "deleteEventRequest";
+  const { token, setIsLoading, setError, setRefresh } = myContext;let functionName = "deleteEventRequest";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${myContext.token}`,
+      Authorization: `Token ${token}`,
     },
   };
   logApiRequest(functionName, url, request);
   const onPressYes = async () => {
-    myContext.setIsLoading(true);
+    setIsLoading(true);
     await fetch(url, request, { timeout: 2000 })
       .then(async (res) => {
         Log.info("EventPage >> delete event >> then");
@@ -60,15 +60,15 @@ export async function deleteEventRequest(myContext, event_id, navigation) {
           "OK",
           "Delete event",
           () => {
-            myContext.setRefresh(!myContext.refresh);
+            setRefresh(!myContext.refresh);
             navigation.pop();
-            myContext.setIsLoading(false);
+            setIsLoading(false);
           }
         );
       })
       .catch((err) => {
-        myContext.setIsLoading(false);
-        myContext.setError(err);
+        setIsLoading(false);
+        setError(err);
         Log.error("EventPage >> delete event >> error", err);
       });
   };
@@ -87,17 +87,18 @@ export async function editEventRequest(
   event_id,
   navigation
 ) {
+  const { token, setIsLoading, setRefresh, setError } = myContext;
   let functionName = "editEventRequest";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${myContext.token}`,
+      Authorization: `Token ${token}`,
     },
     body: JSON.stringify(editEvent),
   };
-  myContext.setIsLoading(true);
+  setIsLoading(true);
   logApiRequest(functionName, url, request);
   await fetchTimeout(url, request, 5000, "Timeout")
     .then(async (res) => {
@@ -109,28 +110,28 @@ export async function editEventRequest(
         // myContext.setRefresh(!myContext.refresh);
         const message = "event updated!";
         createOneButtonAlert(message, "OK", "", () => {
-          myContext.setRefresh(!myContext.refresh);
+          setRefresh(!myContext.refresh);
           navigation.navigate("HomePage");
         });
       }
     })
     .catch((err) => {
-      myContext.setIsLoading(false);
-      myContext.setError(err);
+      setIsLoading(false);
+      setError(err);
       Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
     });
 }
 
 export async function addEventOwnerRequest(myContext, event, navigation) {
+  const { token, setIsLoading, setRefresh, setError } = myContext;
   const url = base_url + allEvents;
-
   await fetchTimeout(
     url,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
+        Authorization: `Token ${token}`,
       },
       body: JSON.stringify(event),
     },
@@ -143,7 +144,7 @@ export async function addEventOwnerRequest(myContext, event, navigation) {
         const message = "data.Error";
         createOneButtonAlert(message, "OK", "Add new event failed");
       } else if (STATUS_SUCCESS(res.status)) {
-        myContext.setRefresh(!myContext.refresh);
+        setRefresh(!myContext.refresh);
         const message =
           "The event was added successfully! \nGo watch your events";
         createOneButtonAlert(message, "OK", "ADD NEW EVENT", () =>
@@ -152,8 +153,8 @@ export async function addEventOwnerRequest(myContext, event, navigation) {
       }
     })
     .catch((err) => {
-      myContext.setIsLoading(false);
-      myContext.setError(err);
+      setIsLoading(false);
+      setError(err);
       Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
     });
 }
@@ -164,6 +165,7 @@ export async function editEventOwnersRequest(
   newOwners,
   navigation
 ) {
+  const { token, setIsLoading, setError, setRefresh } = myContext;
   const urlEditEvent = base_url + getEvent(editEvent.id);
   const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
   async function addNewOwnerRequest(owner) {
@@ -173,7 +175,7 @@ export async function editEventOwnersRequest(
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
+          Authorization: `Token ${token}`,
         },
         body: JSON.stringify({
           name: owner.name,
@@ -194,8 +196,8 @@ export async function editEventOwnersRequest(
         }
       })
       .catch((err) => {
-        myContext.setIsLoading(false);
-        myContext.setError(err);
+        setIsLoading(false);
+        setError(err);
         Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
         return false;
       });
@@ -230,7 +232,7 @@ export async function editEventOwnersRequest(
 
         //----------------------------------------------------------
         if (ownersSucceeded) {
-          myContext.setRefresh(!myContext.refresh);
+          setRefresh(!myContext.refresh);
           const message = "Owners updated!";
           createOneButtonAlert(message, "OK", "", () => navigation.pop());
         } else {
@@ -244,8 +246,8 @@ export async function editEventOwnersRequest(
       }
     })
     .catch((err) => {
-      myContext.setIsLoading(false);
-      myContext.setError(err);
+      setIsLoading(false);
+      setError(err);
       Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
     });
 }
@@ -260,9 +262,7 @@ export async function addEventScheduleRequest(
     token,
     refresh,
     setRefresh,
-    error,
     setError,
-    isLoading,
     setIsLoading,
   } = myContext;
 
@@ -309,11 +309,7 @@ export async function getEventScheduleRequest(
 ) {
   const {
     token,
-    refresh,
-    setRefresh,
-    error,
     setError,
-    isLoading,
     setIsLoading,
   } = myContext;
   const url = base_url + postEventSchedule(eventId);

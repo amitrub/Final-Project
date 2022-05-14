@@ -3,41 +3,41 @@ import { FlatList, TextInput, View } from "react-native";
 import Colors from "react-native/Libraries/NewAppScreen/components/Colors";
 import ContactItem from "../../components/basicComponents/Events/ContactItem";
 import filter from "lodash.filter";
-import Loader from "../../components/basicComponents/others/Loader";
-import ErrorScreen, {
-  ErrorMessages,
-} from "../../components/basicComponents/others/ErrorScreen";
 import TextTitle from "../../components/basicComponents/others/TextTitle";
 import IconButton from "../../components/basicComponents/buttons/IconButton";
 import OwnerEntity from "../../Entities/OwnerEntity";
 import Log from "../../constants/logger";
 import UserAuthentication from "../../global/UserAuthentication";
 import { EditEventEntity } from "../../Entities/EventEntity";
-import { AddEventOwnersStyles as styles } from '../../Styles/styles'
-import {fetchContacts} from "../../api/Contacts/ContactsApi";
-import {addEventOwnerRequest, editEventOwnersRequest} from "../../api/EventPage/EventsPageApi";
+import { AddEventOwnersStyles as styles } from "../../styles/styles";
+import { fetchContacts } from "../../api/Contacts/ContactsApi";
+import {
+  addEventOwnerRequest,
+  editEventOwnersRequest,
+} from "../../api/EventPage/EventsPageApi";
+import { handleError, handleLoading } from "../../validations/validations";
+import Loader from "../../components/basicComponents/others/Loader";
+import ErrorScreen from "../../components/basicComponents/others/ErrorScreen";
 
 const AddEventOwners = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-
+  const { setIsLoading, isLoading, error } = myContext;
   const [allContacts, setAllContacts] = useState([]);
   const [owners, setOwners] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [fullData, setFullData] = useState([]);
 
   useEffect(() => {
-      fetchContacts(myContext, setFullData, setAllContacts)
+    fetchContacts(myContext, setFullData, setAllContacts);
   }, []);
 
   async function onSave(newOwners) {
     Log.info("AddEventOwner >> onSaveEvent >> onSave (New event)");
     let event = params.event;
     event.event_owners = newOwners;
-    await addEventOwnerRequest(myContext, event, navigation)
+    await addEventOwnerRequest(myContext, event, navigation);
   }
   async function onSaveEditEventOwners(newOwners) {
     Log.info("AddEventOwner >> onSaveEvent >> onSaveEditEventOwners");
@@ -51,7 +51,7 @@ const AddEventOwners = (props) => {
       event.budget,
       event.location
     );
-    await editEventOwnersRequest(myContext, editEvent, newOwners, navigation)
+    await editEventOwnersRequest(myContext, editEvent, newOwners, navigation);
   }
   const onSaveEvent = useCallback(async () => {
     setIsLoading(true);
@@ -111,6 +111,8 @@ const AddEventOwners = (props) => {
     }
   };
 
+  // handleLoading();
+  // handleError();
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
 

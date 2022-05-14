@@ -15,7 +15,8 @@ export async function useLoginRequest(
   navigation,
   emptyLoginInputs
 ) {
-  myContext.setIsLoading(true);
+  const { setIsLoading, setError, setToken, setId, setName } = myContext;
+  setIsLoading(true);
   await fetchTimeout(
     base_url + login,
     {
@@ -37,19 +38,19 @@ export async function useLoginRequest(
         const message = data.Error ? data.Error : "data.Error";
         createOneButtonAlert(message, "OK", "Login failed");
       } else if (STATUS_SUCCESS(res.status)) {
-        myContext.setToken(data.token);
-        myContext.setId(data.id);
-        myContext.setName(data.name);
+        setToken(data.token);
+        setId(data.id);
+        setName(data.name);
         createOneButtonAlert("Login succeeded", "OK", "Great!", () => {
           emptyLoginInputs();
           navigation.navigate(TabNavigator);
         });
       }
-      myContext.setIsLoading(false);
+      setIsLoading(false);
     })
     .catch((err) => {
-      myContext.setIsLoading(false);
-      myContext.setError(err);
+      setIsLoading(false);
+      setError(err);
       Log.error("onPressLogin error", err);
     });
 }

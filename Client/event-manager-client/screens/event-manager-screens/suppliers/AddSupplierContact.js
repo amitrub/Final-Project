@@ -9,30 +9,27 @@ import ErrorScreen, {
 } from "../../../components/basicComponents/others/ErrorScreen";
 import TextTitle from "../../../components/basicComponents/others/TextTitle";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import {
-  createOneButtonAlert,
-} from "../../../constants/errorHandler";
+import { createOneButtonAlert } from "../../../constants/errorHandler";
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
-import { AddSupplierContactStyles as styles } from "../../../Styles/styles"
-import {saveNewSupplierRequest} from "../../../api/Suppliers/AddSupplierContactApi";
-import {fetchContacts} from "../../../api/Contacts/ContactsApi";
+import { AddSupplierContactStyles as styles } from "../../../styles/styles";
+import { saveNewSupplierRequest } from "../../../api/Suppliers/AddSupplierContactApi";
+import { fetchContacts } from "../../../api/Contacts/ContactsApi";
 
 const AddSupplierContact = (props) => {
   const params = props.route.params;
   const eventId = params.eventId;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-
+  const { isLoading, setIsLoading, error } = myContext;
   const [allContacts, setAllContacts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+
   const [query, setQuery] = useState("");
   const [fullData, setFullData] = useState([]);
 
   useEffect(() => {
-      fetchContacts(myContext, setFullData, setAllContacts)
+    fetchContacts(myContext, setFullData, setAllContacts);
   }, []);
 
   const onSaveSupplier = useCallback(async () => {
@@ -49,7 +46,13 @@ const AddSupplierContact = (props) => {
 
     const supplierToAdd = suppliers[0];
     Log.info("AddSupplier >> onSaveSupplier");
-    saveNewSupplierRequest(myContext, supplierToAdd, eventId, setSuppliers, navigation)
+    saveNewSupplierRequest(
+      myContext,
+      supplierToAdd,
+      eventId,
+      setSuppliers,
+      navigation
+    );
   }, [suppliers, navigation]);
 
   const renderHeader = () => {

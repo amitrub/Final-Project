@@ -33,10 +33,11 @@ import DatePickerInput from "../../../components/basicComponents/inputs/DatePick
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
 import DetailItem from "../../../components/basicComponents/others/DetailItem";
-import { EventPageStyles as styles } from "../../../Styles/styles";
+import { EventPageStyles as styles } from "../../../styles/styles";
 import {
   deleteEventRequest,
   editEventRequest,
+  fetchEvent,
 } from "../../../api/EventPage/EventsPageApi";
 import cancelModalButton from "../../../components/basicComponents/buttons/CancelModalButton";
 
@@ -44,13 +45,11 @@ const EventPage = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-  const refresh = myContext.refresh;
+  const { token, setIsLoading, setError, refresh } = myContext;
   const event_id = params.event.id;
   const url = base_url + getEvent(event_id);
 
   const [event, setEvent] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [titleModalVisible, setTitleModalVisible] = useState(false);
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -70,7 +69,7 @@ const EventPage = (props) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
+          Authorization: `Token ${token}`,
         },
       },
       { timeout: 2000 }

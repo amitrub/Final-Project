@@ -9,25 +9,28 @@ import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
   ErrorMessages,
 } from "../../components/basicComponents/others/ErrorScreen";
-import { getHomePageData, getIsEventManager } from '../../api/HomePage/HomePage'
-import {HomePageStyles} from "../../Styles/styles";
+import {
+  getHomePageData,
+  getIsEventManager,
+} from "../../api/HomePage/HomePage";
+import { HomePageStyles } from "../../styles/styles";
 
 const HomePage = () => {
   const myContext = useContext(UserAuthentication);
-  const refresh = myContext.refresh;
+  const { refresh, isLoading, setIsLoading, error } = myContext;
 
   const [eventsPreview, setEventsPreview] = React.useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(async () => {
     setIsLoading(true);
     await getIsEventManager(myContext);
-    await getHomePageData(myContext, setEventsPreview, setIsLoading);
+    await getHomePageData(myContext, setEventsPreview);
   }, [refresh]);
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
-
+  //todo add handleLoading and handleError
+  //handleLoading()
+  //handleError()
 
   return (
     <ScrollView>

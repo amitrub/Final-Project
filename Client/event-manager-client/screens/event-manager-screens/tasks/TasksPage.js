@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { TasksPageStyles } from "../../../Styles/styles";
+import { TasksPageStyles } from "../../../styles/styles";
 
 const TasksPage = () => {
   return (
