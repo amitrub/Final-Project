@@ -27,29 +27,30 @@ import ErrorScreen, {
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
 import { base_url, getEvent } from "../../../constants/urls";
-import {
-  createOneButtonAlert,
-} from "../../../constants/errorHandler";
+import { createOneButtonAlert } from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
 import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
 import fetchTimeout from "fetch-timeout";
 import DetailItem from "../../../components/basicComponents/others/DetailItem";
-import { EventPageStyles as styles } from '../../../Styles/styles'
-import {deleteEventRequest, editEventRequest, fetchEvent} from "../../../api/EventPage/EventsPageApi";
+import { EventPageStyles as styles } from "../../../styles/styles";
+import {
+  deleteEventRequest,
+  editEventRequest,
+  fetchEvent,
+} from "../../../api/EventPage/EventsPageApi";
+import { handleError, handleLoading } from "../../../validations/validations";
 
 const EventPage = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-  const refresh = myContext.refresh;
+  const { token, setIsLoading, setError, refresh } = myContext;
   const event_id = params.event.id;
   const url = base_url + getEvent(event_id);
 
   const [event, setEvent] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [titleModalVisible, setTitleModalVisible] = useState(false);
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -62,14 +63,14 @@ const EventPage = (props) => {
   const [editBudget, setEditBudget] = useState(0);
 
   const getData = useCallback(async () => {
-      // await fetchEvent(myContext, setEvent, setIsLoading, setError)
+    // await fetchEvent(myContext, setEvent, setIsLoading, setError)
     await fetch(
       url,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Token ${myContext.token}`,
+          Authorization: `Token ${token}`,
         },
       },
       { timeout: 2000 }
@@ -384,12 +385,11 @@ const EventPage = (props) => {
       event.budget,
       event.location
     );
-    await editEventRequest(myContext, editEvent, event.id, navigation)
+    await editEventRequest(myContext, editEvent, event.id, navigation);
   };
 
-  if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
-
+  handleLoading();
+  handleError();
   return (
     <View>
       {editTitleModal()}

@@ -4,7 +4,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import EventItem from "../basicComponents/Events/EventItem";
 import UserAuthentication from "../../global/UserAuthentication";
 import { useNavigation } from "@react-navigation/native";
-import {EventsPreviewStyles} from "../../Styles/styles";
+import { EventsPreviewStyles } from "../../styles/styles";
 
 const EventsPreview = (props) => {
   const navigation = useNavigation();

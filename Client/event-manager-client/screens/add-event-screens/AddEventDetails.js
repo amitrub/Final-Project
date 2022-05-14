@@ -11,12 +11,15 @@ import IconButton from "../../components/basicComponents/buttons/IconButton";
 import EventEntity from "../../Entities/EventEntity";
 import UserAuthentication from "../../global/UserAuthentication";
 import DropdownComponent from "../../components/basicComponents/inputs/DropdownComponent";
-import { AddEventDetailsStyles as styles } from '../../Styles/styles'
+import { AddEventDetailsStyles as styles } from "../../styles/styles";
+import { handleError, handleLoading } from "../../validations/validations";
 
 const AddEventDetails = (props) => {
   const myContext = useContext(UserAuthentication);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { isLoading, error } = myContext;
+
+  // handleLoading();
+  // handleError();
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.ImportContacts} />;
 

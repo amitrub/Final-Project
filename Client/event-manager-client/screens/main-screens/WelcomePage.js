@@ -12,7 +12,7 @@ import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Log from "../../constants/logger";
 // import * as Google from 'expo-google-app-auth';
 import * as Google from "expo-google-app-auth";
-import { WelcomePageStyles as styles } from "../../Styles/styles";
+import { WelcomePageStyles as styles } from "../../styles/styles";
 import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
   ErrorMessages,
@@ -20,7 +20,7 @@ import ErrorScreen, {
 import { useNavigation } from "@react-navigation/native";
 import UserAuthentication from "../../global/UserAuthentication";
 import Colors from "../../constants/colors";
-import {useLoginRequest} from "../../api/WelcomePage/LoginApi";
+import { useLoginRequest } from "../../api/WelcomePage/LoginApi";
 
 const WelcomePage = (props) => {
   Log.info("Welcome Page >> loading");
@@ -28,7 +28,6 @@ const WelcomePage = (props) => {
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("admin@gmail.com");
   const [password, setPassword] = React.useState("1234");
-
 
   const onPressRegister = () => {
     navigation.navigate("RegisterPage");
@@ -39,11 +38,12 @@ const WelcomePage = (props) => {
   };
   const onPressLogin = useCallback(async () => {
     Log.info("onPressLogin >> POST Login");
-    useLoginRequest(myContext, email, password, navigation, emptyLoginInputs)
+    useLoginRequest(myContext, email, password, navigation, emptyLoginInputs);
   }, [email, password]);
 
   if (myContext.isLoading) return <Loader />;
-  if (myContext.error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
+  if (myContext.error)
+    return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   const SignInGoogle = async () => {
     // const config = {

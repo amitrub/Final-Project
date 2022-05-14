@@ -3,14 +3,15 @@ import Log, {logApiRequest} from "../../constants/logger";
 import {allEvents, base_url, getEvent} from "../../constants/urls";
 
 export async function fetchAllEvents (myContext, setAllEventsData) {
-    myContext.setIsLoading(true);
+    const {token, setIsLoading, setError} = myContext;
+    setIsLoading(true);
     let functionName = "fetchAllEvents";
     let url = base_url + allEvents;
     let request = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Token ${myContext.token}`,
+            Authorization: `Token ${token}`,
         },
     }
     logApiRequest(functionName, url, request);
@@ -40,11 +41,11 @@ export async function fetchAllEvents (myContext, setAllEventsData) {
         }
 
         setAllEventsData(loadedEvents);
-        myContext.setIsLoading(false);
+        setIsLoading(false);
       })
       .catch((err) => {
-        myContext.setIsLoading(false);
-        myContext.setError(err);
+        setIsLoading(false);
+        setError(err);
         Log.error("AllEventsPage >> getData >> error", err);
       });
   };
