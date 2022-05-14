@@ -3,7 +3,7 @@ import fetchTimeout from "fetch-timeout";
 import {createOneButtonAlert, STATUS_FAILED, STATUS_SUCCESS} from "../../constants/errorHandler";
 import Log from "../../constants/logger";
 
-export async function saveNewSupplierRequest(supplierToAdd, eventId, myContext, setSuppliers, navigation, setIsLoading, setError) {
+export async function saveNewSupplierRequest(myContext, supplierToAdd, eventId, setSuppliers, navigation) {
     const url = base_url + getOrPostEventSuppliers(eventId);
     await fetchTimeout(
         url,
@@ -39,7 +39,7 @@ export async function saveNewSupplierRequest(supplierToAdd, eventId, myContext, 
                     "Add supplier",
                     () => {
                         navigation.pop();
-                        setIsLoading(false);
+                        myContext.setIsLoading(false);
                         navigation.navigate("SupplierPage", {
                             eventId: eventId,
                             supplierId: data.id,
@@ -51,8 +51,8 @@ export async function saveNewSupplierRequest(supplierToAdd, eventId, myContext, 
         .catch((err) => {
             Log.error("AddSupplier >> onSaveSupplier >> failed with error: ", err);
             setSuppliers([]);
-            setIsLoading(false);
-            setError(err);
+            myContext.setIsLoading(false);
+            myContext.setError(err);
         });
-    setIsLoading(false);
+    myContext.setIsLoading(false);
 }

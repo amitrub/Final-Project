@@ -32,7 +32,7 @@ const AddSupplierContact = (props) => {
   const [fullData, setFullData] = useState([]);
 
   useEffect(() => {
-      fetchContacts(setFullData, setAllContacts, setIsLoading, setError)
+      fetchContacts(myContext, setFullData, setAllContacts)
   }, []);
 
   const onSaveSupplier = useCallback(async () => {
@@ -49,7 +49,7 @@ const AddSupplierContact = (props) => {
 
     const supplierToAdd = suppliers[0];
     Log.info("AddSupplier >> onSaveSupplier");
-    saveNewSupplierRequest(supplierToAdd, eventId, myContext, setSuppliers, navigation, setIsLoading, setError)
+    saveNewSupplierRequest(myContext, supplierToAdd, eventId, setSuppliers, navigation)
   }, [suppliers, navigation]);
 
   const renderHeader = () => {

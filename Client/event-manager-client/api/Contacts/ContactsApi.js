@@ -1,8 +1,8 @@
 import * as Contacts from "expo-contacts";
 import ContactEntity from "../../Entities/ContactEntity";
 
-export async function fetchContacts (setFullData, setAllContacts, setIsLoading, setError) {
-    setIsLoading(true);
+export async function fetchContacts (myContext, setFullData, setAllContacts) {
+    myContext.setIsLoading(true);
 
     Contacts.requestPermissionsAsync()
       .then((res) => {
@@ -25,16 +25,16 @@ export async function fetchContacts (setFullData, setAllContacts, setIsLoading, 
                 setFullData(contacts);
               }
               setAllContacts(contacts);
-              setIsLoading(false);
+              myContext.setIsLoading(false);
             })
             .catch((err) => {
-              setIsLoading(false);
-              setError(err);
+              myContext.setIsLoading(false);
+              myContext.setError(err);
             });
         }
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err);
+        myContext.setIsLoading(false);
+        myContext.setError(err);
       });
 }

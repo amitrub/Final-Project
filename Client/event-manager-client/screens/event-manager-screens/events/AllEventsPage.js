@@ -15,12 +15,9 @@ const AllEventsPage = (props) => {
   const myContext = useContext(UserAuthentication);
   const refresh = myContext.refresh;
   const [allEventsData, setAllEventsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchAllEvents(myContext, setAllEventsData, setIsLoading, setError)
+    fetchAllEvents(myContext, setAllEventsData)
       .then((res) => res)
       .catch((error) => Log.Error(error));
   }, [refresh]);
@@ -42,8 +39,8 @@ const AllEventsPage = (props) => {
       />
     </View>
   );
-  if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
+  if (myContext.isLoading) return <Loader />;
+  if (myContext.error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   return (
     <View style={styles.screen}>

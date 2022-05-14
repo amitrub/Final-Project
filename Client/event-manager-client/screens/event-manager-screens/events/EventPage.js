@@ -294,7 +294,7 @@ const EventPage = (props) => {
             name={"trash"}
             size={24}
             color={"black"}
-            onPress={() => deleteEventRequest(event_id, myContext, setIsLoading, setError, navigation)}
+            onPress={() => deleteEventRequest(myContext, event_id, navigation)}
           />
         </View>
         <TouchableOpacity
@@ -375,7 +375,6 @@ const EventPage = (props) => {
   };
 
   const onSaveEvent = async () => {
-    setIsLoading(true);
     let editEvent = new EditEventEntity(
       event.id,
       event.event_manager,
@@ -385,7 +384,7 @@ const EventPage = (props) => {
       event.budget,
       event.location
     );
-    editEventRequest(editEvent, event.id, myContext, setIsLoading, setError, navigation)
+    await editEventRequest(myContext, editEvent, event.id, navigation)
   };
 
   if (isLoading) return <Loader />;

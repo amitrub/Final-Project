@@ -30,14 +30,14 @@ const AddEventOwners = (props) => {
   const [fullData, setFullData] = useState([]);
 
   useEffect(() => {
-      fetchContacts(setFullData, setAllContacts, setIsLoading, setError)
+      fetchContacts(myContext, setFullData, setAllContacts)
   }, []);
 
   async function onSave(newOwners) {
     Log.info("AddEventOwner >> onSaveEvent >> onSave (New event)");
     let event = params.event;
     event.event_owners = newOwners;
-    addEventOwnerRequest(myContext, event, setIsLoading, setError, navigation)
+    await addEventOwnerRequest(myContext, event, navigation)
   }
   async function onSaveEditEventOwners(newOwners) {
     Log.info("AddEventOwner >> onSaveEvent >> onSaveEditEventOwners");
@@ -51,7 +51,7 @@ const AddEventOwners = (props) => {
       event.budget,
       event.location
     );
-    editEventOwnersRequest(editEvent, myContext, setIsLoading, setError, navigation)
+    await editEventOwnersRequest(myContext, editEvent, newOwners, navigation)
   }
   const onSaveEvent = useCallback(async () => {
     setIsLoading(true);

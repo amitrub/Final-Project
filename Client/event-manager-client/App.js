@@ -259,6 +259,8 @@ export default function App() {
   const [token, setToken] = useState("");
   const [name, setName] = useState("guest");
   const [refresh, setRefresh] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const userAuth = {
     id: id,
     token: token,
@@ -268,6 +270,10 @@ export default function App() {
     setToken: setToken,
     setName: setName,
     setRefresh: setRefresh,
+    isLoading: isLoading,
+    setIsLoading: setIsLoading,
+    error: error,
+    setError: setError,
   };
   if (!dataLoaded) {
     console.log("Uploading data...");
