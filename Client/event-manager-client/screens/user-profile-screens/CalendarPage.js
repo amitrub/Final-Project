@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import Colors from "../../constants/colors";
 import { Agenda, CalendarList, LocaleConfig } from "react-native-calendars";
 import EventMeetingItem from "../../components/basicComponents/EventMeetingItem";
+import EventScheduleEntity from "../../Entities/EventScheduleEntity";
 
 const timeToString = (time) => {
   const date = new Date(time);
@@ -10,9 +11,9 @@ const timeToString = (time) => {
 };
 const formatDate = (date) => {
   let d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
@@ -83,109 +84,75 @@ const CalendarPage = (props) => {
       selectedColor: Colors.darkseagreen,
     },
   });
-  const [items, setItems] = React.useState({
-    "2022-05-12": [
-      {
-        name: "Bar meeting",
-        startTime: "10:00",
-        endTime: "10:45",
-        description:
-            "Upgrade to premium drinks,\nask details about the owners.",
-      },
-    ],
-    "2022-05-14": [
-      {
-        name: "Design Manager",
-        startTime: "13:00",
-        endTime: "14:30",
-        description: "Buy expensive flowers.",
-      },
-    ],
-    "2022-05-15": [],
-    "2022-05-16": [
-      {
-        name: "Football game",
-        startTime: "20:45",
-        endTime: "22:45",
-        description: "Maccabi Haifa !!!",
-      },
-      {
-        name: "Bar meeting",
-        startTime: "10:00",
-        endTime: "10:45",
-        description:
-            "Upgrade to premium drinks,\nask details about the owners.",
-      },
-    ],
-  });
+  const [items, setItems] = React.useState({});
 
   const loadItems = useCallback(
-      (day) => {
-        const items = {
-          "2022-05-12": [
-            {
-              name: "Bar meeting",
-              startTime: "10:00",
-              endTime: "10:45",
-              description:
-                  "Upgrade to premium drinks,\nask details about the owners.",
-            },
-          ],
-          "2022-05-14": [
-            {
-              name: "Design Manager",
-              startTime: "13:00",
-              endTime: "14:30",
-              description: "Buy expensive flowers.",
-            },
-          ],
-          "2022-05-15": [],
-          "2022-05-16": [
-            {
-              name: "Football game",
-              startTime: "20:45",
-              endTime: "22:45",
-              description: "Maccabi Haifa !!!",
-            },
-            {
-              name: "Bar meeting",
-              startTime: "10:00",
-              endTime: "10:45",
-              description:
-                  "Upgrade to premium drinks,\nask details about the owners.",
-            },
-          ],
-        };
-        console.log("items ", items);
+    (day) => {
+      const items = {
+        "2022-05-12": [
+          {
+            name: "Bar meeting",
+            startTime: "10:00",
+            endTime: "10:45",
+            description:
+              "Upgrade to premium drinks,\nask details about the owners.",
+          },
+        ],
+        "2022-05-14": [
+          {
+            name: "Design Manager",
+            startTime: "13:00",
+            endTime: "14:30",
+            description: "Buy expensive flowers.",
+          },
+        ],
+        "2022-05-15": [],
+        "2022-05-16": [
+          {
+            name: "Football game",
+            startTime: "20:45",
+            endTime: "22:45",
+            description: "Maccabi Haifa !!!",
+          },
+          {
+            name: "Bar meeting",
+            startTime: "10:00",
+            endTime: "10:45",
+            description:
+              "Upgrade to premium drinks,\nask details about the owners.",
+          },
+        ],
+      };
+      console.log("items ", items);
 
-        setTimeout(() => {
-          for (let i = -15; i < 85; i++) {
-            const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-            const strTime = timeToString(time);
+      setTimeout(() => {
+        for (let i = -15; i < 85; i++) {
+          const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+          const strTime = timeToString(time);
 
-            if (!items[strTime]) {
-              items[strTime] = [];
+          if (!items[strTime]) {
+            items[strTime] = [];
 
-              // const numItems = Math.floor(Math.random() * 3 + 1);
-              // for (let j = 0; j < numItems; j++) {
-              //   // items[strTime].push({
-              //   //   name: "Item for " + strTime + " #" + j,
-              //   //   startTime: "10:00",
-              //   //   endTime: "10:45",
-              //   //   description: "description",
-              //   // });
-              //   items[strTime].push([]);
-              // }
-            }
+            // const numItems = Math.floor(Math.random() * 3 + 1);
+            // for (let j = 0; j < numItems; j++) {
+            //   // items[strTime].push({
+            //   //   name: "Item for " + strTime + " #" + j,
+            //   //   startTime: "10:00",
+            //   //   endTime: "10:45",
+            //   //   description: "description",
+            //   // });
+            //   items[strTime].push([]);
+            // }
           }
-          const newItems = {};
-          Object.keys(items).forEach((key) => {
-            newItems[key] = items[key];
-          });
-          setItems(newItems);
-        }, 1000);
-      },
-      [items]
+        }
+        const newItems = {};
+        Object.keys(items).forEach((key) => {
+          newItems[key] = items[key];
+        });
+        setItems(newItems);
+      }, 1000);
+    },
+    [items]
   );
   const renderItem = (item) => {
     return <EventMeetingItem item={item} />;
@@ -201,49 +168,49 @@ const CalendarPage = (props) => {
   };
   const getCalendarListComponent = () => {
     return (
-        <View style={{ height: "80%" }}>
-          <CalendarList
-              markedDates={markedDates}
-              onDayPress={(dayPressed) => onDayPressed(dayPressed)}
-          />
-        </View>
+      <View style={{ height: "80%" }}>
+        <CalendarList
+          markedDates={markedDates}
+          onDayPress={(dayPressed) => onDayPressed(dayPressed)}
+        />
+      </View>
     );
   };
   const getAgendaComponent = () => {
     const today = formatDate(Date.now(), "yyyy-mm-dd");
     return (
-        <View style={{ height: "98%" }}>
-          <Agenda
-              items={items}
-              loadItemsForMonth={loadItems}
-              selected={today}
-              minDate={"2012-05-10"}
-              maxDate={"2025-05-30"}
-              renderItem={renderItem}
-              renderEmptyDate={() => {
-                return <View />;
-              }}
-              rowHasChanged={(r1, r2) => {
-                return r1.text !== r2.text;
-              }}
-              // showClosingKnob={true}
-              // markingType={'period'}
-              // markedDates={{
-              //    '2017-05-08': {textColor: '#43515c'},
-              //    '2017-05-09': {textColor: '#43515c'},
-              //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-              //    '2017-05-21': {startingDay: true, color: 'blue'},
-              //    '2017-05-22': {endingDay: true, color: 'gray'},
-              //    '2017-05-24': {startingDay: true, color: 'gray'},
-              //    '2017-05-25': {color: 'gray'},
-              //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-              // monthFormat={'yyyy'}
-              // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-              //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-              // hideExtraDays={false}
-              // showOnlySelectedDayItems
-          />
-        </View>
+      <View style={{ height: "98%" }}>
+        <Agenda
+          items={items}
+          loadItemsForMonth={loadItems}
+          selected={today}
+          minDate={"2012-05-10"}
+          maxDate={"2025-05-30"}
+          renderItem={renderItem}
+          renderEmptyDate={() => {
+            return <View />;
+          }}
+          rowHasChanged={(r1, r2) => {
+            return r1.text !== r2.text;
+          }}
+          // showClosingKnob={true}
+          // markingType={'period'}
+          // markedDates={{
+          //    '2017-05-08': {textColor: '#43515c'},
+          //    '2017-05-09': {textColor: '#43515c'},
+          //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+          //    '2017-05-21': {startingDay: true, color: 'blue'},
+          //    '2017-05-22': {endingDay: true, color: 'gray'},
+          //    '2017-05-24': {startingDay: true, color: 'gray'},
+          //    '2017-05-25': {color: 'gray'},
+          //    '2017-05-26': {endingDay: true, color: 'gray'}}}
+          // monthFormat={'yyyy'}
+          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+          //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+          // hideExtraDays={false}
+          // showOnlySelectedDayItems
+        />
+      </View>
     );
   };
 
