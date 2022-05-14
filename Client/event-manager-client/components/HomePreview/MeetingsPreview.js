@@ -9,7 +9,7 @@ import {
 } from "../../constants/urls";
 import MeetingEntity from "../../Entities/MeetingEntity";
 import { useNavigation } from "@react-navigation/native";
-import { MeetingsPreviewStyles } from '../../Styles/styles'
+import { MeetingsPreviewStyles } from "../../styles/styles";
 
 // MeetingItem.propTypes = { meeting: PropTypes.any };
 const MeetingsPreview = (props) => {

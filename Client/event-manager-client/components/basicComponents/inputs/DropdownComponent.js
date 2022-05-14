@@ -1,82 +1,81 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 import Colors from "../../../constants/colors";
 
-
 const data = [
-    { label: 'Wedding', value: 'Wedding' },
-    { label: 'Bar Mitzva', value: 'Bar Mitzva' },
-    { label: 'Birthday', value: 'Birthday' },
+  { label: "Wedding", value: "Wedding" },
+  { label: "Bar Mitzva", value: "Bar Mitzva" },
+  { label: "Birthday", value: "Birthday" },
 ];
 
 const DropdownComponent = (props) => {
-    const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
 
-    return (
-        <View style={styles.container}>
-            <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: 'black' }]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? "Event's type" : '...'}
-                searchPlaceholder="Search..."
-                value={value}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                    setValue(item.value);
-                    setIsFocus(false);
-                    props.onPress(item.value);
-                }}
-            />
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Dropdown
+        style={[styles.dropdown, isFocus && { borderColor: "black" }]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={data}
+        search
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? "Event's type" : "..."}
+        searchPlaceholder="Search..."
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+          setValue(item.value);
+          setIsFocus(false);
+          props.onPress(item.value);
+        }}
+      />
+    </View>
+  );
 };
 
 export default DropdownComponent;
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        width: 290
-    },
-    dropdown: {
-        height: 50,
-        paddingHorizontal: 8,
-        borderBottomColor: "#000000",
-        borderBottomWidth: 1,
-    },
-    icon: {
-        marginRight: 5,
-    },
-    label: {
-        position: 'absolute',
-        left: 22,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
-    },
-    placeholderStyle: {
-        fontFamily: "alef-regular",
-        fontSize: 14,
-        color: Colors.html_Silver,
-    },
-    selectedTextStyle: {
-        fontFamily: "alef-regular",
-        fontSize: 14,
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontFamily: "alef-regular",
-        fontSize: 14,
-    },
+  container: {
+    padding: 16,
+    width: 290,
+  },
+  dropdown: {
+    height: 50,
+    paddingHorizontal: 8,
+    borderBottomColor: "#000000",
+    borderBottomWidth: 1,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: "absolute",
+    left: 22,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontFamily: "alef-regular",
+    fontSize: 14,
+    color: Colors.html_Silver,
+  },
+  selectedTextStyle: {
+    fontFamily: "alef-regular",
+    fontSize: 14,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontFamily: "alef-regular",
+    fontSize: 14,
+  },
 });

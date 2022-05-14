@@ -8,8 +8,9 @@ import ErrorScreen, {
 } from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
 import SupplierItem from "../../../components/basicComponents/suppliers/SupplierItem";
-import { AllEventsSuppliersStyles as styles } from "../../../Styles/styles"
-import {fetchEventSuppliers} from "../../../api/Suppliers/AllEventsSuppliersApi";
+import { AllEventsSuppliersStyles as styles } from "../../../styles/styles";
+import { fetchEventSuppliers } from "../../../api/Suppliers/AllEventsSuppliersApi";
+import { handleError, handleLoading } from "../../../validations/validations";
 
 const AllEventsSuppliers = (props) => {
   const params = props.route.params;
@@ -17,13 +18,11 @@ const AllEventsSuppliers = (props) => {
   const eventId = params.eventId;
   const eventName = params.eventName;
   const myContext = useContext(UserAuthentication);
-  const refresh = myContext.refresh;
+  const { refresh, isLoading, setIsLoading, error } = myContext;
   const [eventSuppliersData, setEventSuppliersData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const getData = useCallback(async () => {
-    fetchEventSuppliers(eventId, myContext, setEventSuppliersData, setIsLoading, setError)
+    fetchEventSuppliers(myContext, eventId, setEventSuppliersData);
   }, [refresh]);
   useEffect(() => {
     setIsLoading(true);
@@ -61,6 +60,9 @@ const AllEventsSuppliers = (props) => {
       </View>
     );
   };
+  // handleLoading();
+  // handleError();
+  // todo;
   if (isLoading) return <Loader />;
   if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 

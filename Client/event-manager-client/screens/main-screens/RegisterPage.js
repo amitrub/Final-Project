@@ -1,15 +1,9 @@
 import React, { useCallback } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import { View, Text, SafeAreaView, ScrollView, TextInput } from "react-native";
 import Log from "../../constants/logger";
 import RegisterUser from "../../Entities/Users/RegisterUser";
 import Address from "../../Entities/Users/Address";
-import { RegisterPageStyles } from "../../Styles/styles";
+import { RegisterPageStyles } from "../../styles/styles";
 import { registerUserRequest } from "../../api/RegisterPage/RegisterPageApi";
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 

@@ -8,7 +8,8 @@ import React, {
   useState,
 } from "react";
 import {
-  Alert, Linking,
+  Alert,
+  Linking,
   Modal,
   Pressable,
   ScrollView,
@@ -35,7 +36,7 @@ import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import fetchTimeout from "fetch-timeout";
 import DetailSupplierItem from "../../../components/basicComponents/suppliers/DetailSupplierItem";
 import call from "react-native-phone-call";
-import { SupplierPageStyles as styles } from '../../../Styles/styles'
+import { SupplierPageStyles as styles } from "../../../styles/styles";
 
 const SupplierPage = (props) => {
   const navigation = props.navigation;
@@ -43,12 +44,9 @@ const SupplierPage = (props) => {
   const event_id = params.eventId;
   const supplierId = params.supplierId;
   const myContext = useContext(UserAuthentication);
-  const refresh = myContext.refresh;
+  const { refresh, isLoading, setIsLoading, error, setError } = myContext;
   const url = base_url + getOrPutSupplier(event_id, supplierId);
-
   const [supplier, setSupplier] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [serviceTypeModalVisible, setServiceTypeModalVisible] = useState(false);
   const [priceModalVisible, setPriceModalVisible] = useState(false);
   const [editServiceType, setEditServiceType] = useState("");
@@ -341,10 +339,10 @@ const SupplierPage = (props) => {
           iconSize={18}
         />
         <IconButton
-            onPress={onPressBit}
-            icon={"credit"}
-            color={Colors.black}
-            iconSize={16}
+          onPress={onPressBit}
+          icon={"credit"}
+          color={Colors.black}
+          iconSize={16}
         />
       </View>
     );
@@ -388,7 +386,7 @@ const SupplierPage = (props) => {
   const bitUrl = "https://bitpay.co.il/app/";
   const onPressBit = useCallback(async () => {
     // Checking if the link is supported for links with custom URL scheme.
-    console.log(bitUrl)
+    console.log(bitUrl);
     const supported = await Linking.canOpenURL(bitUrl);
 
     if (supported) {

@@ -3,17 +3,14 @@ import { View, Text, ScrollView } from "react-native";
 import EventItem from "../../../components/basicComponents/Events/EventItem";
 import Entypo from "react-native-vector-icons/Entypo";
 import UserAuthentication from "../../../global/UserAuthentication";
-import Loader from "../../../components/basicComponents/others/Loader";
-import ErrorScreen, {
-  ErrorMessages,
-} from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
-import { AllEventsPageStyles as styles } from '../../../Styles/styles'
-import {fetchAllEvents} from "../../../api/AllEventsPage/AllEventsPageApi";
+import { AllEventsPageStyles as styles } from "../../../styles/styles";
+import { fetchAllEvents } from "../../../api/AllEventsPage/AllEventsPageApi";
+import { handleError, handleLoading } from "../../../validations/validations";
 
 const AllEventsPage = (props) => {
   const myContext = useContext(UserAuthentication);
-  const refresh = myContext.refresh;
+  const { refresh } = myContext;
   const [allEventsData, setAllEventsData] = useState([]);
 
   useEffect(() => {
@@ -39,9 +36,9 @@ const AllEventsPage = (props) => {
       />
     </View>
   );
-  if (myContext.isLoading) return <Loader />;
-  if (myContext.error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
-
+  //todo
+  handleLoading();
+  handleError();
   return (
     <View style={styles.screen}>
       {AllEventsTitle}
