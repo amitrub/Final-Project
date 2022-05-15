@@ -20,9 +20,9 @@ class Event(models.Model):
     budget = models.PositiveIntegerField()
     location = models.CharField(max_length=255)
 
-    def __str__(self):
-        """Return the model as a string"""
-        return self.event_name
+    # def __str__(self):
+    #     """Return the model as a string"""
+    #     return self.id
 
     def tojson(self):
         return json.dumps(self, default=lambda o: o.__dict__,

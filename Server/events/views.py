@@ -6,6 +6,7 @@ from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
+from rest_framework.views import APIView
 
 from events import serializers
 from events import models
@@ -206,6 +207,22 @@ def sub_event_create(self, request, *args, **kwargs):
     serializer.save(event=event)
     headers = self.get_success_headers(serializer.data)
     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+# -------------------EventSchedule to Event-------------------
+
+class EventScheduleToEventViewSet(APIView):
+    """Handle creating, reading and updating profiles feed items"""
+    serializer_class = serializers.EventScheduleSerializer
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, user_id):
+        events = Event.objects.filter(event_manager=user_id).values_list('id', flat=True).first()
+        print(events)
+        event_schedules = EventSchedule.objects.filter(event_id=events)
+        res = [{'start_time': x.start_time, 'end_time': x.end_time, 'event': x.event.event_name} for x in
+               event_schedules.iterator()]
+        return Response({'event_schedules': res})
 
 # class MeetingViewSet(viewsets.ModelViewSet):
 #     """Handle creating, reading and updating profiles feed items"""
