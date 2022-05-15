@@ -126,7 +126,6 @@ class DummyEventOwnerViewSet(viewsets.ModelViewSet):
             raise NotFound('A event with this id does not exist')
         serializer = self.get_serializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save(event=event)
         list = []
         for event_owner in request.data:
             event_owner_new = DummyEventOwner.objects.create(**event_owner, event_id=event_id)
