@@ -1,6 +1,6 @@
 //urls
 export const remote_base_url =
-  "http://ec2-54-236-196-72.compute-1.amazonaws.com";
+  "http://ec2-18-215-93-123.compute-1.amazonaws.com";
 export const local_base_url = "http://10.100.102.31:8000";
 export const base_url = remote_base_url;
 
