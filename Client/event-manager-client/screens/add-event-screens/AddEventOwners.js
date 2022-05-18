@@ -17,7 +17,9 @@ import {
 } from "../../api/EventPage/EventsPageApi";
 import { handleError, handleLoading } from "../../validations/validations";
 import Loader from "../../components/basicComponents/others/Loader";
-import ErrorScreen from "../../components/basicComponents/others/ErrorScreen";
+import ErrorScreen, {
+  ErrorMessages,
+} from "../../components/basicComponents/others/ErrorScreen";
 
 const AddEventOwners = (props) => {
   const params = props.route.params;

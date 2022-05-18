@@ -151,6 +151,7 @@ const WelcomePage = (props) => {
                 onChangeText={setPassword}
                 value={password}
                 placeholder="password"
+                secureTextEntry={true}
               />
             </SafeAreaView>
             <View style={{ paddingTop: 20 }}>
@@ -166,12 +167,12 @@ const WelcomePage = (props) => {
                 </Text>
               </Pressable>
             </View>
-            <View style={{ paddingTop: "15%" }}>
-              <TitleButton
-                text={"Sign-in with Google"}
-                onPress={SignInGoogle}
-              />
-            </View>
+            {/*<View style={{ paddingTop: "15%" }}>*/}
+            {/*  <TitleButton*/}
+            {/*    text={"Sign-in with Google"}*/}
+            {/*    onPress={SignInGoogle}*/}
+            {/*  />*/}
+            {/*</View>*/}
           </View>
         </View>
       </View>

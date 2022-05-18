@@ -39,7 +39,8 @@ export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
 }
 
 export async function deleteEventRequest(myContext, event_id, navigation) {
-  const { token, setIsLoading, setError, setRefresh } = myContext;let functionName = "deleteEventRequest";
+  const { token, setIsLoading, setError, setRefresh } = myContext;
+  let functionName = "deleteEventRequest";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "DELETE",
@@ -168,19 +169,25 @@ export async function editEventOwnersRequest(
   const { token, setIsLoading, setError, setRefresh } = myContext;
   const urlEditEvent = base_url + getEvent(editEvent.id);
   const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
-  async function addNewOwnerRequest(owner) {
+  async function addNewOwnerRequest(owners) {
+    const ownersBody = JSON.stringify(
+      owners.map((o) => {
+        return { name: o.name, phone: o.phone };
+      })
+    );
+
+    console.log("url:", urlEditOwnerEvent);
+    console.log("ownersBody:", ownersBody);
+
     await fetchTimeout(
       urlEditOwnerEvent,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${token}`,
         },
-        body: JSON.stringify({
-          name: owner.name,
-          phone: owner.phone,
-        }),
+        body: ownersBody,
       },
       5000,
       "Timeout"
@@ -189,6 +196,7 @@ export async function editEventOwnersRequest(
         const data = await res.json();
         if (STATUS_FAILED(res.status)) {
           const message = data.toString();
+          console.log(data);
           createOneButtonAlert(message, "OK", "add New Owner Request failed");
           return false;
         } else if (STATUS_SUCCESS(res.status)) {
@@ -223,12 +231,14 @@ export async function editEventOwnersRequest(
         createOneButtonAlert(message, "OK", "EDIT event failed");
       } else if (STATUS_SUCCESS(res.status)) {
         let ownersSucceeded = true;
-        for (const owner of newOwners) {
-          if (!ownersSucceeded) break;
-          addNewOwnerRequest(owner).then((res) => {
-            ownersSucceeded = ownersSucceeded && !!res;
-          });
-        }
+        // for (const owner of newOwners) {
+        //   if (!ownersSucceeded) break;
+        //   addNewOwnerRequest(owner).then((res) => {
+        //     ownersSucceeded = ownersSucceeded && !!res;
+        //   });
+
+        console.log("before addNewOwnerRequest");
+        ownersSucceeded = await addNewOwnerRequest(newOwners);
 
         //----------------------------------------------------------
         if (ownersSucceeded) {
@@ -258,13 +268,7 @@ export async function addEventScheduleRequest(
   meetingToAdd
 ) {
   const url = base_url + postEventSchedule(eventId);
-  const {
-    token,
-    refresh,
-    setRefresh,
-    setError,
-    setIsLoading,
-  } = myContext;
+  const { token, refresh, setRefresh, setError, setIsLoading } = myContext;
 
   await fetchTimeout(
     url,
@@ -307,11 +311,7 @@ export async function getEventScheduleRequest(
   setEventSchedulesData,
   setEventSchedulesByDate
 ) {
-  const {
-    token,
-    setError,
-    setIsLoading,
-  } = myContext;
+  const { token, setError, setIsLoading } = myContext;
   const url = base_url + postEventSchedule(eventId);
   await fetch(
     url,
