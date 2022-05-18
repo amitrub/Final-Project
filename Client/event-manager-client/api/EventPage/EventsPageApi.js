@@ -25,7 +25,7 @@ export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
       Authorization: `Token ${myContext.token}`,
     },
   };
-  logApiRequest(functionName, url, request);
+  logApiRequest(functionName, url, request, myContext);
   await fetch(url, request, { timeout: 2000 })
     .then(async (res) => {
       const data = await res.json();
@@ -49,7 +49,7 @@ export async function deleteEventRequest(myContext, event_id, navigation) {
       Authorization: `Token ${token}`,
     },
   };
-  logApiRequest(functionName, url, request);
+  logApiRequest(functionName, url, request, myContext);
   const onPressYes = async () => {
     setIsLoading(true);
     await fetch(url, request, { timeout: 2000 })
@@ -100,7 +100,7 @@ export async function editEventRequest(
     body: JSON.stringify(editEvent),
   };
   setIsLoading(true);
-  logApiRequest(functionName, url, request);
+  logApiRequest(functionName, url, request, myContext);
   await fetchTimeout(url, request, 5000, "Timeout")
     .then(async (res) => {
       const data = await res.json();
@@ -194,9 +194,9 @@ export async function editEventOwnersRequest(
     )
       .then(async (res) => {
         const data = await res.json();
-        console.log("---------------------------");
-        console.log("res", res.status);
-        console.log("data", data);
+        //console.log("---------------------------");
+        //console.log("res", res.status);
+        //console.log("data", data);
 
         if (STATUS_FAILED(res.status)) {
           const message = data.toString();
@@ -360,7 +360,7 @@ export async function getEventScheduleRequest(
   )
     .then(async (res) => {
       const data = await res.json();
-      console.log("data", data);
+      //console.log("data", data);
 
       const loadedEventSchedules = [];
       for (const key in data) {
@@ -388,7 +388,6 @@ export async function getEventScheduleRequest(
           dict[date] = [eventSchedule];
         }
       });
-      console.log("dict ", dict);
       setEventSchedulesByDate(dict);
 
       setIsLoading(false);

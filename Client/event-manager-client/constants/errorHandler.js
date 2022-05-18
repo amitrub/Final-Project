@@ -10,7 +10,7 @@ export const createOneButtonAlert = (
   title = "Event manager app",
   onPressFunction = () => {}
 ) => {
-  console.log("createOneButtonAlert");
+  //.log("createOneButtonAlert");
   return Alert.alert(title, message, [
     { text: button_text, onPress: onPressFunction },
   ]);
@@ -24,7 +24,7 @@ export const createTwoButtonAlert = (
   onPressOK = () => {},
   onPressCancel = () => {}
 ) => {
-  console.log("createOneButtonAlert");
+  //console.log("createOneButtonAlert");
   return Alert.alert(title, message, [
     { text: button_text_Ok, onPress: onPressOK, style: "default" },
     { text: button_text_Cancel, onPress: onPressCancel, style: "default" },

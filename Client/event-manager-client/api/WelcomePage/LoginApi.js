@@ -29,7 +29,7 @@ export async function useLoginRequest(
         password: password,
       }),
     },
-    1000,
+    2000,
     "Timeout"
   )
     .then(async (res) => {

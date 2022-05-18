@@ -162,9 +162,9 @@ const EventSchedulePage = (props) => {
             .sort((str1, str2) => {
               return str1 > str2;
             })
-            .map((date) => {
+            .map((date, index) => {
               return (
-                <View style={{ width: 350, margin: 10 }}>
+                <View key={index} style={{ width: 350, margin: 10 }}>
                   <Text style={[styles.textTitle, { fontSize: 20 }]}>
                     {date}
                   </Text>

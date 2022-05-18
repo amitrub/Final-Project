@@ -172,11 +172,11 @@ export const HomePageStackScreen = () => {
         component={AddSupplierContact}
         options={emptyHeader}
       />
-        <HomePageStack.Screen
-            name="EventSchedulePage"
-            component={EventSchedulePage}
-            options={emptyHeader}
-        />
+      <HomePageStack.Screen
+        name="EventSchedulePage"
+        component={EventSchedulePage}
+        options={emptyHeader}
+      />
     </HomePageStack.Navigator>
   );
 };
@@ -235,11 +235,11 @@ export const EventsStackScreen = () => {
         component={AddSupplierContact}
         options={emptyHeader}
       />
-        <EventsStack.Screen
-            name="EventSchedulePage"
-            component={EventSchedulePage}
-            options={emptyHeader}
-        />
+      <EventsStack.Screen
+        name="EventSchedulePage"
+        component={EventSchedulePage}
+        options={emptyHeader}
+      />
     </EventsStack.Navigator>
   );
 };
@@ -272,6 +272,7 @@ export default function App() {
   const [refresh, setRefresh] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [debugMode, setDebugMode] = useState(false);
   const userAuth = {
     id: id,
     token: token,
@@ -285,6 +286,8 @@ export default function App() {
     setIsLoading: setIsLoading,
     error: error,
     setError: setError,
+    debugMode: debugMode,
+    setDebugMode: setDebugMode,
   };
   if (!dataLoaded) {
     console.log("Uploading data...");
@@ -299,10 +302,9 @@ export default function App() {
 
   return (
     <UserAuthentication.Provider value={userAuth}>
-        <NavigationContainer>
-          <WelcomeStackScreen />
-        </NavigationContainer>
+      <NavigationContainer>
+        <WelcomeStackScreen />
+      </NavigationContainer>
     </UserAuthentication.Provider>
   );
 }
-

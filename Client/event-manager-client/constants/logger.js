@@ -26,16 +26,19 @@ const defaultConfig = {
 
 const Log = logger.createLogger(defaultConfig);
 
-Log.debug("Debug config message");
-Log.info({ message: "info config!" });
+// Log.debug("Debug config message");
+// Log.info({ message: "info config!" });
 
 export default Log;
 
-export function logApiRequest(functionName, url, request) {
-  console.log("------------------------------------------")
-  console.log("Function Name: " + functionName)
-  console.log("Url: " + url)
-  console.log("Request: " + JSON.stringify(request, null, 4))
-  console.log("------------------------------------------")
-
+export function logApiRequest(functionName, url, request, myContext = null) {
+  if (myContext && myContext.debugMode) {
+    Log.info(
+      `\n------------------------------------------\n` +
+        `Function Name: ${functionName}\n` +
+        `Url: ${url}\n` +
+        `Request ${JSON.stringify(request, null, 4)}\n` +
+        `------------------------------------------`
+    );
+  }
 }

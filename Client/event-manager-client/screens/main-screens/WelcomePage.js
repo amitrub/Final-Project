@@ -23,7 +23,6 @@ import Colors from "../../constants/colors";
 import { useLoginRequest } from "../../api/WelcomePage/LoginApi";
 
 const WelcomePage = (props) => {
-  Log.info("Welcome Page >> loading");
   const navigation = useNavigation();
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("admin@gmail.com");

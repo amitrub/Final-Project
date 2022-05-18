@@ -1,9 +1,13 @@
-import React, { useCallback } from "react";
-import { Text, View } from "react-native";
-import Colors from "../../constants/colors";
-import { Agenda, CalendarList, LocaleConfig } from "react-native-calendars";
+import React, { useCallback, useContext, useEffect } from "react";
+import { View } from "react-native";
+import { Agenda, LocaleConfig } from "react-native-calendars";
 import EventMeetingItem from "../../components/basicComponents/EventMeetingItem";
-import EventScheduleEntity from "../../Entities/EventScheduleEntity";
+import { getEventScheduleByUserId } from "../../api/Calendar/CalendarPageApi";
+import UserAuthentication from "../../global/UserAuthentication";
+import Loader from "../../components/basicComponents/others/Loader";
+import ErrorScreen, {
+  ErrorMessages,
+} from "../../components/basicComponents/others/ErrorScreen";
 
 const timeToString = (time) => {
   const date = new Date(time);
@@ -22,6 +26,9 @@ const formatDate = (date) => {
 };
 
 const CalendarPage = (props) => {
+  const myContext = useContext(UserAuthentication);
+  const { id, token, isLoading, setIsLoading, error, setError, refresh } =
+    myContext;
   LocaleConfig.locales["en"] = {
     monthNames: [
       "January",
@@ -64,66 +71,15 @@ const CalendarPage = (props) => {
     today: "today",
   };
   LocaleConfig.defaultLocale = "en";
-  const calendarObjectExample = {
-    day: 1, // day of month (1-31)
-    month: 1, // month of year (1-12)
-    year: 2017, // year
-    timestamp: Date.now(), // UTC timestamp representing 00:00 AM of this date
-    dateString: "2016-05-13", // date formatted as 'YYYY-MM-DD' string
-  };
-  const daySelected = {
-    selected: true,
-    marked: true,
-    selectedColor: Colors.darkseagreen,
-  };
-  const [chosenDay, setChosenDay] = React.useState(null);
-  const [markedDates, setMarkedDates] = React.useState({
-    "2022-04-02": {
-      selected: true,
-      marked: true,
-      selectedColor: Colors.darkseagreen,
-    },
-  });
   const [items, setItems] = React.useState({});
+  const [fetchedEventSchedules, setFetchedEventSchedules] = React.useState({});
 
+  useEffect(async () => {
+    await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
+  }, [id]);
   const loadItems = useCallback(
-    (day) => {
-      const items = {
-        "2022-05-12": [
-          {
-            name: "Bar meeting",
-            startTime: "10:00",
-            endTime: "10:45",
-            description:
-              "Upgrade to premium drinks,\nask details about the owners.",
-          },
-        ],
-        "2022-05-14": [
-          {
-            name: "Design Manager",
-            startTime: "13:00",
-            endTime: "14:30",
-            description: "Buy expensive flowers.",
-          },
-        ],
-        "2022-05-15": [],
-        "2022-05-16": [
-          {
-            name: "Football game",
-            startTime: "20:45",
-            endTime: "22:45",
-            description: "Maccabi Haifa !!!",
-          },
-          {
-            name: "Bar meeting",
-            startTime: "10:00",
-            endTime: "10:45",
-            description:
-              "Upgrade to premium drinks,\nask details about the owners.",
-          },
-        ],
-      };
-      console.log("items ", items);
+    async (day) => {
+      const items = fetchedEventSchedules;
 
       setTimeout(() => {
         for (let i = -15; i < 85; i++) {
@@ -132,19 +88,9 @@ const CalendarPage = (props) => {
 
           if (!items[strTime]) {
             items[strTime] = [];
-
-            // const numItems = Math.floor(Math.random() * 3 + 1);
-            // for (let j = 0; j < numItems; j++) {
-            //   // items[strTime].push({
-            //   //   name: "Item for " + strTime + " #" + j,
-            //   //   startTime: "10:00",
-            //   //   endTime: "10:45",
-            //   //   description: "description",
-            //   // });
-            //   items[strTime].push([]);
-            // }
           }
         }
+
         const newItems = {};
         Object.keys(items).forEach((key) => {
           newItems[key] = items[key];
@@ -152,29 +98,10 @@ const CalendarPage = (props) => {
         setItems(newItems);
       }, 1000);
     },
-    [items]
+    [refresh]
   );
   const renderItem = (item) => {
     return <EventMeetingItem item={item} />;
-  };
-  const onDayPressed = (dayPressed) => {
-    setChosenDay(dayPressed);
-    let tmpMarkedDates = markedDates;
-    tmpMarkedDates[dayPressed.dateString] = daySelected;
-    setMarkedDates(tmpMarkedDates);
-  };
-  const dayPresentation = () => {
-    return <Text>{JSON.stringify(chosenDay)}</Text>;
-  };
-  const getCalendarListComponent = () => {
-    return (
-      <View style={{ height: "80%" }}>
-        <CalendarList
-          markedDates={markedDates}
-          onDayPress={(dayPressed) => onDayPressed(dayPressed)}
-        />
-      </View>
-    );
   };
   const getAgendaComponent = () => {
     const today = formatDate(Date.now(), "yyyy-mm-dd");
@@ -184,7 +111,7 @@ const CalendarPage = (props) => {
           items={items}
           loadItemsForMonth={loadItems}
           selected={today}
-          minDate={"2012-05-10"}
+          minDate={"2022-01-01"}
           maxDate={"2025-05-30"}
           renderItem={renderItem}
           renderEmptyDate={() => {
@@ -214,7 +141,46 @@ const CalendarPage = (props) => {
     );
   };
 
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
   return <View>{getAgendaComponent()}</View>;
 };
 
 export default CalendarPage;
+
+// const calendarObjectExample = {
+//   day: 1, // day of month (1-31)
+//   month: 1, // month of year (1-12)
+//   year: 2017, // year
+//   timestamp: Date.now(), // UTC timestamp representing 00:00 AM of this date
+//   dateString: "2016-05-13", // date formatted as 'YYYY-MM-DD' string
+// };
+// const daySelected = {
+//   selected: true,
+//   marked: true,
+//   selectedColor: Colors.darkseagreen,
+// };
+// const [chosenDay, setChosenDay] = React.useState(null);
+// const [markedDates, setMarkedDates] = React.useState({
+//   "2022-04-02": {
+//     selected: true,
+//     marked: true,
+//     selectedColor: Colors.darkseagreen,
+//   },
+// });
+// const onDayPressed = (dayPressed) => {
+//   setChosenDay(dayPressed);
+//   let tmpMarkedDates = markedDates;
+//   tmpMarkedDates[dayPressed.dateString] = daySelected;
+//   setMarkedDates(tmpMarkedDates);
+// };
+// const getCalendarListComponent = () => {
+//   return (
+//     <View style={{ height: "80%" }}>
+//       <CalendarList
+//         markedDates={markedDates}
+//         onDayPress={(dayPressed) => onDayPressed(dayPressed)}
+//       />
+//     </View>
+//   );
+// };
