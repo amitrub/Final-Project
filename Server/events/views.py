@@ -217,9 +217,8 @@ class EventScheduleToEventViewSet(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def get(self, request, user_id):
-        events = Event.objects.filter(event_manager=user_id).values_list('id', flat=True).first()
-        print(events)
-        event_schedules = EventSchedule.objects.filter(event_id=events)
+        events = list(Event.objects.filter(event_manager=user_id).values_list('id',flat=True))
+        event_schedules = EventSchedule.objects.filter(event_id__in=events)
         res = [{'start_time': x.start_time, 'end_time': x.end_time, 'event': x.event.event_name, 'description': x.description} for x in
                event_schedules.iterator()]
         return Response({'event_schedules': res})
