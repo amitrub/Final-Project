@@ -29,7 +29,7 @@ export async function useLoginRequest(
         password: password,
       }),
     },
-    1000,
+    2000,
     "Timeout"
   )
     .then(async (res) => {
@@ -41,7 +41,7 @@ export async function useLoginRequest(
         setToken(data.token);
         setId(data.id);
         setName(data.name);
-        createOneButtonAlert("Login succeeded", "OK", "Login succeeded", () => {
+        createOneButtonAlert("Login succeeded", "OK", "Great!", () => {
           emptyLoginInputs();
           navigation.navigate(TabNavigator);
         });

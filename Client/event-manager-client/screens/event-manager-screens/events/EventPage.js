@@ -32,7 +32,6 @@ import Colors from "../../../constants/colors";
 import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
 import { EditEventEntity } from "../../../Entities/EventEntity";
-import fetchTimeout from "fetch-timeout";
 import DetailItem from "../../../components/basicComponents/others/DetailItem";
 import { EventPageStyles as styles } from "../../../styles/styles";
 import {
@@ -40,13 +39,14 @@ import {
   editEventRequest,
   fetchEvent,
 } from "../../../api/EventPage/EventsPageApi";
-import { handleError, handleLoading } from "../../../validations/validations";
+import cancelModalButton from "../../../components/basicComponents/buttons/CancelModalButton";
 
 const EventPage = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-  const { token, setIsLoading, setError, refresh } = myContext;
+  const { token, isLoading, setIsLoading, error, setError, refresh } =
+    myContext;
   const event_id = params.event.id;
   const url = base_url + getEvent(event_id);
 
@@ -116,17 +116,6 @@ const EventPage = (props) => {
       })
       .catch((error) => Log.Error(error));
   }, [navigation, refresh]);
-
-  const cancelModalButton = (closeModalFunc) => {
-    return (
-      <Pressable
-        style={[styles.button, styles.buttonCancel]}
-        onPress={closeModalFunc}
-      >
-        <Text style={styles.textStyle}>Cancel</Text>
-      </Pressable>
-    );
-  };
 
   const editTitleModal = () => {
     return (
@@ -352,11 +341,16 @@ const EventPage = (props) => {
   };
   const eventScheduleComponent = () => {
     return (
-      <DetailEventItem
-        key="5"
-        title={"Event schedule"}
-        items={["Hupa", "Dancing"]}
-        onPress={() => {}}
+      <DetailItem
+        title={"click to manage"}
+        value={"Event Schedule"}
+        onPress={() =>
+          navigation.navigate("EventSchedulePage", {
+            eventId: event.id,
+            eventName: event.event_name,
+            event_schedules: event.event_schedules,
+          })
+        }
       />
     );
   };
@@ -388,8 +382,9 @@ const EventPage = (props) => {
     await editEventRequest(myContext, editEvent, event.id, navigation);
   };
 
-  handleLoading();
-  handleError();
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
+
   return (
     <View>
       {editTitleModal()}

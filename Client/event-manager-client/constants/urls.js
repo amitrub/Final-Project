@@ -13,6 +13,8 @@ export const homePage = (user_id) => `/api/user/${user_id}/homepage/`;
 export const register = "/api/user/";
 export const login = "/api/login/";
 export const eventManager = (user_id) => `/api/user/${user_id}/event_manager/`;
+export const eventSchedulesById = (user_id) =>
+  `/api/user/${user_id}/event_schedules/`;
 
 //meetings
 export const previewMeetingsCapitlP = "/api/PreviewMeetings/";
@@ -23,6 +25,8 @@ export const allMeetings = "/api/allMeetings/";
 export const previewEvents = "/api/previewEvents/";
 export const allEvents = "/api/events/";
 export const getEvent = (eventId) => `/api/events/${eventId}/`;
+export const postEventSchedule = (eventId) =>
+  `/api/events/${eventId}/event_schedule/`;
 
 //events_owners
 export const addEventOwner = (eventId) => `/api/events/${eventId}/event_owner/`;

@@ -23,7 +23,6 @@ import Colors from "../../constants/colors";
 import { useLoginRequest } from "../../api/WelcomePage/LoginApi";
 
 const WelcomePage = (props) => {
-  Log.info("Welcome Page >> loading");
   const navigation = useNavigation();
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("admin@gmail.com");
@@ -38,7 +37,13 @@ const WelcomePage = (props) => {
   };
   const onPressLogin = useCallback(async () => {
     Log.info("onPressLogin >> POST Login");
-    useLoginRequest(myContext, email, password, navigation, emptyLoginInputs);
+    await useLoginRequest(
+      myContext,
+      email,
+      password,
+      navigation,
+      emptyLoginInputs
+    );
   }, [email, password]);
 
   if (myContext.isLoading) return <Loader />;
@@ -145,6 +150,7 @@ const WelcomePage = (props) => {
                 onChangeText={setPassword}
                 value={password}
                 placeholder="password"
+                secureTextEntry={true}
               />
             </SafeAreaView>
             <View style={{ paddingTop: 20 }}>
@@ -160,12 +166,12 @@ const WelcomePage = (props) => {
                 </Text>
               </Pressable>
             </View>
-            <View style={{ paddingTop: "15%" }}>
-              <TitleButton
-                text={"Sign-in with Google"}
-                onPress={SignInGoogle}
-              />
-            </View>
+            {/*<View style={{ paddingTop: "15%" }}>*/}
+            {/*  <TitleButton*/}
+            {/*    text={"Sign-in with Google"}*/}
+            {/*    onPress={SignInGoogle}*/}
+            {/*  />*/}
+            {/*</View>*/}
           </View>
         </View>
       </View>

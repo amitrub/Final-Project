@@ -1,13 +1,11 @@
 import React from "react";
 import {
-  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import Colors from "../../../constants/colors";
-import Entypo from "react-native-vector-icons/Entypo";
 
 const DetailItem = (props) => {
   const onPressProp = props.onPress

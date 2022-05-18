@@ -17,7 +17,10 @@ import {
 } from "../../api/EventPage/EventsPageApi";
 import { handleError, handleLoading } from "../../validations/validations";
 import Loader from "../../components/basicComponents/others/Loader";
-import ErrorScreen from "../../components/basicComponents/others/ErrorScreen";
+import ErrorScreen, {
+  ErrorMessages,
+} from "../../components/basicComponents/others/ErrorScreen";
+import { createOneButtonAlert } from "../../constants/errorHandler";
 
 const AddEventOwners = (props) => {
   const params = props.route.params;
@@ -35,6 +38,7 @@ const AddEventOwners = (props) => {
 
   async function onSave(newOwners) {
     Log.info("AddEventOwner >> onSaveEvent >> onSave (New event)");
+
     let event = params.event;
     event.event_owners = newOwners;
     await addEventOwnerRequest(myContext, event, navigation);
@@ -54,19 +58,32 @@ const AddEventOwners = (props) => {
     await editEventOwnersRequest(myContext, editEvent, newOwners, navigation);
   }
   const onSaveEvent = useCallback(async () => {
-    setIsLoading(true);
-    const newOwners = owners.map(
-      (ownerContact) =>
-        new OwnerEntity(ownerContact.id, ownerContact.name, ownerContact.phone)
-    );
-
-    if (params.editMode) {
-      await onSaveEditEventOwners(newOwners);
+    if (owners.length > 2) {
+      createOneButtonAlert(
+        "please choose maximum two owners...",
+        "OK",
+        "Too many owners"
+      );
     } else {
-      await onSave(newOwners);
-    }
+      setIsLoading(true);
 
-    setIsLoading(false);
+      const newOwners = owners.map(
+        (ownerContact) =>
+          new OwnerEntity(
+            ownerContact.id,
+            ownerContact.name,
+            ownerContact.phone
+          )
+      );
+
+      if (params.editMode) {
+        await onSaveEditEventOwners(newOwners);
+      } else {
+        await onSave(newOwners);
+      }
+
+      setIsLoading(false);
+    }
   }, [owners, navigation]);
 
   const renderHeader = () => {

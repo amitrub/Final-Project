@@ -22,6 +22,7 @@ import AddEventDetails from "./screens/add-event-screens/AddEventDetails";
 import AllEventsSuppliers from "./screens/event-manager-screens/suppliers/AllEventsSuppliers";
 import SupplierPage from "./screens/event-manager-screens/suppliers/SupplierPage";
 import AddSupplierContact from "./screens/event-manager-screens/suppliers/AddSupplierContact";
+import EventSchedulePage from "./screens/event-manager-screens/events/EventSchedulePage";
 
 enableScreens();
 
@@ -171,6 +172,11 @@ export const HomePageStackScreen = () => {
         component={AddSupplierContact}
         options={emptyHeader}
       />
+      <HomePageStack.Screen
+        name="EventSchedulePage"
+        component={EventSchedulePage}
+        options={emptyHeader}
+      />
     </HomePageStack.Navigator>
   );
 };
@@ -229,6 +235,11 @@ export const EventsStackScreen = () => {
         component={AddSupplierContact}
         options={emptyHeader}
       />
+      <EventsStack.Screen
+        name="EventSchedulePage"
+        component={EventSchedulePage}
+        options={emptyHeader}
+      />
     </EventsStack.Navigator>
   );
 };
@@ -246,7 +257,7 @@ const CalendarStack = createNativeStackNavigator();
 export const CalendarStackScreen = () => {
   return (
     <CalendarStack.Navigator>
-      <CalendarStack.Screen name="CalendarPage" component={CalendarPage} />
+      <CalendarStack.Screen name="My Calendar" component={CalendarPage} />
     </CalendarStack.Navigator>
   );
 };
@@ -261,6 +272,7 @@ export default function App() {
   const [refresh, setRefresh] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [debugMode, setDebugMode] = useState(false);
   const userAuth = {
     id: id,
     token: token,
@@ -274,6 +286,8 @@ export default function App() {
     setIsLoading: setIsLoading,
     error: error,
     setError: setError,
+    debugMode: debugMode,
+    setDebugMode: setDebugMode,
   };
   if (!dataLoaded) {
     console.log("Uploading data...");
@@ -288,10 +302,9 @@ export default function App() {
 
   return (
     <UserAuthentication.Provider value={userAuth}>
-        <NavigationContainer>
-          <WelcomeStackScreen />
-        </NavigationContainer>
+      <NavigationContainer>
+        <WelcomeStackScreen />
+      </NavigationContainer>
     </UserAuthentication.Provider>
   );
 }
-

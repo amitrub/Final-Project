@@ -13,7 +13,7 @@ export async function postEventManager(myContext) {
       Authorization: `Token ${token}`,
     },
   };
-  logApiRequest(functionName, url, request);
+  logApiRequest(functionName, url, request, myContext);
   await fetch(url, request, { timeout: 2000 })
     .then(async (res) => {
       const data = await res.json();
@@ -38,7 +38,7 @@ export async function getIsEventManager(myContext) {
       Authorization: `Token ${token}`,
     },
   };
-  logApiRequest(functionName, url, request);
+  logApiRequest(functionName, url, request, myContext);
   await fetch(url, request, { timeout: 2000 })
     .then(async (res) => {
       const data = await res.json();
@@ -49,7 +49,7 @@ export async function getIsEventManager(myContext) {
         if (!data.is_event_manager) {
           await postEventManager(myContext);
         } else {
-          console.log("GET is-event-manager SUCCESS >> already event-manager");
+          //console.log("GET is-event-manager SUCCESS >> already event-manager");
         }
       }
     })
@@ -67,7 +67,7 @@ export async function getHomePageData(myContext, setEventsPreview) {
       Authorization: `Token ${token}`,
     },
   };
-  logApiRequest(functionName, url, request);
+  logApiRequest(functionName, url, request, myContext);
   await fetch(url, request, { timeout: 2000 })
     .then(async (res) => {
       const data = await res.json();
