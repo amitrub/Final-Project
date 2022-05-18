@@ -194,12 +194,17 @@ export async function editEventOwnersRequest(
     )
       .then(async (res) => {
         const data = await res.json();
+        console.log("---------------------------");
+        console.log("res", res.status);
+        console.log("data", data);
+
         if (STATUS_FAILED(res.status)) {
           const message = data.toString();
           console.log(data);
           createOneButtonAlert(message, "OK", "add New Owner Request failed");
           return false;
         } else if (STATUS_SUCCESS(res.status)) {
+          console.log("vvvvvvvvvvv");
           return true;
         }
       })
@@ -230,35 +235,64 @@ export async function editEventOwnersRequest(
         const message = "data.Error";
         createOneButtonAlert(message, "OK", "EDIT event failed");
       } else if (STATUS_SUCCESS(res.status)) {
-        let ownersSucceeded = true;
-        // for (const owner of newOwners) {
-        //   if (!ownersSucceeded) break;
-        //   addNewOwnerRequest(owner).then((res) => {
-        //     ownersSucceeded = ownersSucceeded && !!res;
-        //   });
+        const ownersBody = JSON.stringify(
+          newOwners.map((o) => {
+            return { name: o.name, phone: o.phone };
+          })
+        );
 
-        console.log("before addNewOwnerRequest");
-        ownersSucceeded = await addNewOwnerRequest(newOwners);
-
-        //----------------------------------------------------------
-        if (ownersSucceeded) {
-          setRefresh(!myContext.refresh);
-          const message = "Owners updated!";
-          createOneButtonAlert(message, "OK", "", () => navigation.pop());
-        } else {
-          createOneButtonAlert(
-            "Owners didn't updated successfully!",
-            "OK",
-            "Edit owners error!",
-            () => navigation.pop()
-          );
-        }
+        await fetchTimeout(
+          urlEditOwnerEvent,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`,
+            },
+            body: ownersBody,
+          },
+          5000,
+          "Timeout"
+        )
+          .then(async (res) => {
+            const data = await res.json();
+            if (STATUS_FAILED(res.status)) {
+              const message = data.toString();
+              Log.error("add New Owner Request failed");
+              createOneButtonAlert(
+                "Owners didn't updated successfully! <" + message + ">",
+                "OK",
+                "Edit owners error!",
+                () => navigation.pop()
+              );
+            } else if (STATUS_SUCCESS(res.status)) {
+              setRefresh(!myContext.refresh);
+              const message = "Owners updated!";
+              createOneButtonAlert(message, "OK", "Yay", () =>
+                navigation.pop()
+              );
+            }
+          })
+          .catch((err) => {
+            setIsLoading(false);
+            setError(err);
+            Log.error(
+              "AddEventOwner >> onSaveEvent >> failed with error: ",
+              err
+            );
+          });
       }
     })
     .catch((err) => {
       setIsLoading(false);
       setError(err);
       Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
+      createOneButtonAlert(
+        "owners didn't updated successfully - catch error: " + err,
+        "OK",
+        "Error - edit owners",
+        () => navigation.pop()
+      );
     });
 }
 
