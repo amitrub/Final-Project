@@ -25,7 +25,6 @@ export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
       Authorization: `Token ${myContext.token}`,
     },
   };
-  logApiRequest(functionName, url, request, myContext);
   await fetch(url, request, { timeout: 2000 })
     .then(async (res) => {
       const data = await res.json();
@@ -36,6 +35,7 @@ export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
       setError(err);
       Log.error("EventPage >> getData >> error", err);
     });
+    logApiRequest(functionName, url, request, myContext);
 }
 
 export async function deleteEventRequest(myContext, event_id, navigation) {
