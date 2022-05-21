@@ -11,6 +11,7 @@ export const homePage = (user_id) => `/api/user/${user_id}/homepage/`;
 
 //users
 export const register = "/api/user/";
+export const userDelete = (user_id) => `/api/user/${user_id}/`;
 export const login = "/api/login/";
 export const eventManager = (user_id) => `/api/user/${user_id}/event_manager/`;
 export const eventSchedulesById = (user_id) =>
