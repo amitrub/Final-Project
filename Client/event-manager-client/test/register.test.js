@@ -44,6 +44,24 @@ const user = new User(
     new Address("Israel", "timmorm", "Alon", 208)
 );
 
-test('register user', async () => {
-    await expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
-}, 1000);
+const userbad = new User(
+    "reut",
+    "12345",
+    "8111996",
+    "0546343178",
+    new Address("Israel", "timmorm", "Alon", 208)
+);
+describe('my test', () => {
+    beforeEach(() => {
+        // code to run before each test
+    });
+
+    test('register user successful', async () => {
+        await expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
+    }, 1000);
+
+    test('register user not successful', async () => {
+        await expect(registerUser(userbad)).resolves.toMatch(/(error)/i)
+    }, 1000);
+});
+
