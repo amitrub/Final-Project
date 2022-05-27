@@ -283,16 +283,15 @@ export const EventPageStyles = StyleSheet.create({
     margin: 0,
     display: "flex",
   },
-  rowTitle: {
+  rowButtons: {
     width: 230,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     padding: 0,
     margin: 0,
     display: "flex",
     position: "relative",
-    right: 55,
   },
 });
 

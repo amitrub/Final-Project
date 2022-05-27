@@ -278,21 +278,11 @@ const EventPage = (props) => {
 
   const titleComponent = () => {
     return (
-      <View style={[{ paddingTop: "28%" }, styles.rowTitle]}>
-        <View style={{ paddingTop: 3 }}>
-          <Entypo
-            name={"trash"}
-            size={24}
-            color={"black"}
-            onPress={() => deleteEventRequest(myContext, event_id, navigation)}
-          />
-        </View>
+      <View style={[{ paddingTop: "28%" }]}>
         <TouchableOpacity
           onPress={() => setTitleModalVisible(!titleModalVisible)}
         >
-          <View>
             <Text style={styles.h1}>{event.event_name}</Text>
-          </View>
         </TouchableOpacity>
       </View>
     );
@@ -368,7 +358,24 @@ const EventPage = (props) => {
       />
     );
   };
-
+  const saveDeleteButtons = () => {
+      return (<View style={[{ marginTop: 20 }, styles.rowButtons]}>
+          <IconButton
+              onPress={onSaveEvent}
+              icon={"save"}
+              color={Colors.black}
+              iconSize={18}
+              textButton={"Save"}
+          />
+          <IconButton
+              onPress={() => deleteEventRequest(myContext, event_id, navigation)}
+              icon={"trash"}
+              color={Colors.black}
+              iconSize={18}
+              textButton={"Delete"}
+          />
+      </View>);
+  }
   const onSaveEvent = async () => {
     let editEvent = new EditEventEntity(
       event.id,
@@ -400,14 +407,7 @@ const EventPage = (props) => {
           {suppliersComponent()}
           {ownersComponent()}
           {eventScheduleComponent()}
-          <View style={{ marginTop: 20 }}>
-            <IconButton
-              onPress={onSaveEvent}
-              icon={"save"}
-              color={Colors.black}
-              iconSize={18}
-            />
-          </View>
+          {saveDeleteButtons()}
         </View>
       </ScrollView>
     </View>
