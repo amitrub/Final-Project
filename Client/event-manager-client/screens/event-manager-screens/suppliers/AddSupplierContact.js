@@ -33,25 +33,25 @@ const AddSupplierContact = (props) => {
   }, []);
 
   const onSaveSupplier = useCallback(async () => {
-    setIsLoading(true);
+    Log.info("AddSupplier >> onSaveSupplier");
 
     if (suppliers.length !== 1) {
       return createOneButtonAlert(
-        "You can select one contact in each add supplier process",
+        "Please select one contact only",
         "OK",
-        "Add new supplier",
+        "Failed ...",
         () => setIsLoading(false)
       );
     }
 
+    setIsLoading(true);
     const supplierToAdd = suppliers[0];
-    Log.info("AddSupplier >> onSaveSupplier");
-    saveNewSupplierRequest(
-      myContext,
-      supplierToAdd,
-      eventId,
-      setSuppliers,
-      navigation
+    await saveNewSupplierRequest(
+        myContext,
+        supplierToAdd,
+        eventId,
+        setSuppliers,
+        navigation
     );
   }, [suppliers, navigation]);
 
@@ -102,7 +102,7 @@ const AddSupplierContact = (props) => {
 
   return (
     <View style={[styles.screen, { paddingTop: "20%" }]}>
-      <TextTitle text={"Choose contact to be supplier:"} />
+      <TextTitle text={"Choose supplier:"} />
       {renderHeader()}
       <View
         style={{
@@ -117,12 +117,12 @@ const AddSupplierContact = (props) => {
           )}
         />
       </View>
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 40 }}>
         <IconButton
           onPress={onSaveSupplier}
-          icon={"game-controller"}
+          icon={"chevron-thin-right"}
           color={Colors.black}
-          iconSize={18}
+          iconSize={16}
         />
       </View>
     </View>

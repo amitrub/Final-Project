@@ -124,16 +124,11 @@ const SupplierPage = (props) => {
         .then(async (res) => {
           Log.info("SupplierPage >> delete supplier >> then");
           // const data = await res.json();
-          createOneButtonAlert(
-            "The supplier deleted successfully",
-            "OK",
-            "Delete suppliers",
-            () => {
-              myContext.setRefresh(!myContext.refresh);
-              navigation.pop();
-              setIsLoading(false);
-            }
-          );
+          createOneButtonAlert("", "OK", "Supplier was deleted", () => {
+            myContext.setRefresh(!myContext.refresh);
+            navigation.pop();
+            setIsLoading(false);
+          });
         })
         .catch((err) => {
           setIsLoading(false);
@@ -243,32 +238,27 @@ const SupplierPage = (props) => {
 
   const nameComponent = () => {
     return (
-      <View style={[{ paddingBottom: 20 }, styles.rowTitle]}>
-        <View style={{ paddingTop: 12 }}>
-          <Entypo
-            name={"trash"}
-            size={24}
-            color={"black"}
-            onPress={() => deleteSupplier()}
-          />
-        </View>
+      <View style={[{ paddingBottom: 10 }]}>
         <Text style={styles.h1}>{supplier.name}</Text>
-        <View style={{ paddingTop: 12 }}>
-          <Entypo
-            name={"phone"}
-            size={24}
-            color={"black"}
-            onPress={() => {
-              const args = {
-                number: supplier.phone ? supplier.phone : "0528973510", // String value with the number to call
-                prompt: false, // Optional boolean property. Determines if the user should be prompt prior to the call
-              };
-
-              call(args).catch(console.error);
-            }}
-          />
-        </View>
       </View>
+    );
+  };
+  const callComponent = () => {
+    return (
+      <IconButton
+        onPress={() => {
+          const args = {
+            number: supplier.phone ? supplier.phone : "0528973510", // String value with the number to call
+            prompt: false, // Optional boolean property. Determines if the user should be prompt prior to the call
+          };
+
+          call(args).catch(console.error);
+        }}
+        icon={"phone"}
+        color={Colors.black}
+        iconSize={16}
+        textButton={"Call"}
+      />
     );
   };
   const jobComponent = () => {
@@ -326,23 +316,33 @@ const SupplierPage = (props) => {
     return (
       <View style={[styles.row, { marginTop: 20 }]}>
         <IconButton
+          onPress={onSaveSupplier}
+          icon={"save"}
+          color={Colors.black}
+          iconSize={18}
+          textButton={"Save"}
+        />
+        <IconButton
+          onPress={deleteSupplier}
+          icon={"trash"}
+          color={Colors.black}
+          iconSize={18}
+          textButton={"Delete"}
+        />
+        <IconButton
           onPress={onPay}
           icon={"credit-card"}
           color={Colors.black}
           iconSize={18}
           disabled={supplier.has_paid}
-        />
-        <IconButton
-          onPress={onSaveSupplier}
-          icon={"save"}
-          color={Colors.black}
-          iconSize={18}
+          textButton={"Pay"}
         />
         <IconButton
           onPress={onPressBit}
           icon={"credit"}
           color={Colors.black}
           iconSize={16}
+          textButton={"Bit"}
         />
       </View>
     );
@@ -419,9 +419,9 @@ const SupplierPage = (props) => {
           const message = "data.Error";
           createOneButtonAlert(message, "OK", "EDIT supplier failed");
         } else if (STATUS_SUCCESS(res.status)) {
-          // myContext.setRefresh(!myContext.refresh);
-          const message = "Supplier updated!";
-          createOneButtonAlert(message, "OK", "", () => {
+          setIsLoading(false);
+          const message = "Supplier was updated";
+          createOneButtonAlert(message, "OK", "Yay!", () => {
             myContext.setRefresh(!myContext.refresh);
             navigation.pop();
           });
@@ -443,6 +443,7 @@ const SupplierPage = (props) => {
       <ScrollView>
         <View style={[styles.screen, styles.screenPadding]}>
           {nameComponent()}
+          {callComponent()}
           {jobComponent()}
           {priceComponent()}
           {depositComponent()}
