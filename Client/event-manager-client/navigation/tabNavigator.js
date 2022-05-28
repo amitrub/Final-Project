@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Entypo from "react-native-vector-icons/Entypo";
 import React from "react";
-import { EventsStackScreen } from "./eventsStack";
 import { HomePageStackScreen } from "./homePageStack";
 import { CalendarStackScreen } from "./CalendarStack";
 import { ProfileStackScreen } from "./ProfileStack";
+import AllEventsPage from "../screens/event-manager-screens/events/AllEventsPage";
 
-const Tab = createBottomTabNavigator();
 export const TabNavigator = () => {
+  const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -22,7 +22,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Events"
-        component={EventsStackScreen}
+        component={AllEventsPage}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (

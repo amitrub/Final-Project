@@ -12,10 +12,14 @@ import SupplierPage from "../screens/event-manager-screens/suppliers/SupplierPag
 import AddSupplierContact from "../screens/event-manager-screens/suppliers/AddSupplierContact";
 import EventSchedulePage from "../screens/event-manager-screens/events/EventSchedulePage";
 import React from "react";
-import { emptyHeader } from "./welcomeStack";
 
-const HomePageStack = createNativeStackNavigator();
+export const emptyHeader = {
+  headerTransparent: true,
+  headerTitle: "",
+};
+
 export const HomePageStackScreen = () => {
+  const HomePageStack = createNativeStackNavigator();
   return (
     <HomePageStack.Navigator>
       <HomePageStack.Screen
