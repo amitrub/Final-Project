@@ -11,18 +11,9 @@ export const HomePageStyles = StyleSheet.create({
   mainTitle: {
     color: Colors.text_black,
     fontFamily: "alef-bold",
-    fontSize: 22,
+    fontSize: 28,
     fontStyle: "normal",
     fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  row: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    marginTop: 100,
-    width: 450,
   },
 });
 
