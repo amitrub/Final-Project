@@ -5,7 +5,7 @@ import {
   STATUS_FAILED,
   STATUS_SUCCESS,
 } from "../../constants/errorHandler";
-import { TabNavigator } from "../../App";
+import { TabNavigator } from "../../navigation/tabNavigator";
 import Log from "../../constants/logger";
 
 export async function useLoginRequest(
