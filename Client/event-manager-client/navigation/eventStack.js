@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomePage from "../screens/main-screens/HomePage";
+import AllEventsPage from "../screens/event-manager-screens/events/AllEventsPage";
 import TasksPage from "../screens/event-manager-screens/tasks/TasksPage";
 import EventPage from "../screens/event-manager-screens/events/EventPage";
-import AllEventsPage from "../screens/event-manager-screens/events/AllEventsPage";
 import AddEventDetails from "../screens/add-event-screens/AddEventDetails";
 import AddEventOwners from "../screens/add-event-screens/AddEventOwners";
 import AllEventsSuppliers from "../screens/event-manager-screens/suppliers/AllEventsSuppliers";
@@ -16,68 +15,65 @@ export const emptyHeader = {
   headerTitle: "",
 };
 
-export const HomePageStackScreen = () => {
-  const HomePageStack = createNativeStackNavigator();
+const EventsStack = createNativeStackNavigator();
+export const EventsStackScreen = () => {
   return (
-    <HomePageStack.Navigator>
-      <HomePageStack.Screen
-        name="HomePage"
-        component={HomePage}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <HomePageStack.Screen name="Tasks" component={TasksPage} />
-      <HomePageStack.Screen
-        name="EventPage"
-        component={EventPage}
-        options={emptyHeader}
-      />
-      <HomePageStack.Screen
+    <EventsStack.Navigator>
+      <EventsStack.Screen
         name="AllEvents"
         component={AllEventsPage}
         options={emptyHeader}
       />
-      {/*<HomePageStack.Screen*/}
+      <EventsStack.Screen
+        name="Tasks"
+        component={TasksPage}
+        options={emptyHeader}
+      />
+      <EventsStack.Screen
+        name="EventPage"
+        component={EventPage}
+        options={emptyHeader}
+      />
+      {/*<EventsStack.Screen*/}
       {/*  name="Meeting"*/}
       {/*  component={MeetingPage}*/}
       {/*  options={emptyHeader}*/}
       {/*/>*/}
-      {/*<HomePageStack.Screen*/}
+      {/*<EventsStack.Screen*/}
       {/*  name="Meetings"*/}
       {/*  component={MeetingsPage}*/}
       {/*  options={emptyHeader}*/}
       {/*/>*/}
-      <HomePageStack.Screen
+      <EventsStack.Screen
         name="AddEventDetails"
         component={AddEventDetails}
         options={emptyHeader}
       />
-      <HomePageStack.Screen
+      <EventsStack.Screen
         name="AddEventOwners"
         component={AddEventOwners}
         options={emptyHeader}
       />
-      <HomePageStack.Screen
+      <EventsStack.Screen
         name="AllEventsSuppliers"
         component={AllEventsSuppliers}
         options={emptyHeader}
       />
-      <HomePageStack.Screen
+      <EventsStack.Screen
         name="SupplierPage"
         component={SupplierPage}
         options={emptyHeader}
       />
-      <HomePageStack.Screen
+      <EventsStack.Screen
         name="AddSupplierContact"
         component={AddSupplierContact}
         options={emptyHeader}
       />
-      <HomePageStack.Screen
+      <EventsStack.Screen
         name="EventSchedulePage"
         component={EventSchedulePage}
         options={emptyHeader}
       />
-    </HomePageStack.Navigator>
+    </EventsStack.Navigator>
   );
 };
