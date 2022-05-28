@@ -35,9 +35,8 @@ const HomePage = () => {
   return (
     <ScrollView>
       <View style={HomePageStyles.screen}>
-        <View style={HomePageStyles.row}>
+        <View style={{ marginTop: 100 }}>
           <Text style={HomePageStyles.mainTitle}>Hello {myContext.name}!</Text>
-          <Entypo name="plus" size={20} />
         </View>
         <View style={{ paddingTop: "15%" }}>
           <MeetingsPreview />
