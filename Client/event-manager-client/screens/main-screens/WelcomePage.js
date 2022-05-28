@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 import LogoImage from "../../components/basicComponents/WelcomePage/LogoImage";
 import Log from "../../constants/logger";
-// import * as Google from 'expo-google-app-auth';
 import * as Google from "expo-google-app-auth";
 import { WelcomePageStyles as styles } from "../../styles/styles";
 import Loader from "../../components/basicComponents/others/Loader";
@@ -27,6 +26,7 @@ const WelcomePage = (props) => {
   const myContext = useContext(UserAuthentication);
   const [email, setEmail] = React.useState("admin@gmail.com");
   const [password, setPassword] = React.useState("1234");
+  const [showLoginError, setShowLoginError] = React.useState(false);
 
   const onPressRegister = () => {
     navigation.navigate("RegisterPage");
@@ -42,13 +42,14 @@ const WelcomePage = (props) => {
       email,
       password,
       navigation,
-      emptyLoginInputs
+      emptyLoginInputs,
+      setShowLoginError
     );
-  }, [email, password]);
+  }, [email, password, myContext.refresh]);
 
   if (myContext.isLoading) return <Loader />;
   if (myContext.error)
-    return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
+    return <ErrorScreen errorMessage={ErrorMessages.Generic} />;
 
   const SignInGoogle = async () => {
     // const config = {
@@ -155,6 +156,11 @@ const WelcomePage = (props) => {
             </SafeAreaView>
             <View style={{ paddingTop: 20 }}>
               <TitleButton text={"Sign In"} onPress={onPressLogin} />
+              {showLoginError ? (
+                <View style={{ alignItems: "center" }}>
+                  <Text style={{ color: "red" }}>login failed, try again</Text>
+                </View>
+              ) : undefined}
             </View>
             <View style={[styles.row, { paddingTop: 7 }]}>
               <Text style={{ fontSize: 18, color: Colors.dark_gray }}>
