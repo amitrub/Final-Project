@@ -1,8 +1,9 @@
 //urls
 export const remote_base_url =
   "http://ec2-18-215-93-123.compute-1.amazonaws.com";
+export const remote_base_url_https = "https://eventit.lol";
 export const local_base_url = "http://10.100.102.31:8000";
-export const base_url = remote_base_url;
+export const base_url = remote_base_url_https;
 
 //general
 export const api = "/api";

@@ -13,7 +13,8 @@ export async function useLoginRequest(
   email,
   password,
   navigation,
-  emptyLoginInputs
+  emptyLoginInputs,
+  setShowLoginError
 ) {
   const { setIsLoading, setError, setToken, setId, setName } = myContext;
   setIsLoading(true);
@@ -36,6 +37,7 @@ export async function useLoginRequest(
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
         const message = data.Error ? data.Error : "data.Error";
+        setShowLoginError(true);
         createOneButtonAlert(message, "OK", "Login failed");
       } else if (STATUS_SUCCESS(res.status)) {
         setToken(data.token);
@@ -50,7 +52,8 @@ export async function useLoginRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
+      //setError(err);
+      setShowLoginError(true);
       Log.error("onPressLogin error", err);
     });
 }
