@@ -45,8 +45,8 @@ export async function useLoginRequest(
         setName(data.name);
         createOneButtonAlert("Login succeeded", "OK", "Great!", () => {
           emptyLoginInputs();
-          navigation.navigate(TabNavigator);
         });
+        navigation.navigate("TabNavigator");
       }
       setIsLoading(false);
     })
