@@ -1,6 +1,4 @@
 import { Alert } from "react-native";
-import Log from "./logger";
-import { TabNavigator } from "../App";
 export const STATUS_SUCCESS = (status) => status >= 200 && status < 300;
 export const STATUS_FAILED = (status) => status >= 400 && status < 600;
 
