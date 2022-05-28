@@ -169,52 +169,6 @@ export async function editEventOwnersRequest(
   const { token, setIsLoading, setError, setRefresh } = myContext;
   const urlEditEvent = base_url + getEvent(editEvent.id);
   const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
-  async function addNewOwnerRequest(owners) {
-    const ownersBody = JSON.stringify(
-      owners.map((o) => {
-        return { name: o.name, phone: o.phone };
-      })
-    );
-
-    console.log("url:", urlEditOwnerEvent);
-    console.log("ownersBody:", ownersBody);
-
-    await fetchTimeout(
-      urlEditOwnerEvent,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-        body: ownersBody,
-      },
-      5000,
-      "Timeout"
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        //console.log("---------------------------");
-        //console.log("res", res.status);
-        //console.log("data", data);
-
-        if (STATUS_FAILED(res.status)) {
-          const message = data.toString();
-          console.log(data);
-          createOneButtonAlert(message, "OK", "add New Owner Request failed");
-          return false;
-        } else if (STATUS_SUCCESS(res.status)) {
-          console.log("vvvvvvvvvvv");
-          return true;
-        }
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
-        return false;
-      });
-  }
 
   await fetchTimeout(
     urlEditEvent,
