@@ -5,8 +5,14 @@ import Colors from "../../../constants/colors";
 
 const data = [
   { label: "Wedding", value: "Wedding" },
-  { label: "Bar Mitzva", value: "Bar Mitzva" },
+  { label: "Bar/Bat Mitzva", value: "Bar Mitzva" },
   { label: "Birthday", value: "Birthday" },
+  { label: "Baby Shower", value: "Baby Shower" },
+  { label: "Show", value: "Show" },
+  { label: "Concert", value: "Concert" },
+  { label: "Sport event", value: "Sport event" },
+  { label: "Social event", value: "Social event" },
+  { label: "Other", value: "Other" },
 ];
 
 const DropdownComponent = (props) => {

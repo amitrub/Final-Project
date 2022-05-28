@@ -4,7 +4,7 @@ import React from "react";
 import { HomePageStackScreen } from "./homePageStack";
 import { CalendarStackScreen } from "./CalendarStack";
 import { ProfileStackScreen } from "./ProfileStack";
-import AllEventsPage from "../screens/event-manager-screens/events/AllEventsPage";
+import { EventsStackScreen } from "./eventStack";
 
 export const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -22,7 +22,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Events"
-        component={AllEventsPage}
+        component={EventsStackScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (

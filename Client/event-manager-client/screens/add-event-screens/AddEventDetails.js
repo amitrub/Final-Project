@@ -27,7 +27,7 @@ const AddEventDetails = (props) => {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
-  const [budget, setBudget] = useState(0);
+  const [budget, setBudget] = useState("");
 
   const onPressNext = () => {
     let event = new EventEntity(
