@@ -16,6 +16,7 @@ export const login = "/api/login/";
 export const eventManager = (user_id) => `/api/user/${user_id}/event_manager/`;
 export const eventSchedulesById = (user_id) =>
   `/api/user/${user_id}/event_schedules/`;
+export const userDelete = (user_id) => `/api/user/${user_id}/`;
 
 //meetings
 export const previewMeetingsCapitlP = "/api/PreviewMeetings/";

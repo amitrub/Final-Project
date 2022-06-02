@@ -72,19 +72,12 @@ describe('my test', () => {
         registerUser(user);
     });
 
-    test('login successfully', async () => {
-        await expect(loginuser("reutlevy85@gmail.com","8119996")).resolves.not.toMatch(/(error)/i)
-    }, 1000);
+    test('login successfully', () => {
+        expect(loginuser("reutlevy85@gmail.com","8119996")).resolves.not.toMatch(/(error)/i)
+    });
 
-    test('login bad password', async () => {
-        await expect(loginuser("reutlevy85@gmail.com","8119")).resolves.toMatch(/(error)/i)
-    }, 1000);
-    // test('register user invalid phone', async () => {
-    //     await expect(registerUser(userbadphone)).resolves.toMatch(/(error)/i)
-    // }, 1000);
-    //
-    // test('register user', async () => {
-    //     await expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
-    // }, 1000);
+    test('login bad password', () => {
+         expect(loginuser("reutlevy85@gmail.com","8119")).resolves.toMatch(/(error)/i)
+    });
 })
 
