@@ -1,6 +1,8 @@
 import "isomorphic-fetch"
-import {wait} from "yarn/lib/cli";
+import {response, wait} from "yarn/lib/cli";
 import {re} from "@babel/core/lib/vendor/import-meta-resolve";
+import {remote_base_url} from "../constants/urls";
+import fetchTimeout from "fetch-timeout";
 const {logApiRequest} = require("../constants/logger");
 const {base_url, register, userDelete, login} = require("../constants/urls");
 const Log = require("../constants/logger");
@@ -27,63 +29,59 @@ async function registerUser(user) {
 }
 
 async function loginuser() {
+    console.log("------------login user--------");
     let url = base_url + login;
-    console.log("----------login-------");
     let request = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            email: "reutlevy65@gmail.com",
-            password: "8111996",
-        }),
+           email: "reutlevy98@gmail.com",
+           password: "8111996",
+         }),
     }
-    fetch(url, request, {timeout: 500})
-        .then((response) => response.json())
-        .then((responseJSON) => {
-            console.log("hellllllllo")
-            console.log(responseJSON.token)
-            auth = responseJSON.token
+
+    await fetchTimeout(
+        base_url + login,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: "reutlevy98@gmail.com",
+                password: "8111996",
+            }),
+        },
+        2000,
+        "Timeout"
+        )
+        .then(async (res) => {
+            const data = await res.json();
+            auth = data.token
         });
 }
 
 async function deleteUser(user_id){
 
-    let url1 = base_url + login;
-    // let auth= "";
-    // let request1 = {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //         email: "reutlevy63@gmail.com",
-    //         password: "8111996",
-    //     }),
-    // }
-    // fetch(url1, request1, {timeout: 500})
-    //     .then((response) => response.json())
-    //     .then((responseJSON) => {
-    //         console.log("------------hello---------")
-    //         console.log(responseJSON)
-    //         auth = responseJSON.token
-    //     });
     let url = base_url + userDelete(user_id);
     console.log("----------delete-------");
     console.log(user_id)
     console.log(auth)
-    let request = {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Token ${auth}`,
-        }
-    }
-    fetch(url, request, {timeout: 500})
-        .then((response) => response.json())
-        .then((responseJSON) => {
-            console.log(JSON.stringify(responseJSON));
+    await fetchTimeout(
+        url,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${auth}`,
+            }
+        },
+        2000,
+        "Timeout"
+    ).then(async (res) => {
+            const data = await res.json();
         });
 }
 
@@ -103,7 +101,7 @@ function Address(country, city, street, number) {
 }
 const user = new User(
     "reut",
-    "reutlevy65@gmail.com",
+    "reutlevy98@gmail.com",
     "8111996",
     "0546343178",
     new Address("Israel", "timmorm", "Alon", 208)
@@ -127,16 +125,21 @@ const userbadphone = new User(
 
 describe('my test', () => {
 
-    test('register user bad email', async () => {
-        await expect(registerUser(userbademail)).resolves.toMatch(/(error)/i)
-    }, 1000);
+    afterAll(() => {
+        loginuser();
+        deleteUser(user_id)
+    }, );
 
-    test('register user invalid phone', async () => {
-        await expect(registerUser(userbadphone)).resolves.toMatch(/(error)/i)
-    }, 1000);
+    test('register user bad email', () => {
+        expect(registerUser(userbademail)).resolves.toMatch(/(error)/i)
+    });
 
-    test('register user', async () => {
-        await expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
-    }, 1000);
+    test('register user invalid phone', () => {
+        expect(registerUser(userbadphone)).resolves.toMatch(/(error)/i)
+    });
+
+    test('register user' ,() => {
+        expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
+    });
 })
 
