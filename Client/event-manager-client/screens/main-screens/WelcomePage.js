@@ -19,7 +19,7 @@ import ErrorScreen, {
 import { useNavigation } from "@react-navigation/native";
 import UserAuthentication from "../../global/UserAuthentication";
 import Colors from "../../constants/colors";
-import { useLoginRequest } from "../../api/WelcomePage/LoginApi";
+import {useLoginRequest, useLoginWithGoogleRequest} from "../../api/WelcomePage/LoginApi";
 
 const WelcomePage = (props) => {
   const navigation = useNavigation();
@@ -47,23 +47,14 @@ const WelcomePage = (props) => {
     );
   }, [email, password, myContext.refresh]);
 
-  if (myContext.isLoading) return <Loader />;
-  if (myContext.error)
-    return <ErrorScreen errorMessage={ErrorMessages.Generic} />;
-
-  const SignInGoogle = async () => {
-    // const config = {
-    //   iosClientId: '281217241179-9vvln5etsdo6k1tq26ajbka5tsqhucr9.apps.googleusercontent.com',
-    //   androidClientId: '281217241179-0l1u9546ujv8qkkd7khflc262cutcl2a.apps.googleusercontent.com',
-    //   scopes: ['profile', 'email', 'password']
-    // };
+  const onPressSignInGoogle = useCallback(async () => {
+    Log.info("onPressSignInGoogle >> POST SignInGoogle");
     const config = {
       iosClientId:
-        "778478932854-ikdla5g4ui7m5l4kldpnoi5s41h4vsab.apps.googleusercontent.com",
+          "778478932854-ikdla5g4ui7m5l4kldpnoi5s41h4vsab.apps.googleusercontent.com",
       androidClientId:
-        "778478932854-87k01g95uoenf62miqepo97nmv5d9au6.apps.googleusercontent.com",
+          "778478932854-87k01g95uoenf62miqepo97nmv5d9au6.apps.googleusercontent.com",
       scopes: [
-        // 'profile',
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
         // 'https://www.googleapis.com/auth/user.birthday.read',
@@ -71,62 +62,29 @@ const WelcomePage = (props) => {
         // 'https://www.googleapis.com/auth/user.gender.read',
         // 'https://www.googleapis.com/auth/user.phonenumbers.read',
         // 'https://www.googleapis.com/auth/contacts.readonly',
-        "https://www.googleapis.com/auth/calendar.readonly",
-        // 'email'
+        // "https://www.googleapis.com/auth/calendar.readonly",
       ],
     };
     const { accessToken, idToken, refreshToken, type, user } =
-      await Google.logInAsync(config);
-    console.log(accessToken);
-    console.log(idToken);
-    console.log(refreshToken);
-    console.log(type);
-    console.log(user);
-    console.log("-----------");
-    await fetch(
-      "https://www.googleapis.com/calendar/v3/users/me/calendarList",
-      {
-        // await fetch('https://www.googleapis.com/userinfo/v2/me', {
-        // await fetch('https://people.googleapis.com/v1/people/me', {
-        // await fetch('https://people.googleapis.com/v1/people/me?personFields=birthdays,addresses,phoneNumbers,genders', {
-        method: "GET",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    ).then(async (res) => {
-      const data = await res.json();
-      console.log(data);
-    });
-    // if (type === 'success') {
-    //   // Then you can use the Google REST API
-    //   let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-    //     headers: {Authorization: `Bearer ${accessToken}`},
-    //   });
-    //   console.log("----------------------------")
-    //   console.log(type)
-    //   console.log(accessToken)
-    //   console.log(user)
-    // }
+        await Google.logInAsync(config);
+    const googleEmail = user["email"]
+    console.log(googleEmail)
+    setEmail(googleEmail);
+    await useLoginWithGoogleRequest(
+        myContext,
+        googleEmail,
+        accessToken,
+        navigation,
+        emptyLoginInputs,
+        setShowLoginError
+    );
+  }, [email, myContext.refresh]);
 
-    // Google
-    //     .logInAsync(config)
-    //     .then((result)=>
-    //     {
-    //       console.log(result)
-    //       // const{type,user} = result;
-    //       // if(type==='success'){
-    //       //   setIsLoginGoogle(!isLoginGoogle);
-    //       //   const {email,name,photourl} = user;
-    //       //   setTimeout(() => props.navigation.navigate("Welcome"), {email,name, photourl},1000)
-    //       //   props.navigation.navigate("Welcome");
-    //       // }
-    //       // else {
-    //       //   console.log("error");
-    //       // }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     })
-  };
+  if (myContext.isLoading) return <Loader />;
+  if (myContext.error)
+    return <ErrorScreen errorMessage={ErrorMessages.Generic} />;
+
+
 
   return (
     <ScrollView>
@@ -160,6 +118,14 @@ const WelcomePage = (props) => {
                 <View style={{ alignItems: "center" }}>
                   <Text style={{ color: "red" }}>login failed, try again</Text>
                 </View>
+              ) : undefined}
+            </View>
+            <View style={{ paddingTop: 20 }}>
+              <TitleButton text={"Google"} onPress={onPressSignInGoogle} />
+              {showLoginError ? (
+                  <View style={{ alignItems: "center" }}>
+                    <Text style={{ color: "red" }}>login failed, try again</Text>
+                  </View>
               ) : undefined}
             </View>
             <View style={[styles.row, { paddingTop: 7 }]}>

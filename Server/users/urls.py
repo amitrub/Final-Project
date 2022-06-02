@@ -18,6 +18,7 @@ app_name = 'user'
 
 urlpatterns = [
     path('login/', views.UserLoginApiView.as_view(), name='login'),
+    path('login_with_google/', views.UserLoginWithGoogleApiView.as_view(), name='login_with_google'),
     path('', include(router.urls), name='register'),
     url(r'^user/(?P<user_id>\d+)/event_manager', views.EventManagerAPIView.as_view(), name='event_manager'),
     url(r'^user/(?P<user_id>\d+)/event_owner', views.EventOwnerAPIView.as_view(), name='event_owner'),
