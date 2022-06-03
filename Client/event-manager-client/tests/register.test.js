@@ -54,9 +54,6 @@ async function loginuser(username) {
 
 async function deleteUser(user_id){
 
-    console.log("============delete========");
-    console.log(user_id);
-    console.log(auth)
     let url = base_url + userDelete(user_id);
     await fetchTimeout(
         url,
@@ -70,9 +67,9 @@ async function deleteUser(user_id){
         2000,
         "Timeout"
     ).then(async (res) => {
-            const data = await res.json();
-            console.log(data)
-        });
+        const data = await res.json();
+        console.log(data)
+    });
 }
 
 function User(name,email,password,phone,address) {
@@ -91,7 +88,7 @@ function Address(country, city, street, number) {
 }
 const user = new User(
     "reut",
-        "reutlevy16@gmail.com",
+        "reut18@gmail.com",
     "8111996",
     "0546343178",
     new Address("Israel", "timmorm", "Alon", 208)
@@ -115,10 +112,13 @@ const userbadphone = new User(
 
 describe('my test', () => {
 
-    afterAll(async () => {
-        await loginuser(user.email);
-        await deleteUser(user_id)
-    });
+    // afterAll(async () => {
+    //     await loginuser(user.email);
+    //     await deleteUser(user_id)
+    // });
+    beforeAll(async() =>{
+        await registerUser(user);
+    })
 
     test('register user bad email', async () => {
         await expect(registerUser(userbademail)).resolves.toMatch(/(error)/i)
@@ -128,8 +128,8 @@ describe('my test', () => {
         await expect(registerUser(userbadphone)).resolves.toMatch(/(error)/i)
     });
 
-    test('register user' , async () => {
-        await expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
+    test('register user with the same name' , async () => {
+        await expect(registerUser(user)).resolves.toMatch(/(error)/i)
     });
 })
 

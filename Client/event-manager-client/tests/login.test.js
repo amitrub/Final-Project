@@ -23,6 +23,7 @@ async function registerUser(user) {
             if(responseJSON.id){
                 user_id = responseJSON.id;
             }
+            console.log(JSON.stringify(responseJSON));
             return JSON.stringify(responseJSON);
         });
 }
@@ -42,7 +43,10 @@ function loginuser(username,password) {
     return fetch(url, request, {timeout: 500})
         .then((response) => response.json())
         .then((responseJSON) => {
-            console.log(JSON.stringify(responseJSON));
+            console.log(responseJSON)
+            if(responseJSON.token){
+                auth = responseJSON.token
+            }
             return JSON.stringify(responseJSON);
         });
 }
@@ -50,10 +54,12 @@ function loginuser(username,password) {
 async function deleteUser(user_id){
 
     let url = base_url + userDelete(user_id);
+    console.log(auth)
+    console.log(user_id)
     await fetchTimeout(
         url,
         {
-            method: "POST",
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Token ${auth}`,
@@ -63,6 +69,8 @@ async function deleteUser(user_id){
         "Timeout"
     ).then(async (res) => {
         const data = await res.json();
+        console.log("---------delete register");
+        console.log(data)
     });
 }
 
@@ -82,7 +90,7 @@ function Address(country, city, street, number) {
 }
 const user = new User(
     "reut",
-    "reutlevy85@gmail.com",
+    "reutlevy26@gmail.com",
     "8111996",
     "0546343178",
     new Address("Israel", "timmorm", "Alon", 208)
@@ -90,12 +98,12 @@ const user = new User(
 
 describe('my test', () => {
 
-    beforeAll(() => {
-        registerUser(user);
+    beforeAll(async () => {
+        await registerUser(user);
     });
 
     test('login successfully', async () => {
-        await expect(loginuser("reutlevy85@gmail.com","8111996")).resolves.not.toMatch(/(error)/i)
+        await expect(loginuser(user.email,"8111996")).resolves.not.toMatch(/(error)/i)
     });
 
     test('login bad password', async () => {
@@ -106,8 +114,8 @@ describe('my test', () => {
         await expect(loginuser("reutlevy@gmail.com","8111996")).resolves.toMatch(/(error)/i)
     });
 
-    afterAll (() => {
-       deleteUser(user_id) ;
-    });
+    // afterAll (async ()=> {
+    //    await deleteUser(user_id);
+    // });
 })
 
