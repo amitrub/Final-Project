@@ -28,20 +28,9 @@ async function registerUser(user) {
     });
 }
 
-async function loginuser() {
-    console.log("------------login user--------");
-    let url = base_url + login;
-    let request = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-           email: "reutlevy98@gmail.com",
-           password: "8111996",
-         }),
-    }
-
+async function loginuser(username) {
+    console.log("============login---------")
+    console.log(username)
     await fetchTimeout(
         base_url + login,
         {
@@ -50,7 +39,7 @@ async function loginuser() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                email: "reutlevy98@gmail.com",
+                email: username,
                 password: "8111996",
             }),
         },
@@ -65,14 +54,14 @@ async function loginuser() {
 
 async function deleteUser(user_id){
 
-    let url = base_url + userDelete(user_id);
-    console.log("----------delete-------");
-    console.log(user_id)
+    console.log("============delete========");
+    console.log(user_id);
     console.log(auth)
+    let url = base_url + userDelete(user_id);
     await fetchTimeout(
         url,
         {
-            method: "POST",
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Token ${auth}`,
@@ -82,6 +71,7 @@ async function deleteUser(user_id){
         "Timeout"
     ).then(async (res) => {
             const data = await res.json();
+            console.log(data)
         });
 }
 
@@ -101,7 +91,7 @@ function Address(country, city, street, number) {
 }
 const user = new User(
     "reut",
-    "reutlevy98@gmail.com",
+        "reutlevy16@gmail.com",
     "8111996",
     "0546343178",
     new Address("Israel", "timmorm", "Alon", 208)
@@ -125,21 +115,21 @@ const userbadphone = new User(
 
 describe('my test', () => {
 
-    afterAll(() => {
-        loginuser();
-        deleteUser(user_id)
-    }, );
-
-    test('register user bad email', () => {
-        expect(registerUser(userbademail)).resolves.toMatch(/(error)/i)
+    afterAll(async () => {
+        await loginuser(user.email);
+        await deleteUser(user_id)
     });
 
-    test('register user invalid phone', () => {
-        expect(registerUser(userbadphone)).resolves.toMatch(/(error)/i)
+    test('register user bad email', async () => {
+        await expect(registerUser(userbademail)).resolves.toMatch(/(error)/i)
     });
 
-    test('register user' ,() => {
-        expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
+    test('register user invalid phone', async () => {
+        await expect(registerUser(userbadphone)).resolves.toMatch(/(error)/i)
+    });
+
+    test('register user' , async () => {
+        await expect(registerUser(user)).resolves.not.toMatch(/(error)/i)
     });
 })
 
