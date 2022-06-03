@@ -1,7 +1,14 @@
 import "isomorphic-fetch"
 import {response, wait} from "yarn/lib/cli";
 import {re} from "@babel/core/lib/vendor/import-meta-resolve";
-import {addEventOwner, allEvents, eventManager, remote_base_url} from "../constants/urls";
+import {
+    addEventOwner,
+    allEvents,
+    eventManager,
+    getOrPostEventSuppliers,
+    postEventSchedule,
+    remote_base_url
+} from "../constants/urls";
 import fetchTimeout from "fetch-timeout";
 const {logApiRequest} = require("../constants/logger");
 const {base_url, register, userDelete, login, getEvent} = require("../constants/urls");
@@ -159,18 +166,54 @@ async function postEventOwner(){
         .then((response) => response.json())
         .then((responseJSON) => {
             console.log(JSON.stringify(responseJSON));
-            if(responseJSON.id){
-                event_id = responseJSON.id;
-            }
             return JSON.stringify(responseJSON);
         });
 }
 
-async function getevent(){
+async function postSupplier(){
 
-    let url = base_url + getEvent(event_id);
-    console.log(auth)
-    console.log(event_id)
+    let url = base_url + getOrPostEventSuppliers(event_id);
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${auth}`,
+        },
+        body: JSON.stringify(supplier)
+    }
+
+    return fetch(url, request, {timeout: 500})
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(JSON.stringify(responseJSON));
+            return JSON.stringify(responseJSON);
+        });
+}
+
+async function posteventschedule(){
+
+    let url = base_url + postEventSchedule(event_id);
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${auth}`,
+        },
+        body: JSON.stringify(eventsch)
+    }
+
+    return fetch(url, request, {timeout: 500})
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(JSON.stringify(responseJSON));
+            return JSON.stringify(responseJSON);
+        });
+}
+
+
+async function geteventsub(subtype){
+
+    let url = base_url + `/api/events/${event_id}/${subtype}/`
     let request = {
         method: "GET",
         headers: {
@@ -208,6 +251,19 @@ function eventOwner(name,phone) {
     this.phone= phone;
 }
 
+function Supplier(name,phone,job,price) {
+    this.name = name;
+    this.phone= phone;
+    this.job = job;
+    this.price = price;
+}
+
+function eventSchedule(from,to,description) {
+    this.start_time = from;
+    this.end_time= to;
+    this.description = description;
+}
+
 function Address(country, city, street, number) {
     this.country = country;
     this.city = city;
@@ -235,18 +291,62 @@ const eventowner = new eventOwner(
     "0546343178"
 )
 
-describe('my test', () => {
+const supplier = new Supplier(
+    "reut",
+    "0546343178",
+    "flowers",
+    "1000"
+)
+
+const eventsch = new eventSchedule(
+    "2022-10-12 06:00",
+    "2022-10-12 07:00",
+    "flowers meeting",
+)
+
+describe('event addition tests', () => {
 
     beforeAll(async () => {
         await registerUser(user);
         await loginuser(user.email);
         await postEventManager(user_id);
         await postEvent();
-    }, 300000)
+    })
 
-    test('check add event owner', async () => {
+    test('check get event owner from event', async () => {
         await postEventOwner();
-        await expect(getevent()).resolves.toMatch(/(amit)/i)
+        await expect(geteventsub("event_owner")).resolves.toMatch(/(amit)/i)
     });
+
+    test('check get event owner wrong name', async () => {
+        await postEventOwner();
+        await expect(geteventsub("event_owner")).resolves.toMatch(/(hadas)/i)
+    });
+
+    test('check get event supplier', async () => {
+        await postSupplier();
+        await expect(geteventsub("supplier")).resolves.toMatch(/(reut)/i)
+    });
+
+    test('check get event supplier wrong name', async () => {
+        await postSupplier();
+        await expect(geteventsub("supplier")).resolves.toMatch(/(hadas)/i)
+    });
+
+    test('check get event schedule name', async () => {
+        await posteventschedule();
+        await expect(geteventsub("event_schedule")).resolves.toMatch(/(flowers)/i)
+    });
+
+    test('check get event schedule from', async () => {
+        await posteventschedule();
+        await expect(geteventsub("event_schedule")).resolves.toMatch(/(2022-10-12)/i)
+    });
+
+    test('check get event schedule wromg name', async () => {
+        await posteventschedule();
+        await expect(geteventsub("event_schedule")).resolves.toMatch(/(meeting)/i)
+    });
+
 })
 

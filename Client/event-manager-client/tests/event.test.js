@@ -202,13 +202,13 @@ const event = new Event(
     "Israel"
 );
 
-describe('my test', () => {
+describe('events tests', () => {
 
     beforeAll(async () => {
         await registerUser(user);
         await loginuser(user.email);
         await postEventManager(user_id);
-    }, 300000)
+    }, 30000)
 
     test('user is event manager', async () => {
         await expect(getEventManager(user_id)).resolves.toMatch(/(true)/i)

@@ -112,10 +112,6 @@ const userbadphone = new User(
 
 describe('my test', () => {
 
-    // afterAll(async () => {
-    //     await loginuser(user.email);
-    //     await deleteUser(user_id)
-    // });
     beforeAll(async() =>{
         await registerUser(user);
     })
