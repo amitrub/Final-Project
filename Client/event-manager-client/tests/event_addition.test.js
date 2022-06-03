@@ -1,7 +1,7 @@
 import "isomorphic-fetch"
 import {response, wait} from "yarn/lib/cli";
 import {re} from "@babel/core/lib/vendor/import-meta-resolve";
-import {allEvents, eventManager, remote_base_url} from "../constants/urls";
+import {addEventOwner, allEvents, eventManager, remote_base_url} from "../constants/urls";
 import fetchTimeout from "fetch-timeout";
 const {logApiRequest} = require("../constants/logger");
 const {base_url, register, userDelete, login, getEvent} = require("../constants/urls");
@@ -143,6 +143,29 @@ async function postEvent(){
         });
 }
 
+async function postEventOwner(){
+
+    let url = base_url + addEventOwner(event_id);
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${auth}`,
+        },
+        body: JSON.stringify(eventowner)
+    }
+
+    return fetch(url, request, {timeout: 500})
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(JSON.stringify(responseJSON));
+            if(responseJSON.id){
+                event_id = responseJSON.id;
+            }
+            return JSON.stringify(responseJSON);
+        });
+}
+
 async function getevent(){
 
     let url = base_url + getEvent(event_id);
@@ -180,6 +203,11 @@ function Event(type,event_name,date,budget,location) {
     this.location = location;
 }
 
+function eventOwner(name,phone) {
+    this.name = name;
+    this.phone= phone;
+}
+
 function Address(country, city, street, number) {
     this.country = country;
     this.city = city;
@@ -202,32 +230,23 @@ const event = new Event(
     "Israel"
 );
 
+const eventowner = new eventOwner(
+    "amit",
+    "0546343178"
+)
+
 describe('my test', () => {
 
     beforeAll(async () => {
         await registerUser(user);
         await loginuser(user.email);
         await postEventManager(user_id);
+        await postEvent();
     }, 300000)
 
-    test('user is event manager', async () => {
-        await expect(getEventManager(user_id)).resolves.toMatch(/(true)/i)
-    });
-
-    test('check post event', async () => {
-        await expect(postEvent()).resolves.not.toMatch(/(error)/i)
-    });
-
-    test('check get event name', async () => {
-        await expect(getevent()).resolves.toMatch(/(hadas@roee)/i)
-    });
-
-    test('check get event type', async () => {
-        await expect(getevent()).resolves.toMatch(/(wedding)/i)
-    });
-
-    test('check get event date', async () => {
-        await expect(getevent()).resolves.toMatch(/(2022-10-08)/i)
+    test('check add event owner', async () => {
+        await postEventOwner();
+        await expect(getevent()).resolves.toMatch(/(amit)/i)
     });
 })
 
