@@ -4,7 +4,7 @@ import {re} from "@babel/core/lib/vendor/import-meta-resolve";
 import {allEvents, eventManager, remote_base_url} from "../constants/urls";
 import fetchTimeout from "fetch-timeout";
 const {logApiRequest} = require("../constants/logger");
-const {base_url, register, userDelete, login} = require("../constants/urls");
+const {base_url, register, userDelete, login, getEvent} = require("../constants/urls");
 const Log = require("../constants/logger");
 
 var user_id = 1;
@@ -143,7 +143,7 @@ async function postEvent(){
         });
 }
 
-async function getEvent(){
+async function getevent(){
 
     let url = base_url + getEvent(event_id);
     console.log(auth)
@@ -219,11 +219,15 @@ describe('my test', () => {
     });
 
     test('check get event name', async () => {
-        await expect(getEvent()).resolves.toMatch(/(hadas@roee)/i)
+        await expect(getevent()).resolves.toMatch(/(hadas@roee)/i)
     });
 
     test('check get event type', async () => {
-        await expect(getEvent()).resolves.toMatch(/(wedding)/i)
+        await expect(getevent()).resolves.toMatch(/(wedding)/i)
+    });
+
+    test('check get event date', async () => {
+        await expect(getevent()).resolves.toMatch(/(2022-10-08)/i)
     });
 })
 
