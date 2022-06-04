@@ -222,12 +222,24 @@ describe('events tests', () => {
         await expect(getevent()).resolves.toMatch(/(hadas@roee)/i)
     });
 
+    test('check get event name wrong', async () => {
+        await expect(getevent()).resolves.not.toMatch(/(hello)/i)
+    });
+
     test('check get event type', async () => {
         await expect(getevent()).resolves.toMatch(/(wedding)/i)
     });
 
+    test('check get event type wrong', async () => {
+        await expect(getevent()).resolves.not.toMatch(/(bar mithva)/i)
+    });
+
     test('check get event date', async () => {
         await expect(getevent()).resolves.toMatch(/(2022-10-08)/i)
+    });
+
+    test('check get event date wrong', async () => {
+        await expect(getevent()).resolves.not.toMatch(/(2022-10-18)/i)
     });
 })
 
