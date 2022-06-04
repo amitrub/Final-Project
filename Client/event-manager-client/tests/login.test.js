@@ -113,9 +113,5 @@ describe('my test', () => {
     test('login bad user name', async () => {
         await expect(loginuser("reutlevy@gmail.com","8111996")).resolves.toMatch(/(error)/i)
     });
-
-    // afterAll (async ()=> {
-    //    await deleteUser(user_id);
-    // });
 })
 

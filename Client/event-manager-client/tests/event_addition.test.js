@@ -150,7 +150,7 @@ async function postEvent(){
         });
 }
 
-async function postEventOwner(){
+async function postEventOwner(event_owner){
 
     let url = base_url + addEventOwner(event_id);
     let request = {
@@ -159,18 +159,17 @@ async function postEventOwner(){
             "Content-Type": "application/json",
             "Authorization": `Token ${auth}`,
         },
-        body: JSON.stringify(eventowner)
+        body: JSON.stringify(event_owner)
     }
 
     return fetch(url, request, {timeout: 500})
         .then((response) => response.json())
         .then((responseJSON) => {
-            console.log(JSON.stringify(responseJSON));
             return JSON.stringify(responseJSON);
         });
 }
 
-async function postSupplier(){
+async function postSupplier(supplier){
 
     let url = base_url + getOrPostEventSuppliers(event_id);
     let request = {
@@ -185,12 +184,11 @@ async function postSupplier(){
     return fetch(url, request, {timeout: 500})
         .then((response) => response.json())
         .then((responseJSON) => {
-            console.log(JSON.stringify(responseJSON));
             return JSON.stringify(responseJSON);
         });
 }
 
-async function posteventschedule(){
+async function posteventschedule(event_schedule){
 
     let url = base_url + postEventSchedule(event_id);
     let request = {
@@ -199,13 +197,12 @@ async function posteventschedule(){
             "Content-Type": "application/json",
             "Authorization": `Token ${auth}`,
         },
-        body: JSON.stringify(eventsch)
+        body: JSON.stringify(event_schedule)
     }
 
     return fetch(url, request, {timeout: 500})
         .then((response) => response.json())
         .then((responseJSON) => {
-            console.log(JSON.stringify(responseJSON));
             return JSON.stringify(responseJSON);
         });
 }
@@ -286,24 +283,41 @@ const event = new Event(
     "Israel"
 );
 
-const eventowner = new eventOwner(
+const eventownervalid = new eventOwner(
     "amit",
     "0546343178"
 )
 
-const supplier = new Supplier(
+const suppliervalid = new Supplier(
     "reut",
     "0546343178",
     "flowers",
     "1000"
 )
 
-const eventsch = new eventSchedule(
+const eventschvalid = new eventSchedule(
     "2022-10-12 06:00",
     "2022-10-12 07:00",
     "flowers meeting",
 )
 
+const eventownernotvalid = new eventOwner(
+    "amit",
+    ""
+)
+
+const suppliernotvalid = new Supplier(
+    "reut",
+    "",
+    "flowers",
+    "1000"
+)
+
+const eventschnotvalid = new eventSchedule(
+    "2022-10-12",
+    "2022-10-12",
+    "flowers meeting",
+)
 describe('event addition tests', () => {
 
     beforeAll(async () => {
@@ -314,38 +328,50 @@ describe('event addition tests', () => {
     })
 
     test('check get event owner from event', async () => {
-        await postEventOwner();
+        await postEventOwner(eventownervalid);
         await expect(geteventsub("event_owner")).resolves.toMatch(/(amit)/i)
     });
 
     test('check get event owner wrong name', async () => {
-        await postEventOwner();
-        await expect(geteventsub("event_owner")).resolves.toMatch(/(hadas)/i)
+        await postEventOwner(eventownervalid);
+        await expect(geteventsub("event_owner")).resolves.not.toMatch(/(daniel)/i)
     });
 
     test('check get event supplier', async () => {
-        await postSupplier();
+        await postSupplier(suppliervalid);
         await expect(geteventsub("supplier")).resolves.toMatch(/(reut)/i)
     });
 
     test('check get event supplier wrong name', async () => {
-        await postSupplier();
-        await expect(geteventsub("supplier")).resolves.toMatch(/(hadas)/i)
+        await postSupplier(suppliervalid);
+        await expect(geteventsub("supplier")).resolves.not.toMatch(/(amit)/i)
     });
 
     test('check get event schedule name', async () => {
-        await posteventschedule();
+        await posteventschedule(eventschvalid);
         await expect(geteventsub("event_schedule")).resolves.toMatch(/(flowers)/i)
     });
 
     test('check get event schedule from', async () => {
-        await posteventschedule();
+        await posteventschedule(eventschvalid);
         await expect(geteventsub("event_schedule")).resolves.toMatch(/(2022-10-12)/i)
     });
 
-    test('check get event schedule wromg name', async () => {
-        await posteventschedule();
-        await expect(geteventsub("event_schedule")).resolves.toMatch(/(meeting)/i)
+    test('check get event schedule wrong name', async () => {
+        await posteventschedule(eventschvalid);
+        await expect(geteventsub("event_schedule")).resolves.not.toMatch(/(food meeting)/i)
+    });
+
+    test('post supplier not valid', async () => {
+        await expect(postSupplier(suppliernotvalid)).resolves.toMatch(/(error)/i)
+    });
+
+    test('post event schedule not valid', async () => {
+        await expect(posteventschedule(eventschnotvalid)).resolves.toMatch(/(error)/i)
+    });
+
+    test('post event owner not valid', async () => {
+        await expect(postEventOwner(eventownernotvalid)).resolves.toMatch(/(error)/i)
     });
 
 })

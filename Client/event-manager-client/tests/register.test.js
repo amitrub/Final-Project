@@ -108,6 +108,14 @@ const userbadphone = new User(
     "8111996",
     "",
     new Address("Israel", "timmorm", "Alon", 208)
+)
+
+const userbadpassword = new User(
+    "reut",
+    "12345",
+    "",
+    "0546343178",
+    new Address("Israel", "timmorm", "Alon", 208)
 );
 
 describe('my test', () => {
@@ -126,6 +134,10 @@ describe('my test', () => {
 
     test('register user with the same name' , async () => {
         await expect(registerUser(user)).resolves.toMatch(/(error)/i)
+    });
+
+    test('register user with no password' , async () => {
+        await expect(registerUser(userbadpassword)).resolves.toMatch(/(error)/i)
     });
 })
 
