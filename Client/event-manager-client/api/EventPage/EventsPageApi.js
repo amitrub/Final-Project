@@ -139,14 +139,7 @@ export async function addEventOwnerRequest(myContext, event, navigation) {
     logApiRequest(functionName, url, request, myContext);
   await fetchTimeout(
     url,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify(event),
-    },
+    request,
     5000,
     "Timeout"
   )
@@ -193,14 +186,7 @@ export async function editEventOwnersRequest(
     logApiRequest(functionName, urlEditEvent, request, myContext);
   await fetchTimeout(
     urlEditEvent,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${myContext.token}`,
-      },
-      body: JSON.stringify(editEvent),
-    },
+    request,
     5000,
     "Timeout"
   )
@@ -229,14 +215,7 @@ export async function editEventOwnersRequest(
           logApiRequest(functionName, urlEditEvent, request, myContext);
         await fetchTimeout(
           urlEditOwnerEvent,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${token}`,
-            },
-            body: ownersBody,
-          },
+          request,
           5000,
           "Timeout"
         )
@@ -301,14 +280,7 @@ export async function addEventScheduleRequest(
     logApiRequest(functionName, url, request, myContext);
   await fetchTimeout(
     url,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify(meetingToAdd),
-    },
+    request,
     5000,
     "Timeout"
   )

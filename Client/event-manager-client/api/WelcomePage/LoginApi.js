@@ -33,16 +33,7 @@ export async function useLoginRequest(
     logApiRequest(functionName, url, request)
     await fetchTimeout(
     url,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    },
+    request,
     2000,
     "Timeout"
   )
@@ -99,16 +90,7 @@ export async function useLoginWithGoogleRequest(
     logApiRequest(functionName, url, request)
     await fetchTimeout(
         url,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: email,
-                access_token: accessToken,
-            }),
-        },
+        request,
         2000,
         "Timeout"
     )

@@ -34,20 +34,7 @@ export async function saveNewSupplierRequest(
     logApiRequest(functionName, url, request)
   await fetchTimeout(
     url,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify({
-        name: supplierToAdd.name,
-        phone: supplierToAdd.phone,
-        job: "Choose supplier job",
-        price: 0,
-        has_paid: false,
-      }),
-    },
+    request,
     5000,
     "Timeout"
   )

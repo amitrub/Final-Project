@@ -20,13 +20,7 @@ export async function fetchEventSuppliers(
     logApiRequest(functionName, url, request)
   await fetch(
     url,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-    },
+    request,
     { timeout: 2000 }
   )
     .then(async (res) => {
