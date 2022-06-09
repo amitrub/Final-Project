@@ -1,6 +1,6 @@
 import SupplierEntity from "../../Entities/SupplierEntity";
-import Log from "../../constants/logger";
-import { base_url, getOrPostEventSuppliers } from "../../constants/urls";
+import Log, {logApiRequest} from "../../constants/logger";
+import {base_url, getOrPostEventSuppliers, loginWithGoogle} from "../../constants/urls";
 
 export async function fetchEventSuppliers(
   myContext,
@@ -9,6 +9,15 @@ export async function fetchEventSuppliers(
 ) {
   const { token, setIsLoading, setError } = myContext;
   const url = base_url + getOrPostEventSuppliers(eventId);
+  let functionName = "fetchEventSuppliers";
+  let request = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+      },
+    }
+    logApiRequest(functionName, url, request)
   await fetch(
     url,
     {

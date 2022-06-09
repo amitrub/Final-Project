@@ -1,10 +1,10 @@
 import Log, { logApiRequest } from "../../constants/logger";
 import {
-  addEventOwner,
-  allEvents,
-  base_url,
-  getEvent,
-  postEventSchedule,
+    addEventOwner,
+    allEvents,
+    base_url,
+    getEvent,
+    postEventSchedule, register,
 } from "../../constants/urls";
 import {
   createOneButtonAlert,
@@ -125,7 +125,18 @@ export async function editEventRequest(
 
 export async function addEventOwnerRequest(myContext, event, navigation) {
   const { token, setIsLoading, setRefresh, setError } = myContext;
-  const url = base_url + allEvents;
+    let functionName = "addEventOwnerRequest";
+    let url = base_url + allEvents;
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+        },
+        body: JSON.stringify(event),
+    };
+    setIsLoading(true);
+    logApiRequest(functionName, url, request, myContext);
   await fetchTimeout(
     url,
     {
@@ -169,7 +180,17 @@ export async function editEventOwnersRequest(
   const { token, setIsLoading, setError, setRefresh } = myContext;
   const urlEditEvent = base_url + getEvent(editEvent.id);
   const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
-
+    let functionName = "editEventOwnersRequest";
+    let request = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myContext.token}`,
+        },
+        body: JSON.stringify(editEvent),
+    };
+    setIsLoading(true);
+    logApiRequest(functionName, urlEditEvent, request, myContext);
   await fetchTimeout(
     urlEditEvent,
     {
@@ -195,6 +216,17 @@ export async function editEventOwnersRequest(
           })
         );
 
+          let functionName = "editEventOwnersRequest";
+          let request = {
+              method: "PUT",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Token ${token}`,
+              },
+              body: ownersBody,
+          };
+          setIsLoading(true);
+          logApiRequest(functionName, urlEditEvent, request, myContext);
         await fetchTimeout(
           urlEditOwnerEvent,
           {
@@ -257,7 +289,16 @@ export async function addEventScheduleRequest(
 ) {
   const url = base_url + postEventSchedule(eventId);
   const { token, refresh, setRefresh, setError, setIsLoading } = myContext;
-
+    let functionName = "addEventScheduleRequest";
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+        },
+        body: JSON.stringify(meetingToAdd),
+    };
+    logApiRequest(functionName, url, request, myContext);
   await fetchTimeout(
     url,
     {
@@ -300,16 +341,19 @@ export async function getEventScheduleRequest(
   setEventSchedulesByDate
 ) {
   const { token, setError, setIsLoading } = myContext;
-  const url = base_url + postEventSchedule(eventId);
+    let functionName = "getEventScheduleRequest";
+    let request = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+        },
+    }
+    const url = base_url + postEventSchedule(eventId);
+    logApiRequest(functionName, url, request)
   await fetch(
     url,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-    },
+    request,
     { timeout: 2000 }
   )
     .then(async (res) => {

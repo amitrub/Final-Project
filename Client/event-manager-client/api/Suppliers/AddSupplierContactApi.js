@@ -5,7 +5,7 @@ import {
   STATUS_FAILED,
   STATUS_SUCCESS,
 } from "../../constants/errorHandler";
-import Log from "../../constants/logger";
+import Log, {logApiRequest} from "../../constants/logger";
 
 export async function saveNewSupplierRequest(
   myContext,
@@ -16,6 +16,22 @@ export async function saveNewSupplierRequest(
 ) {
     const { token, refresh, setRefresh, setIsLoading, setError } = myContext;
   const url = base_url + getOrPostEventSuppliers(eventId);
+  let functionName = "saveNewSupplierRequest";
+  let request = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify({
+          name: supplierToAdd.name,
+          phone: supplierToAdd.phone,
+          job: "Choose supplier job",
+          price: 0,
+          has_paid: false,
+      }),
+    }
+    logApiRequest(functionName, url, request)
   await fetchTimeout(
     url,
     {
