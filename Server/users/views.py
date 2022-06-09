@@ -29,7 +29,22 @@ class UserLoginApiView(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid(raise_exception=False):
             return Response({"Error": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'token': token.key, 'id': token.user_id, 'name':token.user.name})
+        return Response({'token': token.key, 'id': token.user_id, 'name': token.user.name})
+
+
+# -------------------LoginWithGoogle-------------------
+class UserLoginWithGoogleApiView(ObtainAuthToken):
+    """Handle creating user authentication tokens"""
+    serializer_class = serializers.AuthTokenWithGoogleSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+    def post(self, request, *args, **kwargs):
+        response = super(UserLoginWithGoogleApiView, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid(raise_exception=False):
+            return Response({"Error": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'token': token.key, 'id': token.user_id, 'name': token.user.name})
 
 
 # -------------------User-------------------
@@ -98,7 +113,8 @@ class EventManagerAPIView(APIView):
         try:
             event_manager = EventManager.objects.get(pk=user_id)
         except User.DoesNotExist:
-            return Response({'Error': "A Event Manager with this id does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Error': "A Event Manager with this id does not exist"},
+                            status=status.HTTP_400_BAD_REQUEST)
         event_manager.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

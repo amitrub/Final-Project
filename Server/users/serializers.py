@@ -1,3 +1,4 @@
+import requests
 from rest_framework import serializers
 
 from addresses.models import Address
@@ -31,6 +32,71 @@ class AuthTokenSerializer(serializers.Serializer):
         if not user:
             msg = _('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg, code='authorization')
+
+        attrs['user'] = user
+        return attrs
+
+
+# -------------------LoginWithGoogle-------------------
+class AuthTokenWithGoogleSerializer(serializers.Serializer):
+    """Serializer for the user authentication object"""
+    email = serializers.CharField()
+    access_token = serializers.CharField()
+
+    def validate(self, attrs):
+        """Validate and authenticate the user"""
+        email = attrs.get('email')
+        access_token = attrs.get('access_token')
+        url = 'https://www.googleapis.com/userinfo/v2/me'
+        headers = {
+            "Authorization": f'Bearer {access_token}'
+        }
+        result = requests.get(url=url, headers=headers)
+        result_json = result.json()
+
+        # {
+        #     "id": "109599329927112222200",
+        #     "email": "amitrubin21@gmail.com",
+        #     "verified_email": true,
+        #     "name": "עמית רובין",
+        #     "given_name": "עמית",
+        #     "family_name": "רובין",
+        #     "picture": "https://lh3.googleusercontent.com/a/AATXAJwODH7MpGDabOMZKn3LnXbQBSvZlCird65EVl4t=s96-c",
+        #     "locale": "he"
+        # }
+
+        # {
+        #     "error": {
+        #         "code": 401,
+        #         "message": "Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+        #         "status": "UNAUTHENTICATED"
+        #     }
+        # }
+
+        if "error" in result_json:
+            msg = _(result_json["error"]["message"])
+            raise serializers.ValidationError(msg, code='authorization')
+
+        google_email = result_json["email"]
+        verified_email = result_json["verified_email"]
+        name = result_json["name"]
+
+        if not email == google_email or not verified_email:
+            msg = _('Unable to authenticate with provided credentials')
+            raise serializers.ValidationError(msg, code='authorization')
+
+        if not User.objects.filter(email=email).exists():
+            # TODO: Create user from Google
+            # "https://www.googleapis.com/calendar/v3/users/me/calendarList"
+            # 'https://people.googleapis.com/v1/people/me?personFields=birthdays,addresses,phoneNumbers,genders'
+            # result = requests.get(url='https://people.googleapis.com/v1/people/me?personFields=addresses,phoneNumbers',
+            #                       headers=headers)
+            # result_json = result.json()
+            # print(result_json)
+            user = User.objects.create_user(email, name, '1234', "")
+            Address.objects.create(user=user, country='', city='', street='', number=0)
+
+        user = User.objects.get(email=email)
 
         attrs['user'] = user
         return attrs
