@@ -71,6 +71,7 @@ const AddEventDetails = (props) => {
           onChangeText={setEventName}
           value={eventName}
           placeholder={"Event's Name"}
+          maxLength={30}
         />
         <DatePickerInput date={date} setDate={setDate} />
         <DateTitle date={date} />
