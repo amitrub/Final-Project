@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import APIException
 
 from events.models import Event, DummySupplier, EventSchedule, DummyEventOwner
-from my_models.models import ExpiringTokenAuthentication, ObtainExpiringAuthToken
+from my_models.models import ExpiringTokenAuthentication, ObtainExpiringAuthToken, MyModelViewSet
 from users import serializers
 from users import models
 from users import permissions
@@ -36,7 +36,7 @@ class UserLoginWithGoogleApiView(ObtainAuthToken):
 
 
 # -------------------User-------------------
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(MyModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class = serializers.UserSerializer
     queryset = models.User.objects.all()
@@ -53,7 +53,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 return self.queryset
 
         except User.DoesNotExist:
-            raise NotFound('A User with this id does not exist')
+            raise NotFound(detail={"Error": 'A User with this id does not exist'})
         return self.queryset.filter(id=user_id)
 
     @action(detail=True, methods=['get'])
@@ -87,7 +87,7 @@ class EventManagerAPIView(APIView):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A user with this id does not exist')
+            raise NotFound(detail={"Error": 'A user with this id does not exist'})
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
@@ -122,7 +122,7 @@ class EventOwnerAPIView(APIView):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A user with this id does not exist')
+            raise NotFound(detail={"Error": 'A user with this id does not exist'})
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=False)
         try:
@@ -160,7 +160,7 @@ class SupplierAPIView(APIView):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A user with this id does not exist')
+            raise NotFound(detail={"Error": 'A user with this id does not exist'})
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=False)
         try:
