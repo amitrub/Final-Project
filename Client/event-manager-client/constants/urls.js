@@ -12,6 +12,7 @@ export const homePage = (user_id) => `/api/user/${user_id}/homepage/`;
 
 //users
 export const register = "/api/user/";
+export const userProfile = (user_id) => `/api/user/${user_id}/`;
 export const login = "/api/login/";
 export const loginWithGoogle = "/api/login_with_google/";
 export const eventManager = (user_id) => `/api/user/${user_id}/event_manager/`;
