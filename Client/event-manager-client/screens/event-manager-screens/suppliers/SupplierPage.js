@@ -43,6 +43,7 @@ const SupplierPage = (props) => {
   const params = props.route.params;
   const event_id = params.eventId;
   const supplierId = params.supplierId;
+  const isAddSupplier = params.isAddSupplier;
   const myContext = useContext(UserAuthentication);
   const { refresh, isLoading, setIsLoading, error, setError } = myContext;
   const url = base_url + getOrPutSupplier(event_id, supplierId);
@@ -275,6 +276,7 @@ const SupplierPage = (props) => {
       <DetailSupplierItem
         title={"price"}
         value={`${supplier.price} ₪`}
+        disabled={supplier.has_paid}
         onPress={() => setPriceModalVisible(!priceModalVisible)}
       />
     );
@@ -284,6 +286,7 @@ const SupplierPage = (props) => {
       <DetailSupplierItem
         title={"deposit"}
         value={`0 ₪`}
+        disabled={supplier.has_paid}
         onPress={() =>
           createOneButtonAlert("Future feature - not implemented yet")
         }
@@ -313,36 +316,51 @@ const SupplierPage = (props) => {
     );
   };
   const savePayIcons = () => {
-    return (
-      <View style={[styles.row, { marginTop: 20 }]}>
+    return !isAddSupplier ? (
+      <View style={styles.screen}>
+        <View style={[styles.row, { marginTop: 20 }]}>
+          <IconButton
+            onPress={onSaveSupplier}
+            icon={"save"}
+            color={Colors.black}
+            iconSize={18}
+            textButton={"Save"}
+          />
+          <IconButton
+            onPress={deleteSupplier}
+            icon={"trash"}
+            color={Colors.black}
+            iconSize={18}
+            textButton={"Delete"}
+          />
+          <IconButton
+            onPress={onPressBit}
+            icon={"credit"}
+            color={Colors.black}
+            iconSize={16}
+            textButton={"Bit"}
+          />
+        </View>
+        <View>
+          <IconButton
+            onPress={onPay}
+            icon={"credit-card"}
+            color={Colors.black}
+            iconSize={18}
+            disabled={supplier.has_paid}
+            textButton={supplier.has_paid ? "Paid!" : "Mark as paid"}
+            width={300}
+          />
+        </View>
+      </View>
+    ) : (
+      <View>
         <IconButton
           onPress={onSaveSupplier}
           icon={"save"}
           color={Colors.black}
           iconSize={18}
           textButton={"Save"}
-        />
-        <IconButton
-          onPress={deleteSupplier}
-          icon={"trash"}
-          color={Colors.black}
-          iconSize={18}
-          textButton={"Delete"}
-        />
-        <IconButton
-          onPress={onPay}
-          icon={"credit-card"}
-          color={Colors.black}
-          iconSize={18}
-          disabled={supplier.has_paid}
-          textButton={"Pay"}
-        />
-        <IconButton
-          onPress={onPressBit}
-          icon={"credit"}
-          color={Colors.black}
-          iconSize={16}
-          textButton={"Bit"}
         />
       </View>
     );
@@ -448,7 +466,7 @@ const SupplierPage = (props) => {
           {priceComponent()}
           {depositComponent()}
           {timeComponent()}
-          {paymentMethodComponent()}
+          {/*{paymentMethodComponent()}*/}
           {savePayIcons()}
         </View>
       </ScrollView>

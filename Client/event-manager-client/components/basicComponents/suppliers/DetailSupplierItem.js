@@ -10,7 +10,14 @@ const DetailSupplierItem = (props) => {
   const valueProp = props.value;
 
   return (
-    <TouchableOpacity style={{ padding: 10 }} onPress={onPressProp}>
+    <TouchableOpacity
+      style={[
+        { padding: 10 },
+        props.disabled ? { opacity: 0.5 } : { opacity: 1 },
+      ]}
+      onPress={onPressProp}
+      disabled={props.disabled}
+    >
       <View style={styles.listItem}>
         <Text style={{ fontFamily: "alef-regular", fontSize: 16 }}>
           {titleProp}{" "}

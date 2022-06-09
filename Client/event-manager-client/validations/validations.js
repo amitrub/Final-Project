@@ -15,3 +15,13 @@ export const handleError = () => {
   if (myContext.error)
     return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 };
+
+export function isNotValidAddEventInput(event) {
+  return (
+    event.type === "" ||
+    event.eventName === "" ||
+    event.date === "" ||
+    event.budget === "" ||
+    event.location === ""
+  );
+}
