@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
 from users import models
 from users.models import User, EventManager, EventOwner, Supplier
-from my_models.serializers import MySerializer
+from my_models.models import MySerializer
 
 
 # -------------------Login-------------------

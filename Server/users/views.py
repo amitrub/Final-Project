@@ -1,16 +1,20 @@
+from datetime import datetime, timedelta
+
+import pytz
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
 from rest_framework.settings import api_settings
-from rest_framework.exceptions import NotFound, PermissionDenied
+from rest_framework.exceptions import NotFound, PermissionDenied, AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import APIException
 
 from events.models import Event, DummySupplier, EventSchedule, DummyEventOwner
+from my_models.models import ExpiringTokenAuthentication, ObtainExpiringAuthToken
 from users import serializers
 from users import models
 from users import permissions
@@ -18,18 +22,10 @@ from users.models import User, EventManager, EventOwner, Supplier
 
 
 # -------------------Login-------------------
-class UserLoginApiView(ObtainAuthToken):
+class UserLoginApiView(ObtainExpiringAuthToken):
     """Handle creating user authentication tokens"""
     serializer_class = serializers.AuthTokenSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
-    def post(self, request, *args, **kwargs):
-        response = super(UserLoginApiView, self).post(request, *args, **kwargs)
-        token = Token.objects.get(key=response.data['token'])
-        serializer = self.serializer_class(data=request.data)
-        if not serializer.is_valid(raise_exception=False):
-            return Response({"Error": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'token': token.key, 'id': token.user_id, 'name': token.user.name})
 
 
 # -------------------LoginWithGoogle-------------------
@@ -38,21 +34,13 @@ class UserLoginWithGoogleApiView(ObtainAuthToken):
     serializer_class = serializers.AuthTokenWithGoogleSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
-    def post(self, request, *args, **kwargs):
-        response = super(UserLoginWithGoogleApiView, self).post(request, *args, **kwargs)
-        token = Token.objects.get(key=response.data['token'])
-        serializer = self.serializer_class(data=request.data)
-        if not serializer.is_valid(raise_exception=False):
-            return Response({"Error": str(response.data['content'])}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'token': token.key, 'id': token.user_id, 'name': token.user.name})
-
 
 # -------------------User-------------------
 class UserViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class = serializers.UserSerializer
     queryset = models.User.objects.all()
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (ExpiringTokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email',)
