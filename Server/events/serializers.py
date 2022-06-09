@@ -5,7 +5,7 @@ from rest_framework import status
 from events import models
 
 from events.models import Event, EventSchedule
-from my_models.serializers import MySerializer
+from my_models.models import MySerializer
 from meetings.models import Meetings
 from meetings.serializers import MeetingSerializer
 

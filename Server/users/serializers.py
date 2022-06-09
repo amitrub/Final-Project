@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
 from users import models
 from users.models import User, EventManager, EventOwner, Supplier
-from my_models.serializers import MySerializer
+from my_models.models import MySerializer
 
 
 # -------------------Login-------------------
@@ -85,6 +85,7 @@ class AuthTokenWithGoogleSerializer(serializers.Serializer):
             msg = _('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg, code='authorization')
 
+        email = email.lower()
         if not User.objects.filter(email=email).exists():
             # TODO: Create user from Google
             # "https://www.googleapis.com/calendar/v3/users/me/calendarList"

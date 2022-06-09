@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 from addresses import models
-from my_models.serializers import MySerializer
+from my_models.models import MySerializer
 
 
 # -------------------Address-------------------

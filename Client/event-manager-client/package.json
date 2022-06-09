@@ -10,10 +10,10 @@
     "eject": "expo eject"
   },
   "babel": {
-    "presets":[
+    "presets": [
       ["@babel/preset-react", {
         "runtime": "automatic",
-         "loose": true
+        "loose": true
       }],
       "@babel/preset-env"
     ]
