@@ -1,12 +1,12 @@
 import fetchTimeout from "fetch-timeout";
-import {base_url, login, loginWithGoogle} from "../../constants/urls";
+import {base_url, login, loginWithGoogle, register} from "../../constants/urls";
 import {
   createOneButtonAlert,
   STATUS_FAILED,
   STATUS_SUCCESS,
 } from "../../constants/errorHandler";
 import { TabNavigator } from "../../navigation/tabNavigator";
-import Log from "../../constants/logger";
+import Log, {logApiRequest} from "../../constants/logger";
 
 export async function useLoginRequest(
   myContext,
@@ -18,18 +18,22 @@ export async function useLoginRequest(
 ) {
   const { setIsLoading, setError, setToken, setId, setName } = myContext;
   setIsLoading(true);
-  await fetchTimeout(
-    base_url + login,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    },
+    let functionName = "loginUserRequest";
+    let url = base_url + login;
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password,
+        }),
+    }
+    logApiRequest(functionName, url, request)
+    await fetchTimeout(
+    url,
+    request,
     2000,
     "Timeout"
   )
@@ -71,18 +75,22 @@ export async function useLoginWithGoogleRequest(
     console.log(base_url + loginWithGoogle)
     console.log(email)
     console.log(accessToken)
-    await fetchTimeout(
-        base_url + loginWithGoogle,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: email,
-                access_token: accessToken,
-            }),
+    let functionName = "loginUserRequest";
+    let url = base_url + loginWithGoogle;
+    let request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+            email: email,
+            access_token: accessToken,
+        }),
+    }
+    logApiRequest(functionName, url, request)
+    await fetchTimeout(
+        url,
+        request,
         2000,
         "Timeout"
     )
