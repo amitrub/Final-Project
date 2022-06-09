@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import APIException
 
 from events.models import Event, DummySupplier, EventSchedule, DummyEventOwner
-from my_models.models import ExpiringTokenAuthentication, ObtainExpiringAuthToken
+from my_models.models import ExpiringTokenAuthentication, ObtainExpiringAuthToken, MyModelViewSet
 from users import serializers
 from users import models
 from users import permissions
@@ -36,7 +36,7 @@ class UserLoginWithGoogleApiView(ObtainAuthToken):
 
 
 # -------------------User-------------------
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(MyModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class = serializers.UserSerializer
     queryset = models.User.objects.all()

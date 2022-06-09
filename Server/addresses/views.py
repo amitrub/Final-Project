@@ -6,10 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 from addresses import serializers
 from addresses import models
 from addresses import permissions
+from my_models.models import MyModelViewSet
 from users.models import User
 
 
-class AddressViewSet(viewsets.ModelViewSet):
+class AddressViewSet(MyModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
     serializer_class = serializers.AddressSerializer
     queryset = models.Address.objects.all()
