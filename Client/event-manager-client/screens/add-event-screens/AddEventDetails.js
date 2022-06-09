@@ -74,7 +74,7 @@ const AddEventDetails = (props) => {
           maxLength={30}
         />
         <DatePickerInput date={date} setDate={setDate} />
-        <DateTitle date={date} />
+        <DateTitle date={date} isSmall={true} />
         <View style={{ paddingTop: "10%" }}>
           <TextInput
             style={styles.input}
