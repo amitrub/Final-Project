@@ -544,7 +544,7 @@ export const SupplierPageStyles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   row: {
-    width: 200,
+    width: 300,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",

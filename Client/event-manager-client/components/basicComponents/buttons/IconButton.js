@@ -1,10 +1,16 @@
-import {Pressable, Text, View} from "react-native";
+import { Pressable, Text, View } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import { StyleSheet } from "react-native";
 import Colors from "../../../constants/colors";
 
 const IconButton = (props) => {
-  const disabled = props.disabled === undefined ? false : props.disabled;
+  const disabled = props.disabled ? props.disabled : false;
+  const iconButtonStyle = props.width
+    ? [styles.button, { width: props.width }]
+    : styles.button;
+  const icon = props.width ? undefined : (
+    <Entypo name={props.icon} size={props.iconSize} color={props.color} />
+  );
 
   return (
     <Pressable
@@ -12,8 +18,8 @@ const IconButton = (props) => {
       style={({ pressed }) => (pressed || disabled) && styles.pressed}
       disabled={disabled}
     >
-      <View style={[styles.button]}>
-        <Entypo name={props.icon} size={props.iconSize} color={props.color} />
+      <View style={iconButtonStyle}>
+        {icon}
         {props.textButton ? <Text>{props.textButton}</Text> : undefined}
       </View>
     </Pressable>

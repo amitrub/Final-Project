@@ -14,7 +14,7 @@ export async function saveNewSupplierRequest(
   setSuppliers,
   navigation
 ) {
-    const { token, refresh, setRefresh, setIsLoading, setError } = myContext;
+  const { token, refresh, setRefresh, setIsLoading, setError } = myContext;
   const url = base_url + getOrPostEventSuppliers(eventId);
   await fetchTimeout(
     url,
@@ -44,12 +44,13 @@ export async function saveNewSupplierRequest(
         createOneButtonAlert(message, "OK", "Add supplier contact failed");
       } else if (STATUS_SUCCESS(res.status)) {
         setRefresh(!refresh);
-          navigation.pop();
-          setIsLoading(false);
-          navigation.navigate("SupplierPage", {
-              eventId: eventId,
-              supplierId: data.id,
-          });
+        navigation.pop();
+        setIsLoading(false);
+        navigation.navigate("SupplierPage", {
+          eventId: eventId,
+          supplierId: data.id,
+          isAddSupplier: true,
+        });
       }
     })
     .catch((err) => {

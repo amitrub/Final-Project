@@ -6,10 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 const SupplierItem = (props) => {
   const navigation = useNavigation();
   const supplier = props.supplier;
+  const itemColorStyle = supplier.has_paid
+    ? { backgroundColor: Colors.darkseagreen }
+    : { backgroundColor: Colors.button_gray };
 
   return (
     <TouchableOpacity
-      style={styles.listItem}
+      style={[styles.listItem, itemColorStyle]}
       onPress={() => {
         navigation.navigate("SupplierPage", {
           eventId: props.eventId,
@@ -18,7 +21,9 @@ const SupplierItem = (props) => {
       }}
     >
       <View>
-        <Text style={styles.text}>{supplier.price}</Text>
+        <Text style={styles.text}>
+          {supplier.has_paid ? "Paid!" : supplier.price}
+        </Text>
         <Text style={styles.text}>{supplier.name}</Text>
       </View>
       <Text style={styles.text}>{supplier.job}</Text>

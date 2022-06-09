@@ -17,4 +17,5 @@ export default {
   blueBright: "#2196F3",
   blueBack: "#0b88ec",
   dark_green: "#006400",
+  lightGreen: "#90EE90",
 };
