@@ -1,3 +1,5 @@
+import itertools
+from abc import ABC
 from datetime import datetime, timedelta
 
 import pytz
@@ -9,12 +11,22 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
 
-class MySerializer(serializers.ModelSerializer):
+class MySerializer(serializers.Serializer):
 
     def is_valid(self, raise_exception=False):
         valid_data = super().is_valid()
         if not valid_data and raise_exception:
-            raise ValidationError(detail={"Error": self.errors})
+            raise ValidationError(detail={"Error": " ".join(list(itertools.chain(*list(self.errors.values()))))})
+        return valid_data
+
+
+class MyModelSerializer(serializers.ModelSerializer):
+
+    def is_valid(self, raise_exception=False):
+        valid_data = super().is_valid()
+        if not valid_data and raise_exception:
+            raise ValidationError(
+                detail={"Error": "Fields not filled properly - " + ", ".join(list(self.errors.keys()))})
         return valid_data
 
 
@@ -39,16 +51,16 @@ class ExpiringTokenAuthentication(TokenAuthentication):
         try:
             token = model.objects.select_related('user').get(key=key)
         except model.DoesNotExist:
-            raise AuthenticationFailed('Invalid token.')
+            raise AuthenticationFailed(detail={"Error": 'Invalid token.'})
 
         if not token.user.is_active:
-            raise AuthenticationFailed('User inactive or deleted')
+            raise AuthenticationFailed(detail={"Error": 'User inactive or deleted'})
 
         # This is required for the time comparison
         utc_now = datetime.utcnow()
         utc_now = utc_now.replace(tzinfo=pytz.utc)
 
         if token.created < utc_now - timedelta(hours=24):
-            raise AuthenticationFailed('Token has expired')
+            raise AuthenticationFailed(detail={"Error": 'Token has expired'})
 
         return token.user, token

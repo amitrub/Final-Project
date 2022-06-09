@@ -5,7 +5,7 @@ from rest_framework import status
 from events import models
 
 from events.models import Event, EventSchedule
-from my_models.models import MySerializer
+from my_models.models import MyModelSerializer
 from meetings.models import Meetings
 from meetings.serializers import MeetingSerializer
 
@@ -13,7 +13,7 @@ from meetings.serializers import MeetingSerializer
 # -------------------EventSchedule-------------------
 
 
-class EventScheduleSerializer(MySerializer):
+class EventScheduleSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     event = serializers.SlugRelatedField(
@@ -29,7 +29,7 @@ class EventScheduleSerializer(MySerializer):
 
 # -------------------DummySupplier-------------------
 
-class DummySupplierSerializer(MySerializer):
+class DummySupplierSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     event = serializers.SlugRelatedField(
@@ -49,7 +49,7 @@ class DummySupplierSerializer(MySerializer):
 
 # -------------------DummyEventOwner-------------------
 
-class DummyEventOwnerSerializer(MySerializer):
+class DummyEventOwnerSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     event = serializers.SlugRelatedField(
@@ -64,7 +64,7 @@ class DummyEventOwnerSerializer(MySerializer):
 
 # -------------------Event-------------------
 
-class EventSerializer(MySerializer):
+class EventSerializer(MyModelSerializer):
     """Serializer events"""
     # meetings = MeetingSerializer(many=True, required=False)
     event_owners = DummyEventOwnerSerializer(many=True, required=False)

@@ -53,7 +53,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 return self.queryset
 
         except User.DoesNotExist:
-            raise NotFound('A User with this id does not exist')
+            raise NotFound(detail={"Error": 'A User with this id does not exist'})
         return self.queryset.filter(id=user_id)
 
     @action(detail=True, methods=['get'])
@@ -87,7 +87,7 @@ class EventManagerAPIView(APIView):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A user with this id does not exist')
+            raise NotFound(detail={"Error": 'A user with this id does not exist'})
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
@@ -122,7 +122,7 @@ class EventOwnerAPIView(APIView):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A user with this id does not exist')
+            raise NotFound(detail={"Error": 'A user with this id does not exist'})
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=False)
         try:
@@ -160,7 +160,7 @@ class SupplierAPIView(APIView):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
-            raise NotFound('A user with this id does not exist')
+            raise NotFound(detail={"Error": 'A user with this id does not exist'})
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=False)
         try:

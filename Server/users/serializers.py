@@ -1,5 +1,8 @@
+from abc import ABC
+
 import requests
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from addresses.models import Address
 from addresses.serializers import AddressSerializer
@@ -7,11 +10,11 @@ from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
 from users import models
 from users.models import User, EventManager, EventOwner, Supplier
-from my_models.models import MySerializer
+from my_models.models import MyModelSerializer, MySerializer
 
 
 # -------------------Login-------------------
-class AuthTokenSerializer(serializers.Serializer):
+class AuthTokenSerializer(MySerializer):
     """Serializer for the user authentication object"""
     email = serializers.CharField()
     password = serializers.CharField(
@@ -30,15 +33,15 @@ class AuthTokenSerializer(serializers.Serializer):
             password=password
         )
         if not user:
-            msg = _('Unable to authenticate with provided credentials')
-            raise serializers.ValidationError(msg, code='authorization')
+            msg = 'Unable to authenticate with provided credentials'
+            raise ValidationError(detail=msg)
 
         attrs['user'] = user
         return attrs
 
 
 # -------------------LoginWithGoogle-------------------
-class AuthTokenWithGoogleSerializer(serializers.Serializer):
+class AuthTokenWithGoogleSerializer(MySerializer):
     """Serializer for the user authentication object"""
     email = serializers.CharField()
     access_token = serializers.CharField()
@@ -75,7 +78,7 @@ class AuthTokenWithGoogleSerializer(serializers.Serializer):
 
         if "error" in result_json:
             msg = _(result_json["error"]["message"])
-            raise serializers.ValidationError(msg, code='authorization')
+            raise ValidationError(msg, code='authorization')
 
         google_email = result_json["email"]
         verified_email = result_json["verified_email"]
@@ -83,7 +86,7 @@ class AuthTokenWithGoogleSerializer(serializers.Serializer):
 
         if not email == google_email or not verified_email:
             msg = _('Unable to authenticate with provided credentials')
-            raise serializers.ValidationError(msg, code='authorization')
+            raise ValidationError(msg, code='authorization')
 
         if not User.objects.filter(email=email).exists():
             # TODO: Create user from Google
@@ -105,7 +108,7 @@ class AuthTokenWithGoogleSerializer(serializers.Serializer):
 # -------------------User-------------------
 
 
-class UserSerializer(MySerializer):
+class UserSerializer(MyModelSerializer):
     """Serializes a user profile object"""
 
     address = AddressSerializer()
@@ -153,7 +156,7 @@ class UserSerializer(MySerializer):
 
 
 # -------------------EventManager-------------------
-class EventManagerSerializer(MySerializer):
+class EventManagerSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -168,7 +171,7 @@ class EventManagerSerializer(MySerializer):
 
 # TODO: Not in use yet
 # -------------------Supplier-------------------
-class EventOwnerSerializer(MySerializer):
+class EventOwnerSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -183,7 +186,7 @@ class EventOwnerSerializer(MySerializer):
 
 # TODO: Not in use yet
 # -------------------Supplier-------------------
-class SupplierSerializer(MySerializer):
+class SupplierSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
