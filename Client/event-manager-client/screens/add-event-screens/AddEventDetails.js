@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TextInput, ScrollView } from "react-native";
+import { View, TextInput, ScrollView } from "react-native";
 import Colors from "../../constants/colors";
 import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
@@ -12,7 +12,12 @@ import EventEntity from "../../Entities/EventEntity";
 import UserAuthentication from "../../global/UserAuthentication";
 import DropdownComponent from "../../components/basicComponents/inputs/DropdownComponent";
 import { AddEventDetailsStyles as styles } from "../../styles/styles";
-import { handleError, handleLoading } from "../../validations/validations";
+import {
+  handleError,
+  handleLoading,
+  isNotValidAddEventInput,
+} from "../../validations/validations";
+import { createOneButtonAlert } from "../../constants/errorHandler";
 
 const AddEventDetails = (props) => {
   const myContext = useContext(UserAuthentication);
@@ -42,9 +47,17 @@ const AddEventDetails = (props) => {
       [],
       []
     );
-    props.navigation.navigate("AddEventOwners", {
-      event: event,
-    });
+    if (isNotValidAddEventInput(event)) {
+      createOneButtonAlert(
+        "please fill all event properties",
+        "OK",
+        "Failed..."
+      );
+    } else {
+      props.navigation.navigate("AddEventOwners", {
+        event: event,
+      });
+    }
   };
 
   return (

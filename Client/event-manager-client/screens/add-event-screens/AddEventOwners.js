@@ -139,7 +139,7 @@ const AddEventOwners = (props) => {
       {renderHeader()}
       <View
         style={{
-          height: "70%",
+          height: "75%",
         }}
       >
         <FlatList
@@ -153,9 +153,10 @@ const AddEventOwners = (props) => {
       <View style={{ marginTop: 20 }}>
         <IconButton
           onPress={onSaveEvent}
-          icon={"game-controller"}
+          icon={"save"}
           color={Colors.black}
           iconSize={18}
+          textButton={"Save"}
         />
       </View>
     </View>
