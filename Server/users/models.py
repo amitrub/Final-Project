@@ -5,6 +5,8 @@ from django.contrib.auth.models import BaseUserManager
 
 
 # -------------------User-------------------
+from rest_framework.exceptions import ValidationError
+
 
 class UserObjectsManager(BaseUserManager):
     """Manager for user profiles"""
@@ -15,7 +17,11 @@ class UserObjectsManager(BaseUserManager):
         if not email:
             raise ValueError('User must have an email address')
 
-        email = self.normalize_email(email)
+        email = self.normalize_email(email).lower()
+
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(detail={"Error": "user with this email already exists."})
+
         user = self.model(email=email, name=name, phone=phone)
 
         user.set_password(password)

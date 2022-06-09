@@ -88,6 +88,7 @@ class AuthTokenWithGoogleSerializer(MySerializer):
             msg = _('Unable to authenticate with provided credentials')
             raise ValidationError(msg, code='authorization')
 
+        email = email.lower()
         if not User.objects.filter(email=email).exists():
             # TODO: Create user from Google
             # "https://www.googleapis.com/calendar/v3/users/me/calendarList"
