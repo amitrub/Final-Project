@@ -2,9 +2,10 @@ import { base_url, eventManager, homePage } from "../../constants/urls";
 import { STATUS_FAILED, STATUS_SUCCESS } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
 import { logAndCreateErrorMessage } from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function postEventManager(myContext) {
-  const { id, token } = myContext;
+  const { id, token, setIsLoading } = myContext;
   let functionName = "Post Event Manager";
   let url = base_url + eventManager(id);
   let request = {
@@ -15,7 +16,7 @@ export async function postEventManager(myContext) {
     },
   };
   logApiRequest(functionName, url, request, myContext);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -24,11 +25,14 @@ export async function postEventManager(myContext) {
         console.log("POST is-event-manager SUCCESS");
       }
     })
-    .catch((error) => console.log("postEventManager catch error", error));
+    .catch((error) => {
+      setIsLoading(false);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+    });
 }
 
 export async function getIsEventManager(myContext) {
-  const { id, token } = myContext;
+  const { id, token, setIsLoading } = myContext;
   let functionName = "Get Is Event Manager";
   let url = base_url + eventManager(id);
   let request = {
@@ -39,7 +43,7 @@ export async function getIsEventManager(myContext) {
     },
   };
   logApiRequest(functionName, url, request, myContext);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -52,7 +56,10 @@ export async function getIsEventManager(myContext) {
         }
       }
     })
-    .catch((error) => console.log("onPressRegister error", error));
+    .catch((error) => {
+      setIsLoading(false);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+    });
 }
 
 export async function getHomePageData(myContext, setEventsPreview) {
@@ -67,7 +74,7 @@ export async function getHomePageData(myContext, setEventsPreview) {
     },
   };
   logApiRequest(functionName, url, request, myContext);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -82,5 +89,8 @@ export async function getHomePageData(myContext, setEventsPreview) {
         setIsLoading(false);
       }
     })
-    .catch((error) => console.log("onPressRegister error", error));
+    .catch((error) => {
+      setIsLoading(false);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+    });
 }

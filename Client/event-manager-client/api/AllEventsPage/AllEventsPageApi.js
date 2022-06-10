@@ -1,6 +1,8 @@
 import EventEntity from "../../Entities/EventEntity";
 import Log, { logApiRequest } from "../../constants/logger";
 import { allEvents, base_url, getEvent } from "../../constants/urls";
+import {logAndCreateErrorMessage} from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function fetchAllEvents(myContext, setAllEventsData) {
   const { token, setIsLoading, setError } = myContext;
@@ -15,7 +17,7 @@ export async function fetchAllEvents(myContext, setAllEventsData) {
     },
   };
   logApiRequest(functionName, url, request, myContext);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       const loadedEvents = [];
@@ -42,6 +44,6 @@ export async function fetchAllEvents(myContext, setAllEventsData) {
     .catch((err) => {
       setIsLoading(false);
       setError(err);
-      Log.error("AllEventsPage >> getData >> error", err);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }

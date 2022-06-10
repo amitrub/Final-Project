@@ -8,6 +8,7 @@ import {
 import { TabNavigator } from "../../navigation/tabNavigator";
 import Log, { logApiRequest } from "../../constants/logger";
 import { logAndCreateErrorMessage } from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function useLoginRequest(
   myContext,
@@ -32,7 +33,7 @@ export async function useLoginRequest(
     }),
   };
   logApiRequest(functionName, url, request);
-  await fetchTimeout(url, request, 2000, "Timeout")
+  await fetchTimeout(url, request, global_timeout, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -50,7 +51,7 @@ export async function useLoginRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      Log.error("onPressLogin error", err);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }
 
@@ -79,7 +80,7 @@ export async function useLoginWithGoogleRequest(
     }),
   };
   logApiRequest(functionName, url, request);
-  await fetchTimeout(url, request, 2000, "Timeout")
+  await fetchTimeout(url, request, global_timeout, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -97,6 +98,6 @@ export async function useLoginWithGoogleRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      Log.error("onPressSignInGoogle error", err);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }
