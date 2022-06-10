@@ -5,7 +5,7 @@ import { allEvents, base_url, getEvent } from "../../constants/urls";
 export async function fetchAllEvents(myContext, setAllEventsData) {
   const { token, setIsLoading, setError } = myContext;
   setIsLoading(true);
-  let functionName = "fetchAllEvents";
+  let functionName = "Fetch All Events";
   let url = base_url + allEvents;
   let request = {
     method: "GET",
