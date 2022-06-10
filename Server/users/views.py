@@ -29,7 +29,7 @@ class UserLoginApiView(ObtainExpiringAuthToken):
 
 
 # -------------------LoginWithGoogle-------------------
-class UserLoginWithGoogleApiView(ObtainAuthToken):
+class UserLoginWithGoogleApiView(ObtainExpiringAuthToken):
     """Handle creating user authentication tokens"""
     serializer_class = serializers.AuthTokenWithGoogleSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
