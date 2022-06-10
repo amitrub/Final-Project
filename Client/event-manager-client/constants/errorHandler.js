@@ -34,8 +34,8 @@ export const handleResponseRegister = async (response) => {
     const data = await response.json();
 
     if (STATUS_FAILED(response.status)) {
-      const message = data.email[0];
-      createOneButtonAlert(message, "OK", "Registration Failed");
+        const errorMessage = data.Error ? data.Error : "data.Error";
+      createOneButtonAlert(errorMessage, "OK", "Registration Failed");
     } else if (STATUS_SUCCESS(response.status)) {
       const message = "You have successfully registered!\nplease LOGIN";
       createOneButtonAlert(message, "OK", "Registration Succeeded");
