@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { View, SafeAreaView, ScrollView, TextInput } from "react-native";
 import Log from "../../constants/logger";
 import RegisterUser from "../../Entities/Users/RegisterUser";
@@ -6,6 +6,7 @@ import Address from "../../Entities/Users/Address";
 import { RegisterPageStyles } from "../../styles/styles";
 import { registerUserRequest } from "../../api/RegisterPage/RegisterPageApi";
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
+import UserAuthentication from "../../global/UserAuthentication";
 
 const RegisterPage = (props) => {
   Log.info("Register Page >> loading");
@@ -35,8 +36,9 @@ const RegisterPage = (props) => {
       phone,
       new Address(country, city, street, number)
     );
+    const myContext = useContext(UserAuthentication);
     Log.info("onPressRegister >> POST Register");
-    registerUserRequest(user, emptyRegisterInputs, props.navigation)
+    registerUserRequest(user, emptyRegisterInputs, props.navigation, myContext)
       .then((r) => r)
       .catch((e) => console.log(e));
   }, [email, password, fullName, phone, city, country, number, street]);

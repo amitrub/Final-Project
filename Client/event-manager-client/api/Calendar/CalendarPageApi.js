@@ -2,6 +2,7 @@ import { base_url, eventSchedulesById } from "../../constants/urls";
 import { STATUS_FAILED, STATUS_SUCCESS } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
 import { logAndCreateErrorMessage } from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function getEventScheduleByUserId(
   myContext,
@@ -20,7 +21,7 @@ export async function getEventScheduleByUserId(
     },
   };
   logApiRequest(functionName, url, request, myContext);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -48,5 +49,8 @@ export async function getEventScheduleByUserId(
         setIsLoading(false);
       }
     })
-    .catch((error) => console.log("onPressRegister error", error));
+    .catch((error) => {
+      setIsLoading(false);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+    });
 }

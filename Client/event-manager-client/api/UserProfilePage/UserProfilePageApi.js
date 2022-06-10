@@ -5,10 +5,12 @@ import {
   STATUS_SUCCESS,
 } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
+import {logAndCreateErrorMessage} from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function editUserRequest(user, navigation, myContext) {
   let functionName = "Edit User Request";
-  const { id, token } = myContext;
+  const { id, token, setIsLoading } = myContext;
   let url = base_url + userProfile(id);
   let request = {
     method: "PATCH",
@@ -19,7 +21,7 @@ export async function editUserRequest(user, navigation, myContext) {
     body: JSON.stringify(user),
   };
   logApiRequest(functionName, url, request);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -33,7 +35,7 @@ export async function editUserRequest(user, navigation, myContext) {
       }
     })
     .catch((error) => {
-      createOneButtonAlert("Server is soooo slow, you should check it...");
-      Log.error("editUserRequest error", error);
+      setIsLoading(false);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }

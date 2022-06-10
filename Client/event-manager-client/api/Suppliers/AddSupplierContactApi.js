@@ -3,6 +3,7 @@ import fetchTimeout from "fetch-timeout";
 import { STATUS_FAILED, STATUS_SUCCESS } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
 import { logAndCreateErrorMessage } from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function saveNewSupplierRequest(
   myContext,
@@ -29,7 +30,7 @@ export async function saveNewSupplierRequest(
     }),
   };
   logApiRequest(functionName, url, request);
-  await fetchTimeout(url, request, 5000, "Timeout")
+  await fetchTimeout(url, request, global_timeout, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -47,10 +48,10 @@ export async function saveNewSupplierRequest(
       }
     })
     .catch((err) => {
-      Log.error("AddSupplier >> onSaveSupplier >> failed with error: ", err);
       setSuppliers([]);
       setIsLoading(false);
       setError(err);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
   setIsLoading(false);
 }

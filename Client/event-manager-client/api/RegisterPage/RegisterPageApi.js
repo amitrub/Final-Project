@@ -6,12 +6,15 @@ import {
 } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
 import { logAndCreateErrorMessage } from "../../validations/validations";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
 export async function registerUserRequest(
   user,
   emptyRegisterInputs,
-  navigation
+  navigation,
+  myContext
 ) {
+  const { setIsLoading } = myContext;
   let functionName = "Register User Request";
   let url = base_url + register;
   let request = {
@@ -22,7 +25,7 @@ export async function registerUserRequest(
     body: JSON.stringify(user),
   };
   logApiRequest(functionName, url, request);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
@@ -36,7 +39,7 @@ export async function registerUserRequest(
       }
     })
     .catch((error) => {
-      createOneButtonAlert("Server is soooo slow, you should check it...");
-      Log.error("onPressRegister error", error);
+      setIsLoading(false);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }

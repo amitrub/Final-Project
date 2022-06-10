@@ -5,6 +5,8 @@ import {
   getOrPostEventSuppliers,
   loginWithGoogle,
 } from "../../constants/urls";
+import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
+import {logAndCreateErrorMessage} from "../../validations/validations";
 
 export async function fetchEventSuppliers(
   myContext,
@@ -22,7 +24,7 @@ export async function fetchEventSuppliers(
     },
   };
   logApiRequest(functionName, url, request);
-  await fetch(url, request, { timeout: 2000 })
+  await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
       const loadedSuppliers = [];
@@ -45,6 +47,6 @@ export async function fetchEventSuppliers(
     .catch((err) => {
       setIsLoading(false);
       setError(err);
-      Log.error("AllEventsSuppliers >> getData >> error", err);
+      logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }
