@@ -1,11 +1,7 @@
-import {
-  base_url,
-  eventManager,
-  eventSchedulesById,
-  homePage,
-} from "../../constants/urls";
+import { base_url, eventSchedulesById } from "../../constants/urls";
 import { STATUS_FAILED, STATUS_SUCCESS } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
+import { logAndCreateErrorMessage } from "../../validations/validations";
 
 export async function getEventScheduleByUserId(
   myContext,
@@ -14,7 +10,7 @@ export async function getEventScheduleByUserId(
   const { id, token, setIsLoading, refresh, setRefresh } = myContext;
   setIsLoading(true);
 
-  let functionName = "getEventScheduleByUserId";
+  let functionName = "Get Event Schedule By UserId";
   let url = base_url + eventSchedulesById(id);
   let request = {
     method: "GET",
@@ -28,8 +24,7 @@ export async function getEventScheduleByUserId(
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
-        const message = data.Error ? data.Error : "data.Error";
-        Log.error(`${functionName} FAILED >> Error: `, message);
+        logAndCreateErrorMessage(data, functionName);
       } else if (STATUS_SUCCESS(res.status)) {
         Log.info(
           "CalendarPageApi >> getEventScheduleByUserId >> status success"

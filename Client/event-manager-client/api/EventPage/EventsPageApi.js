@@ -1,10 +1,10 @@
 import Log, { logApiRequest } from "../../constants/logger";
 import {
-    addEventOwner,
-    allEvents,
-    base_url,
-    getEvent,
-    postEventSchedule, register,
+  addEventOwner,
+  allEvents,
+  base_url,
+  getEvent,
+  postEventSchedule,
 } from "../../constants/urls";
 import {
   createOneButtonAlert,
@@ -14,9 +14,10 @@ import {
 } from "../../constants/errorHandler";
 import fetchTimeout from "fetch-timeout";
 import EventScheduleEntity from "../../Entities/EventScheduleEntity";
+import { logAndCreateErrorMessage } from "../../validations/validations";
 
 export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
-  let functionName = "fetchEvent";
+  let functionName = "Fetch Event";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "GET",
@@ -40,7 +41,7 @@ export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
 
 export async function deleteEventRequest(myContext, event_id, navigation) {
   const { token, setIsLoading, setError, setRefresh } = myContext;
-  let functionName = "deleteEventRequest";
+  let functionName = "Delete Event Request";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "DELETE",
@@ -89,7 +90,7 @@ export async function editEventRequest(
   navigation
 ) {
   const { token, setIsLoading, setRefresh, setError } = myContext;
-  let functionName = "editEventRequest";
+  let functionName = "Edit Event Request";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "PATCH",
@@ -105,8 +106,7 @@ export async function editEventRequest(
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
-        const message = "data.Error";
-        createOneButtonAlert(message, "OK", "EDIT event failed");
+        logAndCreateErrorMessage(data, functionName);
       } else if (STATUS_SUCCESS(res.status)) {
         // myContext.setRefresh(!myContext.refresh);
         const message = "event updated!";
@@ -125,29 +125,23 @@ export async function editEventRequest(
 
 export async function addEventOwnerRequest(myContext, event, navigation) {
   const { token, setIsLoading, setRefresh, setError } = myContext;
-    let functionName = "addEventOwnerRequest";
-    let url = base_url + allEvents;
-    let request = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-        },
-        body: JSON.stringify(event),
-    };
-    setIsLoading(true);
-    logApiRequest(functionName, url, request, myContext);
-  await fetchTimeout(
-    url,
-    request,
-    5000,
-    "Timeout"
-  )
+  let functionName = "Add Event Owner Request";
+  let url = base_url + allEvents;
+  let request = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+    body: JSON.stringify(event),
+  };
+  setIsLoading(true);
+  logApiRequest(functionName, url, request, myContext);
+  await fetchTimeout(url, request, 5000, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
-        const message = "data.Error";
-        createOneButtonAlert(message, "OK", "Add new event failed");
+        logAndCreateErrorMessage(data, functionName);
       } else if (STATUS_SUCCESS(res.status)) {
         setRefresh(!myContext.refresh);
         const message =
@@ -173,28 +167,22 @@ export async function editEventOwnersRequest(
   const { token, setIsLoading, setError, setRefresh } = myContext;
   const urlEditEvent = base_url + getEvent(editEvent.id);
   const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
-    let functionName = "editEventOwnersRequest";
-    let request = {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${myContext.token}`,
-        },
-        body: JSON.stringify(editEvent),
-    };
-    setIsLoading(true);
-    logApiRequest(functionName, urlEditEvent, request, myContext);
-  await fetchTimeout(
-    urlEditEvent,
-    request,
-    5000,
-    "Timeout"
-  )
+  let functionName = "Edit Event Owners Request";
+  let request = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${myContext.token}`,
+    },
+    body: JSON.stringify(editEvent),
+  };
+  setIsLoading(true);
+  logApiRequest(functionName, urlEditEvent, request, myContext);
+  await fetchTimeout(urlEditEvent, request, 5000, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
-        const message = "data.Error";
-        createOneButtonAlert(message, "OK", "EDIT event failed");
+        logAndCreateErrorMessage(data, functionName);
       } else if (STATUS_SUCCESS(res.status)) {
         const ownersBody = JSON.stringify(
           newOwners.map((o) => {
@@ -202,34 +190,22 @@ export async function editEventOwnersRequest(
           })
         );
 
-          let functionName = "editEventOwnersRequest";
-          let request = {
-              method: "PUT",
-              headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Token ${token}`,
-              },
-              body: ownersBody,
-          };
-          setIsLoading(true);
-          logApiRequest(functionName, urlEditEvent, request, myContext);
-        await fetchTimeout(
-          urlEditOwnerEvent,
-          request,
-          5000,
-          "Timeout"
-        )
+        let functionName = "Edit Event Owners Request";
+        let request = {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+          body: ownersBody,
+        };
+        setIsLoading(true);
+        logApiRequest(functionName, urlEditEvent, request, myContext);
+        await fetchTimeout(urlEditOwnerEvent, request, 5000, "Timeout")
           .then(async (res) => {
             const data = await res.json();
             if (STATUS_FAILED(res.status)) {
-              const message = data.toString();
-              Log.error("add New Owner Request failed");
-              createOneButtonAlert(
-                "Owners didn't updated successfully! <" + message + ">",
-                "OK",
-                "Edit owners error!",
-                () => navigation.pop()
-              );
+              logAndCreateErrorMessage(data, functionName);
             } else if (STATUS_SUCCESS(res.status)) {
               setRefresh(!myContext.refresh);
               const message = "Owners updated!";
@@ -268,31 +244,21 @@ export async function addEventScheduleRequest(
 ) {
   const url = base_url + postEventSchedule(eventId);
   const { token, refresh, setRefresh, setError, setIsLoading } = myContext;
-    let functionName = "addEventScheduleRequest";
-    let request = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-        },
-        body: JSON.stringify(meetingToAdd),
-    };
-    logApiRequest(functionName, url, request, myContext);
-  await fetchTimeout(
-    url,
-    request,
-    5000,
-    "Timeout"
-  )
+  let functionName = "Add Event Schedule Request";
+  let request = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+    body: JSON.stringify(meetingToAdd),
+  };
+  logApiRequest(functionName, url, request, myContext);
+  await fetchTimeout(url, request, 5000, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
-        const message = "data.Error";
-        createOneButtonAlert(
-          message,
-          "OK",
-          "Add Event Schedule Request failed"
-        );
+        logAndCreateErrorMessage(data, functionName);
       } else if (STATUS_SUCCESS(res.status)) {
         setRefresh(!refresh);
         const message = "Event Schedule was added successfully!";
@@ -313,21 +279,17 @@ export async function getEventScheduleRequest(
   setEventSchedulesByDate
 ) {
   const { token, setError, setIsLoading } = myContext;
-    let functionName = "getEventScheduleRequest";
-    let request = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-        },
-    }
-    const url = base_url + postEventSchedule(eventId);
-    logApiRequest(functionName, url, request)
-  await fetch(
-    url,
-    request,
-    { timeout: 2000 }
-  )
+  let functionName = "Get Event Schedule Request";
+  let request = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+  };
+  const url = base_url + postEventSchedule(eventId);
+  logApiRequest(functionName, url, request);
+  await fetch(url, request, { timeout: 2000 })
     .then(async (res) => {
       const data = await res.json();
       //console.log("data", data);

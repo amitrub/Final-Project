@@ -1,23 +1,20 @@
-import { base_url, register } from "../../constants/urls";
+import { base_url, userProfile } from "../../constants/urls";
 import {
   createOneButtonAlert,
   STATUS_FAILED,
   STATUS_SUCCESS,
 } from "../../constants/errorHandler";
 import Log, { logApiRequest } from "../../constants/logger";
-import { logAndCreateErrorMessage } from "../../validations/validations";
 
-export async function registerUserRequest(
-  user,
-  emptyRegisterInputs,
-  navigation
-) {
-  let functionName = "Register User Request";
-  let url = base_url + register;
+export async function editUserRequest(user, navigation, myContext) {
+  let functionName = "Edit User Request";
+  const { id, token } = myContext;
+  let url = base_url + userProfile(id);
   let request = {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
     },
     body: JSON.stringify(user),
   };
@@ -26,17 +23,17 @@ export async function registerUserRequest(
     .then(async (res) => {
       const data = await res.json();
       if (STATUS_FAILED(res.status)) {
-        logAndCreateErrorMessage(data, functionName);
+        const message = data.Error ? data.Error : "";
+        createOneButtonAlert(message, "OK", "Editing user failed");
       } else if (STATUS_SUCCESS(res.status)) {
-        const message = "You have successfully registered!\nplease LOGIN";
-        createOneButtonAlert(message, "OK", "Registration Succeeded", () =>
-          navigation.navigate("Welcome")
+        const message = "You have successfully edited your user profile!";
+        createOneButtonAlert(message, "OK", "Edit Succeeded", () =>
+          navigation.navigate("HomePage")
         );
-        emptyRegisterInputs();
       }
     })
     .catch((error) => {
       createOneButtonAlert("Server is soooo slow, you should check it...");
-      Log.error("onPressRegister error", error);
+      Log.error("editUserRequest error", error);
     });
 }
