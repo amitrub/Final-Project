@@ -1,16 +1,20 @@
-import {View, SafeAreaView, ScrollView, TextInput, Text} from "react-native";
-import React, {useCallback, useContext, useEffect, useLayoutEffect} from "react";
+import { View, SafeAreaView, ScrollView, TextInput, Text } from "react-native";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import Log from "../../constants/logger";
-import {ProfilePageStyles} from "../../styles/styles";
+import { ProfilePageStyles } from "../../styles/styles";
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 import UserAuthentication from "../../global/UserAuthentication";
-import {editUserRequest} from "../../api/UserProfilePage/UserProfilePageApi";
-import {base_url, userProfile} from "../../constants/urls";
-import {useNavigation} from "@react-navigation/native";
-
+import { editUserRequest } from "../../api/UserProfilePage/UserProfilePageApi";
+import { base_url, userProfile } from "../../constants/urls";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfilePage = (props) => {
-const navigation = useNavigation();
+  const navigation = useNavigation();
   Log.info("User Profile Page >> loading");
   const myContext = useContext(UserAuthentication);
   const { id, token, setIsLoading, setError } = myContext;
@@ -41,7 +45,7 @@ const navigation = useNavigation();
         setEmail(data.email);
         setFullName(data.name);
         setPhone(data.phone);
-        if(data.address){
+        if (data.address) {
           setCountry(data.address.country);
           setCity(data.address.city);
           setStreet(data.address.street);
@@ -77,7 +81,12 @@ const navigation = useNavigation();
       return user.phone !== phone;
     }
     function oneOfAddressFieldsHasChanged() {
-      return user.address.country !== country || user.address.city !== city || user.address.street !== street || user.address.number.toString() !== number;
+      return (
+        user.address.country !== country ||
+        user.address.city !== city ||
+        user.address.street !== street ||
+        user.address.number.toString() !== number
+      );
     }
 
     if (emailHasEdited()) {
@@ -91,10 +100,10 @@ const navigation = useNavigation();
     }
     if (oneOfAddressFieldsHasChanged()) {
       let newAddress = {
-        "country": country,
-        "city": city,
-        "street": street,
-        "number": number
+        country: country,
+        city: city,
+        street: street,
+        number: number,
       };
       editUser["address"] = newAddress;
     }
@@ -113,10 +122,17 @@ const navigation = useNavigation();
   return (
     <SafeAreaView style={ProfilePageStyles.screen}>
       <ScrollView>
-        <View style={{alignItems: "center"}}>
-        <View style={{ marginTop: 15 }}>
-          <Text style={[ProfilePageStyles.mainTitle]}>{fullName}'s Profile</Text>
-        </View>
+        <View style={{ alignItems: "center" }}>
+          <View
+            style={{
+              marginTop: 15,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={[ProfilePageStyles.mainTitle]}>Profile</Text>
+            <Text style={[ProfilePageStyles.secondTitle]}>{fullName}</Text>
+          </View>
           <View style={{ paddingTop: 40, paddingBottom: 20 }}>
             <TextInput
               style={ProfilePageStyles.input}

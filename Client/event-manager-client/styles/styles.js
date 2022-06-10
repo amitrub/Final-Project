@@ -47,12 +47,19 @@ export const ProfilePageStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-    mainTitle: {
+  mainTitle: {
     color: Colors.text_black,
     fontFamily: "alef-bold",
     fontSize: 26,
     fontStyle: "normal",
     fontWeight: "700",
+  },
+  secondTitle: {
+    color: Colors.dark_gray,
+    fontFamily: "alef",
+    fontSize: 18,
+    fontStyle: "normal",
+    fontWeight: "400",
   },
   input: {
     height: 40,
