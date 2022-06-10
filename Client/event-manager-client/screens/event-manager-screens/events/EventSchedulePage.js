@@ -19,15 +19,16 @@ import {
   AllEventsPageStyles as styles,
   EventPageStyles,
 } from "../../../styles/styles";
-import { base_url, postEventSchedule } from "../../../constants/urls";
 import EventMeetingItem from "../../../components/basicComponents/EventMeetingItem";
 import cancelModalButton from "../../../components/basicComponents/buttons/CancelModalButton";
 import EventScheduleEntity from "../../../Entities/EventScheduleEntity";
-import { createOneButtonAlert } from "../../../constants/errorHandler";
 import {
   addEventScheduleRequest,
   getEventScheduleRequest,
 } from "../../../api/EventPage/EventsPageApi";
+import TimePickerInput from "../../../components/basicComponents/inputs/TimePickerInput";
+import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
+import { logAndCreateErrorMessage } from "../../../validations/validations";
 
 const EventSchedulePage = (props) => {
   const params = props.route.params;
@@ -44,6 +45,7 @@ const EventSchedulePage = (props) => {
     new EventScheduleEntity("", "", "")
   );
   const [meetingDescription, setMeetingDescription] = useState("");
+  const [meetingDate, setMeetingDate] = useState("");
   const [meetingStartTime, setMeetingStartTime] = useState("");
   const [meetingEndTime, setMeetingEndTime] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -68,6 +70,8 @@ const EventSchedulePage = (props) => {
         <Pressable
           style={[EventPageStyles.button, EventPageStyles.buttonUpdate]}
           onPress={async () => {
+            const startTime = `${meetingDate} ${meetingStartTime}`;
+            const endTime = `${meetingDate} ${meetingEndTime}`;
             function isValidTime(meetingTime) {
               let split = meetingTime?.split(" ");
               if (split.length !== 2) {
@@ -77,25 +81,29 @@ const EventSchedulePage = (props) => {
               let currTime = split[1];
               return currDate.length === 10 && currTime.length === 5;
             }
-
             function resetFields() {
               setMeetingDescription("");
+              setMeetingDate("");
               setMeetingStartTime("");
               setMeetingEndTime("");
             }
 
-            if (isValidTime(meetingStartTime) && isValidTime(meetingEndTime)) {
+            if (isValidTime(startTime) && isValidTime(endTime)) {
               let tmp = meetingToAdd;
               meetingToAdd.description = meetingDescription;
-              meetingToAdd.start_time = meetingStartTime;
-              meetingToAdd.end_time = meetingEndTime;
+              meetingToAdd.start_time = startTime;
+              meetingToAdd.end_time = endTime;
               setMeetingToAdd(tmp);
               await addEventScheduleRequest(myContext, eventId, meetingToAdd);
               resetFields();
               setModalVisible(!modalVisible);
             } else {
-              createOneButtonAlert(
-                "please enter start and end time on [yyyy-mm-dd hh:mm] format"
+              logAndCreateErrorMessage(
+                {
+                  Error:
+                    "Missing props, choose date, start and end time please",
+                },
+                "Add Event Schedule"
               );
             }
           }}
@@ -109,22 +117,27 @@ const EventSchedulePage = (props) => {
         <>
           <TextInput
             style={EventPageStyles.input}
-            onChangeText={setMeetingStartTime}
-            value={meetingStartTime}
-            placeholder={"start time [yyyy-mm-dd hh:mm]"}
-          />
-          <TextInput
-            style={EventPageStyles.input}
-            onChangeText={setMeetingEndTime}
-            value={meetingEndTime}
-            placeholder={"end time [yyyy-mm-dd hh:mm]"}
-          />
-          <TextInput
-            style={EventPageStyles.input}
             onChangeText={setMeetingDescription}
             value={meetingDescription}
-            placeholder={"description"}
+            placeholder={"stage name"}
           />
+          <View style={{ height: 25, width: 250, paddingBottom: 70 }}>
+            <TimePickerInput
+              time={meetingStartTime}
+              setTime={setMeetingStartTime}
+              placeholder={"select start time"}
+            />
+          </View>
+          <View style={{ height: 25, width: 250, paddingBottom: 70 }}>
+            <TimePickerInput
+              time={meetingEndTime}
+              setTime={setMeetingEndTime}
+              placeholder={"select end time"}
+            />
+          </View>
+          <View style={{ height: 25, width: 250, paddingBottom: 70 }}>
+            <DatePickerInput date={meetingDate} setDate={setMeetingDate} />
+          </View>
         </>
       );
     }
@@ -141,7 +154,9 @@ const EventSchedulePage = (props) => {
       >
         <View style={EventPageStyles.centeredView}>
           <View style={EventPageStyles.modalView}>
-            <Text style={EventPageStyles.modalText}>Add schedule item</Text>
+            <Text style={EventPageStyles.modalText}>
+              Add stage to your event
+            </Text>
             {getEventSchedulerInputs()}
             <View style={EventPageStyles.row}>
               {getPresaleUpdateButton()}
@@ -182,7 +197,7 @@ const EventSchedulePage = (props) => {
     return (
       <View style={styles.row}>
         <View style={{ paddingBottom: "5%" }}>
-          <Text style={styles.mainTitle}>Event scheduler</Text>
+          <Text style={styles.mainTitle}>Event schedule</Text>
           <Text style={styles.textTitle}>{eventName}</Text>
         </View>
         <Entypo

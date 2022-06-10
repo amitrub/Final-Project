@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { SafeAreaView, StyleSheet, View, Pressable } from "react-native";
 import DatePicker from "react-native-datepicker";
 import Colors from "../../../constants/colors";
 
-const DatePickerInput = (props) => {
+const TimePickerInput = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <Pressable>
           <DatePicker
             style={styles.datePickerStyle}
-            date={props.date}
-            mode="date"
-            placeholder="select date"
-            format="YYYY-MM-DD"
-            // minDate="01-01-2021"
-            // maxDate="01-01-2000"
+            date={props.time}
+            mode="time"
+            placeholder={props.placeholder}
+            // locale="en_GB"
+            // format="HH-"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
@@ -39,7 +38,7 @@ const DatePickerInput = (props) => {
                 color: Colors.dark_gray,
               },
             }}
-            onDateChange={(date) => props.setDate(date)}
+            onDateChange={(time) => props.setTime(time)}
           />
         </Pressable>
       </View>
@@ -47,7 +46,7 @@ const DatePickerInput = (props) => {
   );
 };
 
-export default DatePickerInput;
+export default TimePickerInput;
 
 const styles = StyleSheet.create({
   container: {

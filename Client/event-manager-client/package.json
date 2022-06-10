@@ -15,7 +15,9 @@
         "runtime": "automatic",
         "loose": true
       }],
-      "@babel/preset-env"
+      ["@babel/preset-env", {
+        "loose": true
+      }]
     ]
   },
   "dependencies": {
