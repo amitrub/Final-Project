@@ -63,28 +63,9 @@ const EventPage = (props) => {
   const [editBudget, setEditBudget] = useState(0);
 
   const getData = useCallback(async () => {
-    // await fetchEvent(myContext, setEvent, setIsLoading, setError)
-    await fetch(
-      url,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      },
-      { timeout: 2000 }
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        setEvent(data);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        Log.error("EventPage >> getData >> error", err);
-      });
+      await fetchEvent(myContext, navigation, setEvent, event_id);
   }, [event_id]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {

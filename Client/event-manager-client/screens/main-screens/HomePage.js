@@ -11,9 +11,11 @@ import {
 } from "../../api/HomePage/HomePageApi";
 import { HomePageStyles } from "../../styles/styles";
 import { getEventScheduleByUserId } from "../../api/Calendar/CalendarPageApi";
+import { useNavigation } from "@react-navigation/native";
 
 const HomePage = () => {
   const myContext = useContext(UserAuthentication);
+  const navigation = useNavigation();
   const { name, refresh, isLoading, setIsLoading } = myContext;
 
   const [eventsPreview, setEventsPreview] = React.useState([]);
@@ -26,6 +28,7 @@ const HomePage = () => {
     await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
   }, [refresh]);
   if (isLoading) return <Loader />;
+
 
   return (
     <ScrollView>

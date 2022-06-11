@@ -17,26 +17,27 @@ import EventScheduleEntity from "../../Entities/EventScheduleEntity";
 import { logAndCreateErrorMessage } from "../../validations/validations";
 import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
-export async function fetchEvent(myContext, setEvent, setIsLoading, setError) {
+export async function fetchEvent(myContext, navigation, setEvent, event_id) {
+  const { token, setIsLoading } = myContext;
   let functionName = "Fetch Event";
   let url = base_url + getEvent(event_id);
   let request = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${myContext.token}`,
+      Authorization: `Token ${token}`,
     },
   };
   logApiRequest(functionName, url, request, myContext);
-  await fetch(url, request, { timeout: global_timeout })
+  await fetchTimeout(url, request, global_timeout, "Timeout")
     .then(async (res) => {
       const data = await res.json();
       setEvent(data);
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
       logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+      navigation.pop();
     });
 }
 

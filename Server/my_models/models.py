@@ -61,7 +61,7 @@ class MyModelViewSet(viewsets.ModelViewSet):
         try:
             event = Event.objects.get(pk=event_id)
         except Event.DoesNotExist:
-            raise NotFound('A event with this id does not exist')
+            raise exceptions.NotFound('A event with this id does not exist')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(event=event)
@@ -75,8 +75,12 @@ class MySerializer(serializers.Serializer):
         valid_data = super().is_valid()
         if not valid_data and raise_exception:
             # raise exceptions.ValidationError(detail={"Error": " ".join(list(itertools.chain(*list(self.errors.values()))))})
-            raise exceptions.ValidationError(
-                detail={"Error": "Fields not filled properly - " + ", ".join(list(self.errors.keys()))})
+            if 'non_field_errors' in self.errors.keys():
+                massage = str(list(dict(self.errors).get('non_field_errors'))[0])
+                raise exceptions.ValidationError(detail={"Error": massage})
+            else:
+                raise exceptions.ValidationError(
+                    detail={"Error": "Fields not filled properly - " + ", ".join(list(self.errors.keys()))})
         return valid_data
 
 
@@ -85,8 +89,12 @@ class MyModelSerializer(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         valid_data = super().is_valid()
         if not valid_data and raise_exception:
-            raise exceptions.ValidationError(
-                detail={"Error": "Fields not filled properly - " + ", ".join(list(self.errors.keys()))})
+            if len(self.errors.keys()) == 1 and " ".join(list(itertools.chain(*list(self.errors.values())))) == "user with this email already exists.":
+                raise exceptions.ValidationError(
+                    detail={"Error": " ".join(list(itertools.chain(*list(self.errors.values()))))})
+            else:
+                raise exceptions.ValidationError(
+                    detail={"Error": "Fields not filled properly - " + ", ".join(list(self.errors.keys()))})
         return valid_data
 
 
