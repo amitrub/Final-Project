@@ -5,10 +5,8 @@ import React, {useCallback, useContext, useLayoutEffect, useState,} from "react"
 import {Alert, Linking, Modal, Pressable, ScrollView, Text, TextInput, View,} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import Loader from "../../../components/basicComponents/others/Loader";
-import ErrorScreen, {ErrorMessages,} from "../../../components/basicComponents/others/ErrorScreen";
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
-import {base_url, getOrPutSupplier} from "../../../constants/urls";
 import {createOneButtonAlert,} from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
@@ -29,8 +27,7 @@ const SupplierPage = (props) => {
     const supplierId = params.supplierId;
     const isAddSupplier = params.isAddSupplier;
     const myContext = useContext(UserAuthentication);
-    const {refresh, isLoading, setIsLoading, error, setError} = myContext;
-    const url = base_url + getOrPutSupplier(event_id, supplierId);
+    const {refresh, isLoading, setIsLoading} = myContext;
     const [supplier, setSupplier] = useState({});
     const [serviceTypeModalVisible, setServiceTypeModalVisible] = useState(false);
     const [priceModalVisible, setPriceModalVisible] = useState(false);
@@ -320,7 +317,7 @@ const SupplierPage = (props) => {
     }, [bitUrl]);
 
     if (isLoading) return <Loader/>;
-    if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching}/>;
+
     return (
         <View style={styles.screen}>
             {editServiceTypeModal()}
