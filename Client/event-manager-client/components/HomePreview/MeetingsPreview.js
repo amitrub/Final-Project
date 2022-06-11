@@ -1,76 +1,53 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import MeetingItem from "../basicComponents/MeetingItem";
 import Entypo from "react-native-vector-icons/Entypo";
-import {
-  base_url,
-  firebaseJson,
-  previewMeetingsCapitlP,
-} from "../../constants/urls";
-import MeetingEntity from "../../Entities/MeetingEntity";
 import { useNavigation } from "@react-navigation/native";
 import { MeetingsPreviewStyles } from "../../styles/styles";
 
-// MeetingItem.propTypes = { meeting: PropTypes.any };
 const MeetingsPreview = (props) => {
   const navigation = useNavigation();
-  const [previewMeetingsData, setPreviewMeetingsData] = useState([]);
-  const url = base_url + previewMeetingsCapitlP + firebaseJson;
+  const eventStages = props.eventStages;
 
-  const getData = useCallback(async () => {
-    const response = await fetch(url);
-    const data = await response.json();
-    const loadedEvents = [];
-
-    for (const key in data) {
-      loadedEvents.push(
-        new MeetingEntity(
-          data[key].time,
-          data[key].location,
-          data[key].Description
-        )
-      );
-    }
-    setPreviewMeetingsData(loadedEvents);
-  }, []);
-
-  useEffect(() => {
-    getData()
-      .then((res) => res)
-      .catch((error) => console.log(error));
+  const eventStagesPreview = [];
+  Object.keys(eventStages).forEach((key) => {
+    eventStages[key].forEach((e) => {
+      if (eventStagesPreview.length < 3) {
+        eventStagesPreview.push(e);
+      }
+    });
   });
 
   const body = (
     <View>
-      <MeetingItem
-        location={"LAGO"}
-        time={"18:30"}
-        description={"Choosing flowers to Hupa"}
-      />
-    </View>
+      {eventStagesPreview.map((eventStage, index) => {
+        const start_time = eventStage?.start_time?.split("T")[1]?.slice(0, 5);
+        const end_time = eventStage?.end_time?.split("T")[1]?.slice(0, 5);
+        const date = eventStage?.start_time?.split("T")[0];
 
-    //TO BE CONTINUE
-    // <View>
-    //   {previewMeetingsData?.map((previewMeeting) => {
-    //     return (
-    //       <MeetingItem
-    //         location={previewMeeting.location}
-    //         time={previewMeeting.time}
-    //         description={previewMeeting.description}
-    //       />
-    //     );
-    //   })}
-    // </View>
+        return (
+          <View>
+            <MeetingItem
+              description={eventStage.description}
+              key={index}
+              time={`${start_time}-${end_time}`}
+              eventName={eventStage.event}
+              date={date}
+            />
+          </View>
+        );
+      })}
+    </View>
   );
 
   const previewTitle = (
     <View style={MeetingsPreviewStyles.row}>
-      <Text style={MeetingsPreviewStyles.textTitle}>Today's meetings</Text>
-      <Entypo
-        name="dots-three-horizontal"
-        size={22}
-        onPress={() => navigation.navigate("Meetings")}
-      />
+      <Text style={MeetingsPreviewStyles.textTitle}>Next meetings</Text>
+      {/*<Entypo*/}
+      {/*  name="dots-three-horizontal"*/}
+      {/*  size={22}*/}
+      {/*  onPress={() => navigation.navigate("My Calendar")}*/}
+      {/*/>*/}
     </View>
   );
 
