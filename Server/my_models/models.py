@@ -74,7 +74,9 @@ class MySerializer(serializers.Serializer):
     def is_valid(self, raise_exception=False):
         valid_data = super().is_valid()
         if not valid_data and raise_exception:
-            raise exceptions.ValidationError(detail={"Error": " ".join(list(itertools.chain(*list(self.errors.values()))))})
+            # raise exceptions.ValidationError(detail={"Error": " ".join(list(itertools.chain(*list(self.errors.values()))))})
+            raise exceptions.ValidationError(
+                detail={"Error": "Fields not filled properly - " + ", ".join(list(self.errors.keys()))})
         return valid_data
 
 
