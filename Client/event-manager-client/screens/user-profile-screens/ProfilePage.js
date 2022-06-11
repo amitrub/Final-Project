@@ -30,7 +30,11 @@ const ProfilePage = (props) => {
             .then((res) => {
                 setIsLoading(false);
             })
-            .catch((error) => Log.Error(error));
+            .catch((error) => {
+                Log.Error(error)
+                setIsLoading(false)
+            });
+
     }, []);
 
     function createEditFieldsObject() {
