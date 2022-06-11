@@ -6,14 +6,16 @@ import UserAuthentication from "../../../global/UserAuthentication";
 import Log from "../../../constants/logger";
 import {AllEventsPageStyles as styles} from "../../../styles/styles";
 import {fetchAllEvents} from "../../../api/AllEventsPage/AllEventsPageApi";
+import { useNavigation } from "@react-navigation/native";
 
 const AllEventsPage = (props) => {
     const myContext = useContext(UserAuthentication);
+    const navigation = useNavigation();
     const {refresh} = myContext;
     const [allEventsData, setAllEventsData] = useState([]);
 
     useEffect(() => {
-        fetchAllEvents(myContext, setAllEventsData)
+        fetchAllEvents(myContext, setAllEventsData, navigation)
             .then((res) => res)
             .catch((error) => Log.Error(error));
     }, [refresh]);

@@ -3,8 +3,9 @@ import {logApiRequest} from "../../constants/logger";
 import {allEvents, base_url} from "../../constants/urls";
 import {logAndCreateErrorMessage} from "../../validations/validations";
 import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
+import fetchTimeout from "fetch-timeout";
 
-export async function fetchAllEvents(myContext, setAllEventsData) {
+export async function fetchAllEvents(myContext, setAllEventsData, navigation) {
     const {token, setIsLoading} = myContext;
     setIsLoading(true);
     let functionName = "Fetch All Events";
@@ -17,7 +18,7 @@ export async function fetchAllEvents(myContext, setAllEventsData) {
         },
     };
     logApiRequest(functionName, url, request, myContext);
-    await fetch(url, request, {timeout: global_timeout})
+    await fetchTimeout(url, request, global_timeout, "Timeout")
         .then(async (res) => {
             const data = await res.json();
             const loadedEvents = [];
@@ -44,5 +45,6 @@ export async function fetchAllEvents(myContext, setAllEventsData) {
         .catch((err) => {
             setIsLoading(false);
             logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+            navigation.navigate("HomePage");
         });
 }

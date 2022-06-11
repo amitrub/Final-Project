@@ -55,7 +55,7 @@ export async function deleteEventRequest(myContext, event_id, navigation) {
   logApiRequest(functionName, url, request, myContext);
   const onPressYes = async () => {
     setIsLoading(true);
-    await fetch(url, request, { timeout: global_timeout })
+    await fetchTimeout(url, request, global_timeout, "Timeout")
       .then(async (res) => {
         Log.info("EventPage >> delete event >> then");
         // const data = await res.json();
@@ -72,7 +72,6 @@ export async function deleteEventRequest(myContext, event_id, navigation) {
       })
       .catch((err) => {
         setIsLoading(false);
-        setError(err);
         logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
       });
   };
@@ -120,8 +119,8 @@ export async function editEventRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
       logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
+      navigation.navigate("HomePage");
     });
 }
 
@@ -155,7 +154,6 @@ export async function addEventOwnerRequest(myContext, event, navigation) {
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
       logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }
@@ -203,7 +201,7 @@ export async function editEventOwnersRequest(
         };
         setIsLoading(true);
         logApiRequest(functionName, urlEditEvent, request, myContext);
-        await fetchTimeout(urlEditOwnerEvent, request, 5000, "Timeout")
+        await fetchTimeout(urlEditOwnerEvent, request, global_timeout, "Timeout")
           .then(async (res) => {
             const data = await res.json();
             if (STATUS_FAILED(res.status)) {
@@ -267,7 +265,6 @@ export async function addEventScheduleRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
       logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
     });
 }
