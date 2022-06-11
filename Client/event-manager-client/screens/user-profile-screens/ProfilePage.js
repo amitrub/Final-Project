@@ -4,7 +4,7 @@ import Log from "../../constants/logger";
 import {ProfilePageStyles} from "../../styles/styles";
 import TitleButton from "../../components/basicComponents/buttons/TitleButton";
 import UserAuthentication from "../../global/UserAuthentication";
-import {editUserRequest, getUserDataRequest} from "../../api/UserProfilePage/UserProfilePageApi";
+import {editUserRequest, fetchUserDate} from "../../api/UserProfilePage/UserProfilePageApi";
 import {useNavigation} from "@react-navigation/native";
 
 const ProfilePage = (props) => {
@@ -22,7 +22,7 @@ const ProfilePage = (props) => {
     const [user, setUser] = React.useState({});
 
     const getData = useCallback(async () => {
-        getUserDataRequest(myContext, setEmail, setFullName, setPhone, setCountry, setCity, setStreet, setNumber, setUser)
+        fetchUserDate(myContext, setEmail, setFullName, setPhone, setCountry, setCity, setStreet, setNumber, setUser)
     }, [id]);
     useLayoutEffect(() => {
         setIsLoading(true);
@@ -34,6 +34,7 @@ const ProfilePage = (props) => {
                 Log.Error(error)
                 setIsLoading(false)
             });
+
     }, []);
 
     function createEditFieldsObject() {

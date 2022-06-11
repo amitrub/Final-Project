@@ -4,9 +4,9 @@ import Log, {logApiRequest} from "../../constants/logger";
 import {logAndCreateErrorMessage} from "../../validations/validations";
 import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
-export async function getUserDataRequest(myContext, setEmail, setFullName, setPhone, setCountry, setCity, setStreet, setNumber, setUser) {
-    const {id, token, setIsLoading} = myContext;
-    setIsLoading(true)
+export async function fetchUserDate(myContext, setEmail, setFullName, setPhone, setCountry, setCity, setStreet, setNumber, setUser) {
+  setIsLoading(true)  
+  const {id, token, setIsLoading} = myContext;
     let url = base_url + userProfile(id);
     await fetch(
         url,
@@ -37,7 +37,7 @@ export async function getUserDataRequest(myContext, setEmail, setFullName, setPh
             setIsLoading(false);
             Log.error("UserProfilePage >> getData >> error", err);
         });
-};
+}
 
 export async function editUserRequest(user, navigation, myContext) {
     let functionName = "Edit User Request";
@@ -69,5 +69,6 @@ export async function editUserRequest(user, navigation, myContext) {
             setIsLoading(false);
             logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
             Log.error("UserProfilePage >> editUser >> error", err);
+
         });
 }
