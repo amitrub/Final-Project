@@ -17,6 +17,9 @@ export const handleError = () => {
 };
 
 export const logAndCreateErrorMessage = (data, functionName) => {
+    const myContext = useContext(UserAuthentication);
+    const {setIsLoading} = myContext;
+    setIsLoading(false)
     const errorMessage = data.Error ? data.Error : "data.Error";
     Log.error(`${functionName} >> failed with error: ${errorMessage}`);
     createOneButtonAlert(
