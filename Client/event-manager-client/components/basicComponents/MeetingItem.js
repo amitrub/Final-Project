@@ -1,13 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../../constants/colors";
 
 const MeetingItem = (props) => (
   <TouchableOpacity style={styles.listItem}>
-    <Text style={styles.textTitle}>
-      {props.location} {props.time}
-    </Text>
-    <Text style={styles.textDesc}>{props.description}</Text>
+    <View>
+      <Text style={styles.textTitle}>{props.description}</Text>
+      <Text style={styles.text}>{props.eventName}</Text>
+    </View>
+    <View>
+      <Text style={styles.text}>{props.time}</Text>
+      <Text style={styles.text}>{props.date}</Text>
+    </View>
   </TouchableOpacity>
 );
 
@@ -19,14 +23,18 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     height: 60,
     width: 300,
-    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    margin: 0,
+    display: "flex",
   },
   textTitle: {
     fontFamily: "alef-bold",
     fontSize: 18,
     textAlign: "left",
   },
-  textDesc: {
+  text: {
     fontFamily: "alef-regular",
     fontSize: 14,
     textAlign: "left",
