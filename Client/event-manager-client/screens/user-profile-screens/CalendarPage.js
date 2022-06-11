@@ -2,7 +2,10 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { View } from "react-native";
 import { Agenda, LocaleConfig } from "react-native-calendars";
 import EventMeetingItem from "../../components/basicComponents/EventMeetingItem";
-import { getEventScheduleByUserId } from "../../api/Calendar/CalendarPageApi";
+import {
+  getEventsByUserId,
+  getEventScheduleByUserId,
+} from "../../api/Calendar/CalendarPageApi";
 import UserAuthentication from "../../global/UserAuthentication";
 import Loader from "../../components/basicComponents/others/Loader";
 import ErrorScreen, {
@@ -25,10 +28,9 @@ const formatDate = (date) => {
   return [year, month, day].join("-");
 };
 
-const CalendarPage = (props) => {
+const CalendarPage = () => {
   const myContext = useContext(UserAuthentication);
-  const { id, token, isLoading, setIsLoading, error, setError, refresh } =
-    myContext;
+  const { id, isLoading, error, refresh } = myContext;
   LocaleConfig.locales["en"] = {
     monthNames: [
       "January",
@@ -72,14 +74,28 @@ const CalendarPage = (props) => {
   };
   LocaleConfig.defaultLocale = "en";
   const [items, setItems] = React.useState({});
+  const [fetchedEvents, setFetchedEvents] = React.useState({});
   const [fetchedEventSchedules, setFetchedEventSchedules] = React.useState({});
 
   useEffect(async () => {
     await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
-  }, [id]);
+    await getEventsByUserId(myContext, setFetchedEvents);
+  }, [id, refresh]);
   const loadItems = useCallback(
     async (day) => {
+      // Object.keys(fetchedEventSchedules).forEach((key) => {
+      //   const eventSchedule = fetchedEventSchedules[key];
+      //   console.log("before", eventSchedule);
+      //   eventSchedule.sort((a, b) => {
+      //     const time_a = a.start_time.split("T")[1].slice(0, 5);
+      //     const time_b = b.start_time.split("T")[1].slice(0, 5);
+      //     return time_b - time_a;
+      //   });
+      //   console.log("after", eventSchedule);
+      //   fetchedEventSchedules[key] = eventSchedule;
+      // });
       const items = fetchedEventSchedules;
+      const eventItems = fetchedEvents;
 
       setTimeout(() => {
         for (let i = -15; i < 85; i++) {
@@ -95,13 +111,29 @@ const CalendarPage = (props) => {
         Object.keys(items).forEach((key) => {
           newItems[key] = items[key];
         });
+        Object.keys(eventItems).forEach((key) => {
+          if (newItems.hasOwnProperty(key)) {
+            eventItems[key].forEach((event) => {
+              if (newItems[key].every((e) => !e.id || e.id !== event.id)) {
+                newItems[key].unshift(event);
+              }
+            });
+          } else {
+            newItems[key] = eventItems[key];
+          }
+        });
         setItems(newItems);
       }, 1000);
     },
-    [refresh]
+    [fetchedEvents, fetchedEventSchedules]
   );
   const renderItem = (item) => {
-    return <EventMeetingItem item={item} />;
+    const isEventItem = !!item.location;
+    if (isEventItem) {
+      return <EventMeetingItem item={item} isEventItem={true} />;
+    } else {
+      return <EventMeetingItem item={item} />;
+    }
   };
   const getAgendaComponent = () => {
     const today = formatDate(Date.now(), "yyyy-mm-dd");

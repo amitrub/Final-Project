@@ -32,12 +32,11 @@ import { logAndCreateErrorMessage } from "../../../validations/validations";
 
 const EventSchedulePage = (props) => {
   const params = props.route.params;
-  const navigation = props.navigation;
   const eventId = params.eventId;
   const eventName = params.eventName;
 
   const myContext = useContext(UserAuthentication);
-  const { refresh, error, setError, isLoading, setIsLoading } = myContext;
+  const { refresh, error, isLoading, setIsLoading } = myContext;
   const [eventSchedulesData, setEventSchedulesData] = useState([]);
   const [eventSchedulesByDate, setEventSchedulesByDate] = useState({});
 
