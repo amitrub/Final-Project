@@ -8,72 +8,70 @@ import {
 } from "../../api/Calendar/CalendarPageApi";
 import UserAuthentication from "../../global/UserAuthentication";
 import Loader from "../../components/basicComponents/others/Loader";
-import ErrorScreen, {
-  ErrorMessages,
-} from "../../components/basicComponents/others/ErrorScreen";
 
 const timeToString = (time) => {
-  const date = new Date(time);
-  return date.toISOString().split("T")[0];
+    const date = new Date(time);
+    return date.toISOString().split("T")[0];
 };
 const formatDate = (date) => {
-  let d = new Date(date),
-    month = "" + (d.getMonth() + 1),
-    day = "" + d.getDate(),
-    year = d.getFullYear();
+    let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
 
-  if (month.length < 2) month = "0" + month;
-  if (day.length < 2) day = "0" + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-  return [year, month, day].join("-");
+    return [year, month, day].join("-");
 };
 
-const CalendarPage = () => {
-  const myContext = useContext(UserAuthentication);
-  const { id, isLoading, error, refresh } = myContext;
-  LocaleConfig.locales["en"] = {
-    monthNames: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November ",
-      "December",
-    ],
-    monthNamesShort: [
-      "Jan.",
-      "Feb.",
-      "Mar.",
-      "Apr.",
-      "May.",
-      "Jun.",
-      "Jul.",
-      "Aug.",
-      "Sep.",
-      "Oct.",
-      "Nov. ",
-      "Dec.",
-    ],
-    dayNames: [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ],
-    dayNamesShort: ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."],
-    today: "today",
-  };
-  LocaleConfig.defaultLocale = "en";
-  const [items, setItems] = React.useState({});
+const CalendarPage = (props) => {
+    const myContext = useContext(UserAuthentication);
+    const {id, isLoading, refresh} =
+        myContext;
+    LocaleConfig.locales["en"] = {
+        monthNames: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November ",
+            "December",
+        ],
+        monthNamesShort: [
+            "Jan.",
+            "Feb.",
+            "Mar.",
+            "Apr.",
+            "May.",
+            "Jun.",
+            "Jul.",
+            "Aug.",
+            "Sep.",
+            "Oct.",
+            "Nov. ",
+            "Dec.",
+        ],
+        dayNames: [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ],
+        dayNamesShort: ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."],
+        today: "today",
+    };
+    LocaleConfig.defaultLocale = "en";
+    const [items, setItems] = React.useState({});
   const [fetchedEvents, setFetchedEvents] = React.useState({});
   const [fetchedEventSchedules, setFetchedEventSchedules] = React.useState({});
 
@@ -81,9 +79,9 @@ const CalendarPage = () => {
     await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
     await getEventsByUserId(myContext, setFetchedEvents);
   }, [id, refresh]);
-  const loadItems = useCallback(
-    async (day) => {
-      // Object.keys(fetchedEventSchedules).forEach((key) => {
+    const loadItems = useCallback(
+        async (day) => {
+            // Object.keys(fetchedEventSchedules).forEach((key) => {
       //   const eventSchedule = fetchedEventSchedules[key];
       //   console.log("before", eventSchedule);
       //   eventSchedule.sort((a, b) => {
@@ -97,15 +95,15 @@ const CalendarPage = () => {
       const items = fetchedEventSchedules;
       const eventItems = fetchedEvents;
 
-      setTimeout(() => {
-        for (let i = -15; i < 85; i++) {
-          const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-          const strTime = timeToString(time);
+            setTimeout(() => {
+                for (let i = -15; i < 85; i++) {
+                    const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+                    const strTime = timeToString(time);
 
-          if (!items[strTime]) {
-            items[strTime] = [];
-          }
-        }
+                    if (!items[strTime]) {
+                        items[strTime] = [];
+                    }
+                }
 
         const newItems = {};
         Object.keys(items).forEach((key) => {
@@ -173,9 +171,8 @@ const CalendarPage = () => {
     );
   };
 
-  if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
-  return <View>{getAgendaComponent()}</View>;
+    if (isLoading) return <Loader/>;
+    return <View>{getAgendaComponent()}</View>;
 };
 
 export default CalendarPage;

@@ -33,7 +33,7 @@ class AuthTokenSerializer(MySerializer):
             password=password
         )
         if not user:
-            msg = 'Unable to authenticate with provided credentials'
+            msg = 'Email or password not filled in properly'
             raise ValidationError(detail=msg)
 
         attrs['user'] = user
@@ -85,7 +85,7 @@ class AuthTokenWithGoogleSerializer(MySerializer):
         name = result_json["name"]
 
         if not email == google_email or not verified_email:
-            msg = _('Unable to authenticate with provided credentials')
+            msg = _('There is an error logging in through Google')
             raise ValidationError(msg, code='authorization')
 
         email = email.lower()
