@@ -26,7 +26,7 @@ export default function App() {
     const [name, setName] = useState("guest");
     const [refresh, setRefresh] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [debugMode, setDebugMode] = useState(true);
+    const [debugMode, setDebugMode] = useState(false);
     const userAuth = {
         id: id,
         token: token,

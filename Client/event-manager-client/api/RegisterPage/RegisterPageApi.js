@@ -3,12 +3,16 @@ import {createOneButtonAlert, STATUS_FAILED, STATUS_SUCCESS,} from "../../consta
 import {logApiRequest} from "../../constants/logger";
 import {logAndCreateErrorMessage} from "../../validations/validations";
 import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
+import fetchTimeout from "fetch-timeout";
 
 export async function registerUserRequest(
     user,
     emptyRegisterInputs,
     navigation,
+    myContext,
 ) {
+    const {setIsLoading} = myContext;
+    setIsLoading(true);
     let functionName = "Register User Request";
     let url = base_url + register;
     let request = {
@@ -19,7 +23,7 @@ export async function registerUserRequest(
         body: JSON.stringify(user),
     };
     logApiRequest(functionName, url, request);
-    await fetch(url, request, {timeout: global_timeout})
+    await fetchTimeout(url, request, global_timeout, "Timeout")
         .then(async (res) => {
             const data = await res.json();
             if (STATUS_FAILED(res.status)) {
@@ -30,9 +34,11 @@ export async function registerUserRequest(
                     navigation.navigate("Welcome")
                 );
                 emptyRegisterInputs();
+                setIsLoading(false);
             }
         })
         .catch((error) => {
+            setIsLoading(false);
             logAndCreateErrorMessage({"Error": global_timeout_message}, functionName);
         });
 }

@@ -7,17 +7,19 @@ import UserAuthentication from "../../global/UserAuthentication";
 import Loader from "../../components/basicComponents/others/Loader";
 import {getHomePageData, getIsEventManager,} from "../../api/HomePage/HomePageApi";
 import {HomePageStyles} from "../../styles/styles";
+import { useNavigation } from "@react-navigation/native";
 
 const HomePage = () => {
     const myContext = useContext(UserAuthentication);
+    const navigation = useNavigation();
     const {refresh, isLoading, setIsLoading, error} = myContext;
 
     const [eventsPreview, setEventsPreview] = React.useState([]);
 
     useEffect(async () => {
         setIsLoading(true);
-        await getIsEventManager(myContext);
-        await getHomePageData(myContext, setEventsPreview);
+        await getIsEventManager(myContext, navigation);
+        await getHomePageData(myContext, setEventsPreview, navigation);
     }, [refresh]);
     if (isLoading) return <Loader/>;
 
