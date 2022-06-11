@@ -14,7 +14,7 @@ const AllEventsSuppliers = (props) => {
     const eventId = params.eventId;
     const eventName = params.eventName;
     const myContext = useContext(UserAuthentication);
-    const {refresh, isLoading, setIsLoading, error} = myContext;
+    const {refresh, isLoading, setIsLoading} = myContext;
     const [eventSuppliersData, setEventSuppliersData] = useState([]);
 
     const getData = useCallback(async () => {

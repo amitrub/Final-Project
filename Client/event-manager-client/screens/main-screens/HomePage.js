@@ -10,7 +10,7 @@ import {HomePageStyles} from "../../styles/styles";
 
 const HomePage = () => {
     const myContext = useContext(UserAuthentication);
-    const {refresh, isLoading, setIsLoading, error} = myContext;
+    const {refresh, isLoading, setIsLoading} = myContext;
 
     const [eventsPreview, setEventsPreview] = React.useState([]);
 
