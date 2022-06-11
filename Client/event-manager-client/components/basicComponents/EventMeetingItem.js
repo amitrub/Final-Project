@@ -1,21 +1,29 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Avatar, Card } from "react-native-paper";
 import { EventScheduleStyle } from "../../styles/styles";
 import Log from "../../constants/logger";
+import Colors from "../../constants/colors";
 
 const EventMeetingItem = (props) => {
   function getNameLetters(name) {
-    let splitName = name?.split(" ");
-    if (splitName.length < 2) {
-      if (splitName.length === 1) {
-        return splitName[0][0].toUpperCase();
-      } else {
-        return "Bla";
+    try {
+      if (!props.isEventItem) {
+        let splitName = name?.split(" ");
+        if (splitName.length < 2) {
+          if (splitName.length === 1) {
+            return splitName[0][0].toUpperCase();
+          } else {
+            return "Bla";
+          }
+        }
+        if (!splitName) return "";
+        return splitName[0][0].toUpperCase() + splitName[1][0].toUpperCase();
       }
+      return "";
+    } catch (e) {
+      return "";
     }
-    if (!splitName) return "";
-    return splitName[0][0].toUpperCase() + splitName[1][0].toUpperCase();
   }
   function getHour(itemTime) {
     try {
@@ -26,48 +34,51 @@ const EventMeetingItem = (props) => {
     }
   }
   const item = props.item;
+  const itemName = props.isEventItem
+    ? item.event_name
+    : item.eventName
+    ? item.eventName
+    : item.event;
+  const cardStyle = {
+    backgroundColor: props.isEventItem
+      ? Colors.darkseagreen
+      : Colors.white_background,
+  };
 
   if (!item) {
     return <Text>"Item didn't send as prop!"</Text>;
   }
-  const startTime = getHour(item.start_time);
-  const endTime = getHour(item.end_time);
+  const startTime = props.isEventItem ? "" : getHour(item.start_time);
+  const endTime = props.isEventItem ? "" : getHour(item.end_time);
 
   return (
-    <TouchableOpacity
-      style={{
-        marginRight: 10,
-        marginTop: 17,
-      }}
-    >
-      <Card>
+    <TouchableOpacity style={styles.container}>
+      <Card style={cardStyle}>
         <Card.Content>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.itemView}>
             <View>
               <View style={{ paddingBottom: 5 }}>
                 <Text style={EventScheduleStyle.timeText}>
-                  {startTime}-{endTime}
+                  {!props.isEventItem
+                    ? `${startTime}-${endTime}`
+                    : "Event day!"}
                 </Text>
               </View>
               <Text style={EventScheduleStyle.nameText}>
-                {item.description}
+                {props.isEventItem ? itemName : item.description}
               </Text>
               <Text style={EventScheduleStyle.descriptionText}>
-                {item.eventName}
+                {props.isEventItem ? undefined : itemName}
               </Text>
             </View>
-            <Avatar.Text
-              label={getNameLetters(item.description)}
-              backgroundColor={
-                "#" + Math.floor(Math.random() * 16777215).toString(16)
-              }
-            />
+            {!props.isEventItem ? (
+              <Avatar.Text
+                label={getNameLetters(item.description)}
+                backgroundColor={
+                  "#" + Math.floor(Math.random() * 16777215).toString(16)
+                }
+              />
+            ) : undefined}
           </View>
         </Card.Content>
       </Card>
@@ -76,3 +87,20 @@ const EventMeetingItem = (props) => {
 };
 
 export default EventMeetingItem;
+
+const styles = StyleSheet.create({
+  container: {
+    marginRight: 10,
+    marginTop: 17,
+  },
+  itemView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textDesc: {
+    fontFamily: "alef-regular",
+    fontSize: 14,
+    textAlign: "left",
+  },
+});

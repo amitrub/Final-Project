@@ -11,17 +11,17 @@ import EventScheduleEntity from "../../../Entities/EventScheduleEntity";
 import {addEventScheduleRequest, getEventScheduleRequest,} from "../../../api/EventPage/EventsPageApi";
 import TimePickerInput from "../../../components/basicComponents/inputs/TimePickerInput";
 import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
-import {logAndCreateErrorMessage} from "../../../validations/validations";
+import { logAndCreateErrorMessage } from "../../../validations/validations";
 
 const EventSchedulePage = (props) => {
-    const params = props.route.params;
-    const eventId = params.eventId;
-    const eventName = params.eventName;
+  const params = props.route.params;
+  const eventId = params.eventId;
+  const eventName = params.eventName;
 
-    const myContext = useContext(UserAuthentication);
-    const {refresh, isLoading, setIsLoading} = myContext;
-    const [eventSchedulesData, setEventSchedulesData] = useState([]);
-    const [eventSchedulesByDate, setEventSchedulesByDate] = useState({});
+  const myContext = useContext(UserAuthentication);
+  const { refresh, error, isLoading, setIsLoading } = myContext;
+  const [eventSchedulesData, setEventSchedulesData] = useState([]);
+  const [eventSchedulesByDate, setEventSchedulesByDate] = useState({});
 
     const [meetingToAdd, setMeetingToAdd] = useState(
         new EventScheduleEntity("", "", "")

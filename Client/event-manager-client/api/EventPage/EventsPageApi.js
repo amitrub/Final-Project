@@ -258,9 +258,10 @@ export async function addEventScheduleRequest(
       if (STATUS_FAILED(res.status)) {
         logAndCreateErrorMessage(data, functionName);
       } else if (STATUS_SUCCESS(res.status)) {
-        setRefresh(!refresh);
         const message = "Event Schedule was added successfully!";
-        createOneButtonAlert(message, "OK", "ADD Event schedule", () => {});
+        createOneButtonAlert(message, "OK", "ADD Event schedule", () =>
+          setRefresh(!refresh)
+        );
       }
     })
     .catch((err) => {
@@ -290,7 +291,6 @@ export async function getEventScheduleRequest(
   await fetch(url, request, { timeout: global_timeout })
     .then(async (res) => {
       const data = await res.json();
-      //console.log("data", data);
 
       const loadedEventSchedules = [];
       for (const key in data) {
@@ -304,7 +304,6 @@ export async function getEventScheduleRequest(
           )
         );
       }
-
       setEventSchedulesData(loadedEventSchedules);
 
       let dict = {};
