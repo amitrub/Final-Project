@@ -9,19 +9,18 @@ import ErrorScreen, {ErrorMessages,} from "../../../components/basicComponents/o
 import Log from "../../../constants/logger";
 import UserAuthentication from "../../../global/UserAuthentication";
 import {base_url, getOrPutSupplier} from "../../../constants/urls";
-import {
-    createOneButtonAlert,
-    createTwoButtonAlert,
-    STATUS_FAILED,
-    STATUS_SUCCESS,
-} from "../../../constants/errorHandler";
+import {createOneButtonAlert,} from "../../../constants/errorHandler";
 import Colors from "../../../constants/colors";
 import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import fetchTimeout from "fetch-timeout";
 import DetailSupplierItem from "../../../components/basicComponents/suppliers/DetailSupplierItem";
 import call from "react-native-phone-call";
 import {SupplierPageStyles as styles} from "../../../styles/styles";
-import {logAndCreateErrorMessage} from "../../../validations/validations";
+import {
+    deleteSupplierRequest,
+    fetchSupplierDataRequest,
+    payToSupplierRequest,
+    saveSupplierRequest
+} from "../../../api/Suppliers/SupplierActionsApi";
 
 const SupplierPage = (props) => {
     const navigation = props.navigation;
@@ -39,26 +38,10 @@ const SupplierPage = (props) => {
     const [editPrice, setEditPrice] = useState(0);
 
     const getData = useCallback(async () => {
-        await fetch(
-            url,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${myContext.token}`,
-                },
-            },
-            {timeout: 2000}
-        )
-            .then(async (res) => {
-                const data = await res.json();
-                setSupplier(data);
-            })
-            .catch((err) => {
-                setIsLoading(false);
-                setError(err);
-                Log.error("SupplierPage >> getData >> error", err);
-            });
+        fetchSupplierDataRequest(myContext,
+            event_id,
+            supplierId,
+            setSupplier)
     }, [event_id, supplierId]);
     useLayoutEffect(() => {
         setIsLoading(true);
@@ -92,44 +75,6 @@ const SupplierPage = (props) => {
             .catch((error) => Log.Error(error));
     }, [navigation, refresh]);
 
-    const deleteSupplier = async () => {
-        Log.info(`SupplierPage >> delete supplier >> url: ${url}`);
-        const onPressYes = async () => {
-            setIsLoading(true);
-            await fetch(
-                url,
-                {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Token ${myContext.token}`,
-                    },
-                },
-                {timeout: 2000}
-            )
-                .then(async (res) => {
-                    Log.info("SupplierPage >> delete supplier >> then");
-                    // const data = await res.json();
-                    createOneButtonAlert("", "OK", "Supplier was deleted", () => {
-                        myContext.setRefresh(!myContext.refresh);
-                        navigation.pop();
-                        setIsLoading(false);
-                    });
-                })
-                .catch((err) => {
-                    setIsLoading(false);
-                    setError(err);
-                    Log.error("SupplierPage >> delete supplier >> error", err);
-                });
-        };
-        createTwoButtonAlert(
-            "Are you sure you want to delete this supplier?",
-            "Yes",
-            "No",
-            "Delete supplier",
-            onPressYes
-        );
-    };
     const cancelModalButton = (closeModalFunc) => {
         return (
             <Pressable
@@ -289,30 +234,29 @@ const SupplierPage = (props) => {
             />
         );
     };
-    const paymentMethodComponent = () => {
-        return (
-            <DetailSupplierItem
-                title={"payment method"}
-                value={"BIT"}
-                onPress={() =>
-                    createOneButtonAlert("Future feature - not implemented yet")
-                }
-            />
-        );
-    };
+
     const savePayIcons = () => {
         return !isAddSupplier ? (
             <View style={styles.screen}>
                 <View style={[styles.row, {marginTop: 20}]}>
                     <IconButton
-                        onPress={onSaveSupplier}
+                        onPress={() => saveSupplierRequest(myContext,
+                            event_id,
+                            supplierId,
+                            supplier,
+                            navigation)}
                         icon={"save"}
                         color={Colors.black}
                         iconSize={18}
                         textButton={"Save"}
                     />
                     <IconButton
-                        onPress={deleteSupplier}
+                        onPress={() => {
+                            deleteSupplierRequest(myContext,
+                                event_id,
+                                supplierId,
+                                navigation)
+                        }}
                         icon={"trash"}
                         color={Colors.black}
                         iconSize={18}
@@ -328,7 +272,12 @@ const SupplierPage = (props) => {
                 </View>
                 <View>
                     <IconButton
-                        onPress={onPay}
+                        onPress={() => {
+                            payToSupplierRequest(myContext,
+                                event_id,
+                                supplierId,
+                                navigation)
+                        }}
                         icon={"credit-card"}
                         color={Colors.black}
                         iconSize={18}
@@ -341,7 +290,11 @@ const SupplierPage = (props) => {
         ) : (
             <View>
                 <IconButton
-                    onPress={onSaveSupplier}
+                    onPress={() => saveSupplierRequest(myContext,
+                        event_id,
+                        supplierId,
+                        supplier,
+                        navigation)}
                     icon={"save"}
                     color={Colors.black}
                     iconSize={18}
@@ -351,39 +304,6 @@ const SupplierPage = (props) => {
         );
     };
 
-    const onPay = async () => {
-        setIsLoading(true);
-        const url = base_url + getOrPutSupplier(event_id, supplierId);
-        await fetchTimeout(
-            url,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${myContext.token}`,
-                },
-                body: JSON.stringify({has_paid: true}),
-            },
-            5000,
-            "Timeout"
-        )
-            .then(async (res) => {
-                const data = await res.json();
-                if (STATUS_FAILED(res.status)) {
-                    logAndCreateErrorMessage(data, functionName);
-                } else if (STATUS_SUCCESS(res.status)) {
-                    const message = "Payment passed successfully!";
-                    createOneButtonAlert(message, "OK", "", () => {
-                        myContext.setRefresh(!myContext.refresh);
-                    });
-                }
-            })
-            .catch((err) => {
-                setIsLoading(false);
-                setError(err);
-                Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
-            });
-    };
     const bitUrl = "https://bitpay.co.il/app/";
     const onPressBit = useCallback(async () => {
         // Checking if the link is supported for links with custom URL scheme.
@@ -398,41 +318,6 @@ const SupplierPage = (props) => {
             Alert.alert(`Don't know how to open this URL: ${bitUrl}`);
         }
     }, [bitUrl]);
-    const onSaveSupplier = async () => {
-        setIsLoading(true);
-        const url = base_url + getOrPutSupplier(event_id, supplierId);
-        await fetchTimeout(
-            url,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${myContext.token}`,
-                },
-                body: JSON.stringify({job: supplier.job, price: supplier.price}),
-            },
-            5000,
-            "Timeout"
-        )
-            .then(async (res) => {
-                const data = await res.json();
-                if (STATUS_FAILED(res.status)) {
-                    logAndCreateErrorMessage(data, functionName);
-                } else if (STATUS_SUCCESS(res.status)) {
-                    setIsLoading(false);
-                    const message = "Supplier was updated";
-                    createOneButtonAlert(message, "OK", "Yay!", () => {
-                        myContext.setRefresh(!myContext.refresh);
-                        navigation.pop();
-                    });
-                }
-            })
-            .catch((err) => {
-                setIsLoading(false);
-                setError(err);
-                Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
-            });
-    };
 
     if (isLoading) return <Loader/>;
     if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching}/>;
@@ -448,7 +333,6 @@ const SupplierPage = (props) => {
                     {priceComponent()}
                     {depositComponent()}
                     {timeComponent()}
-                    {/*{paymentMethodComponent()}*/}
                     {savePayIcons()}
                 </View>
             </ScrollView>
