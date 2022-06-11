@@ -4,9 +4,9 @@ import Log, {logApiRequest} from "../../constants/logger";
 import {logAndCreateErrorMessage} from "../../validations/validations";
 import {global_timeout, global_timeout_message} from "../../global/GlobalValues";
 
-export async function fetchUserDate(myContext, setEmail, setFullName, setPhone, setCountry, setCity, setStreet, setNumber, setUser) {
-  setIsLoading(true)  
-  const {id, token, setIsLoading} = myContext;
+export async function fetchUserData(myContext, setEmail, setFullName, setPhone, setCountry, setCity, setStreet, setNumber, setUser) {
+    const {id, token, setIsLoading} = myContext;
+    setIsLoading(true)
     let url = base_url + userProfile(id);
     await fetch(
         url,
