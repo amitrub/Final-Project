@@ -1,8 +1,11 @@
-import React, {useCallback, useContext, useEffect} from "react";
-import {View} from "react-native";
-import {Agenda, LocaleConfig} from "react-native-calendars";
+import React, { useCallback, useContext, useEffect } from "react";
+import { View } from "react-native";
+import { Agenda, LocaleConfig } from "react-native-calendars";
 import EventMeetingItem from "../../components/basicComponents/EventMeetingItem";
-import {getEventScheduleByUserId} from "../../api/Calendar/CalendarPageApi";
+import {
+  getEventsByUserId,
+  getEventScheduleByUserId,
+} from "../../api/Calendar/CalendarPageApi";
 import UserAuthentication from "../../global/UserAuthentication";
 import Loader from "../../components/basicComponents/others/Loader";
 
@@ -69,14 +72,28 @@ const CalendarPage = (props) => {
     };
     LocaleConfig.defaultLocale = "en";
     const [items, setItems] = React.useState({});
-    const [fetchedEventSchedules, setFetchedEventSchedules] = React.useState({});
+  const [fetchedEvents, setFetchedEvents] = React.useState({});
+  const [fetchedEventSchedules, setFetchedEventSchedules] = React.useState({});
 
-    useEffect(async () => {
-        await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
-    }, [id]);
+  useEffect(async () => {
+    await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
+    await getEventsByUserId(myContext, setFetchedEvents);
+  }, [id, refresh]);
     const loadItems = useCallback(
         async (day) => {
-            const items = fetchedEventSchedules;
+            // Object.keys(fetchedEventSchedules).forEach((key) => {
+      //   const eventSchedule = fetchedEventSchedules[key];
+      //   console.log("before", eventSchedule);
+      //   eventSchedule.sort((a, b) => {
+      //     const time_a = a.start_time.split("T")[1].slice(0, 5);
+      //     const time_b = b.start_time.split("T")[1].slice(0, 5);
+      //     return time_b - time_a;
+      //   });
+      //   console.log("after", eventSchedule);
+      //   fetchedEventSchedules[key] = eventSchedule;
+      // });
+      const items = fetchedEventSchedules;
+      const eventItems = fetchedEvents;
 
             setTimeout(() => {
                 for (let i = -15; i < 85; i++) {
@@ -88,55 +105,71 @@ const CalendarPage = (props) => {
                     }
                 }
 
-                const newItems = {};
-                Object.keys(items).forEach((key) => {
-                    newItems[key] = items[key];
-                });
-                setItems(newItems);
-            }, 1000);
-        },
-        [refresh]
+        const newItems = {};
+        Object.keys(items).forEach((key) => {
+          newItems[key] = items[key];
+        });
+        Object.keys(eventItems).forEach((key) => {
+          if (newItems.hasOwnProperty(key)) {
+            eventItems[key].forEach((event) => {
+              if (newItems[key].every((e) => !e.id || e.id !== event.id)) {
+                newItems[key].unshift(event);
+              }
+            });
+          } else {
+            newItems[key] = eventItems[key];
+          }
+        });
+        setItems(newItems);
+      }, 1000);
+    },
+    [fetchedEvents, fetchedEventSchedules]
+  );
+  const renderItem = (item) => {
+    const isEventItem = !!item.location;
+    if (isEventItem) {
+      return <EventMeetingItem item={item} isEventItem={true} />;
+    } else {
+      return <EventMeetingItem item={item} />;
+    }
+  };
+  const getAgendaComponent = () => {
+    const today = formatDate(Date.now(), "yyyy-mm-dd");
+    return (
+      <View style={{ height: "98%" }}>
+        <Agenda
+          items={items}
+          loadItemsForMonth={loadItems}
+          selected={today}
+          minDate={"2022-01-01"}
+          maxDate={"2025-05-30"}
+          renderItem={renderItem}
+          renderEmptyDate={() => {
+            return <View />;
+          }}
+          rowHasChanged={(r1, r2) => {
+            return r1.text !== r2.text;
+          }}
+          // showClosingKnob={true}
+          // markingType={'period'}
+          // markedDates={{
+          //    '2017-05-08': {textColor: '#43515c'},
+          //    '2017-05-09': {textColor: '#43515c'},
+          //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+          //    '2017-05-21': {startingDay: true, color: 'blue'},
+          //    '2017-05-22': {endingDay: true, color: 'gray'},
+          //    '2017-05-24': {startingDay: true, color: 'gray'},
+          //    '2017-05-25': {color: 'gray'},
+          //    '2017-05-26': {endingDay: true, color: 'gray'}}}
+          // monthFormat={'yyyy'}
+          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+          //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+          // hideExtraDays={false}
+          // showOnlySelectedDayItems
+        />
+      </View>
     );
-    const renderItem = (item) => {
-        return <EventMeetingItem item={item}/>;
-    };
-    const getAgendaComponent = () => {
-        const today = formatDate(Date.now(), "yyyy-mm-dd");
-        return (
-            <View style={{height: "98%"}}>
-                <Agenda
-                    items={items}
-                    loadItemsForMonth={loadItems}
-                    selected={today}
-                    minDate={"2022-01-01"}
-                    maxDate={"2025-05-30"}
-                    renderItem={renderItem}
-                    renderEmptyDate={() => {
-                        return <View/>;
-                    }}
-                    rowHasChanged={(r1, r2) => {
-                        return r1.text !== r2.text;
-                    }}
-                    // showClosingKnob={true}
-                    // markingType={'period'}
-                    // markedDates={{
-                    //    '2017-05-08': {textColor: '#43515c'},
-                    //    '2017-05-09': {textColor: '#43515c'},
-                    //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-                    //    '2017-05-21': {startingDay: true, color: 'blue'},
-                    //    '2017-05-22': {endingDay: true, color: 'gray'},
-                    //    '2017-05-24': {startingDay: true, color: 'gray'},
-                    //    '2017-05-25': {color: 'gray'},
-                    //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-                    // monthFormat={'yyyy'}
-                    // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-                    //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-                    // hideExtraDays={false}
-                    // showOnlySelectedDayItems
-                />
-            </View>
-        );
-    };
+  };
 
     if (isLoading) return <Loader/>;
     return <View>{getAgendaComponent()}</View>;

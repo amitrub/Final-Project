@@ -6,7 +6,6 @@ import Log from "../../constants/logger";
 import * as Google from "expo-google-app-auth";
 import {WelcomePageStyles as styles} from "../../styles/styles";
 import Loader from "../../components/basicComponents/others/Loader";
-import ErrorScreen, {ErrorMessages,} from "../../components/basicComponents/others/ErrorScreen";
 import {useNavigation} from "@react-navigation/native";
 import UserAuthentication from "../../global/UserAuthentication";
 import Colors from "../../constants/colors";
@@ -67,8 +66,7 @@ const WelcomePage = (props) => {
     }, [email, myContext.refresh]);
 
     if (myContext.isLoading) return <Loader/>;
-    if (myContext.error)
-        return <ErrorScreen errorMessage={ErrorMessages.Generic}/>;
+
 
     return (
         <ScrollView>
