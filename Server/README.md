@@ -44,6 +44,20 @@ The main responsibilities of the server is to manage all the data of the users a
 
 ### Server Structure
 #### Main App
+The main app of the server is the server_django directory.
+There are 3 parts in this app:
+##### settings.py
+This file is responsible for managing all server settings:
+- ALLOWED_HOSTS
+- INSTALLED_APPS
+- WSGI_APPLICATION
+- DATABASES
+- LOGGING
+- AUTH_PASSWORD_VALIDATORS
+##### urls.py
+This file is responsible for redirecte the base url to url file of each sub apps.
+##### wsgi.py
+This file is responsible for defining the Web Server Gateway Interface for the server.
 #### Sub Apps
 #### Deploy
 #### Fixtures
