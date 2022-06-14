@@ -1,3 +1,32 @@
-# <center> EventIt!<br> Maintenance guide Server</center>
+# <center> EventIt! Maintenance Guide</center>
 
-![גיט clone](https://user-images.githubusercontent.com/48449311/173595595-89234c20-d665-4a72-96fa-6bb1a9db6fe5.PNG)
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Client Side](#client-side)
+	* [Routes File](#routes-file)
+	* [Gui Utils](#gui-utils)
+	* [Directory and Files Management](#directory-and-files-management)
+	* [Video Cutter](#video-cutter)
+	* [Requests Format](#requests-format)
+3. [Server Side](#server-side)
+	* [Request Parser File](#client-request-parser-file)
+	* [Facade Module](#facade-module)
+	* [Data Extractor Module](#data-extractor-module)
+		* [Functionality](#functionality)
+		* [Algorithms](#algorithms)
+	* [Data_Analyser Module](#data_analyser-module)
+	* [Visualizer Module](#visualizer-module)
+	* [Evaluator Module](#evaluator-module)
+		 * [Functionality](#functionality)
+		* [Error Detection Algorithms](#error-detection-algorithms)
+		* [Scoring Method](#scoring-method)
+		* [Plug and Play](#plug-and-play)
+	* [Tester Module](#tester-module)
+	* [Output Manager Module](#output-manager-module)
+	* [Utils](#utils)
+	*  [File Management](#file-management)
+	* [Data Base Structure](#data-base-structure)
+4. [Adding Functionality Schema](#adding-functionality-schema)
+5. [Assimilation on New Device and Run All Program](#assimilation-on-new-device-and-run-all-program)
+
+## Introduction
