@@ -46,7 +46,7 @@ The main responsibilities of the server is to manage all the data of the users a
 #### Main App
 The main app of the server is the **server_django** directory.
 There are 3 parts in this app:
-##### Settings.py
+##### -Settings.py
 managing all server settings:
 - ALLOWED_HOSTS
 - INSTALLED_APPS
@@ -54,9 +54,9 @@ managing all server settings:
 - DATABASES
 - LOGGING
 - AUTH_PASSWORD_VALIDATORS
-##### Urls.py
+##### -Urls.py
 redirecte the base url to url file of each sub apps.
-##### Wsgi.py
+##### -Wsgi.py
 defining the Web Server Gateway Interface for the server.
 #### Sub Apps
 The sub apps of the server is the **users, addresses, events, payments** directories.
