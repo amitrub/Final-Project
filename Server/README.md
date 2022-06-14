@@ -5,7 +5,15 @@
 2. [Server Side](#server-side)
 	* [Quick start](#quick-start)
 	 	* [Local](#local)
-		* [Remote](#remote)	
+		* [Remote](#remote)
+	* [Server Structure](#server-structure)	
+	 	* [Main App](#main-app)
+		* [Sub Apps](#sub-apps)
+		* [Deploy](#deploy)
+		* [Fixtures](#fixtures)
+		* [Logging](#logging)
+		* [My Models](#my-models)
+	* [System Expansion](#system-expansion)
 3. [Client Side](#client-side)
 4. [Adding Functionality Schema](#adding-functionality-schema)
 5. [Assimilation on New Device and Run All Program](#assimilation-on-new-device-and-run-all-program)
@@ -14,6 +22,7 @@
 ## Server Side
 The Srever is writen in Python useing Django web framework
 The main responsibilities of the server is to manage all the data of the users and make it accessible to the Client side.
+
 ### Quick Start
 #### Local
 * For start, you need to have on your device installed - git, python, pip.
@@ -32,3 +41,12 @@ The main responsibilities of the server is to manage all the data of the users a
 * install curl - sudo apt install curl.
 * download the setup file and setup your server - curl -sL https://raw.githubusercontent.com/amitrub/Final-Project/main/Server/deploy/setup.sh | sudo bash -.
 * open browser on - $SERVER_IP/api, and you can see the server running.
+
+### Server Structure
+#### Main App
+#### Sub Apps
+#### Deploy
+#### Fixtures
+#### Logging
+#### My Models
+### System Expansion
