@@ -46,7 +46,7 @@ The main responsibilities of the server is to manage all the data of the users a
 #### Main App
 The main app of the server is the **server_django** directory.
 There are 3 parts in this app:
-##### -Settings.py
+- ##### Settings.py
 managing all server settings:
 - ALLOWED_HOSTS
 - INSTALLED_APPS
