@@ -46,7 +46,7 @@ The main responsibilities of the server is to manage all the data of the users a
 #### Main App
 The main app of the server is the **server_django** directory.
 There are 3 parts in this app:
-- ##### Settings.py
+##### - Settings.py
 managing all server settings:
 - ALLOWED_HOSTS
 - INSTALLED_APPS
@@ -54,35 +54,35 @@ managing all server settings:
 - DATABASES
 - LOGGING
 - AUTH_PASSWORD_VALIDATORS
-##### -Urls.py
+##### - Urls.py
 redirecte the base url to url file of each sub apps.
-##### -Wsgi.py
+##### - Wsgi.py
 defining the Web Server Gateway Interface for the server.
 #### Sub Apps
 The sub apps of the server is the **users, addresses, events, payments** directories.
 There are 9 parts in this app:
-##### Models.py
+##### - Models.py
 defining all the models for the app that will create the DB and will be the last stage before performing queries on the db.
-##### Views.py
+##### - Views.py
 responsible for handling with all the HTTP requests for each model in the app.
-##### Urls.py
+##### - Urls.py
 redirecte the url path to the views funtions.
-##### Serializers.py
+##### - Serializers.py
 responsible for checking the integrity of the input from the HTTP requests. 
-##### Permissions.py
+##### - Permissions.py
 responsible for defining and checking if the user can priform the action that he is trying to do. 
-##### Admin.py
+##### - Admin.py
 define if the admin can manage the app from the admin site.
-##### Migrations
+##### - Migrations
 in the directory all the migrations are creating for every model in the app, for the creation of the DB.
-##### Tests
+##### - Tests
 this directory contains all the tests for that specific app.
-#### Deploy
+#### - Deploy
 The **deploy** directory contins files for the setup and update of a remote server.
-#### Fixtures
+#### - Fixtures
 The **fixtures** directory contins json files for some inital object to init the DB.
-#### Logging
+#### - Logging
 The **logging** directory contins the logger file for web server.
-#### My Models
+#### - My Models
 The **my_models** directory contins our extensions of rest_framework components for handling with errors and our adjustments.
 ### System Expansion
