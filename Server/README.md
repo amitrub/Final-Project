@@ -44,10 +44,10 @@ The main responsibilities of the server is to manage all the data of the users a
 
 ### Server Structure
 #### Main App
-The main app of the server is the server_django directory.
+The main app of the server is the **server_django** directory.
 There are 3 parts in this app:
 ##### settings.py
-This file is responsible for managing all server settings:
+managing all server settings:
 - ALLOWED_HOSTS
 - INSTALLED_APPS
 - WSGI_APPLICATION
@@ -55,10 +55,28 @@ This file is responsible for managing all server settings:
 - LOGGING
 - AUTH_PASSWORD_VALIDATORS
 ##### urls.py
-This file is responsible for redirecte the base url to url file of each sub apps.
+redirecte the base url to url file of each sub apps.
 ##### wsgi.py
-This file is responsible for defining the Web Server Gateway Interface for the server.
+defining the Web Server Gateway Interface for the server.
 #### Sub Apps
+The sub apps of the server is the **users, addresses, events, payments** directories.
+There are 9 parts in this app:
+##### models.py
+defining all the models for the app that will create the DB and will be the last stage before performing queries on the db.
+##### views.py
+responsible for handling with all the HTTP requests for each model in the app.
+##### urls.py
+redirecte the url path to the views funtions.
+##### serializers.py
+responsible for checking the integrity of the input from the HTTP requests. 
+##### permissions.py
+responsible for defining and checking if the user can priform the action that he is trying to do. 
+##### admin.py
+define if the admin can manage the app from the admin site.
+##### migrations
+in the directory all the migrations are creating for every model in the app, for the creation of the DB.
+##### tests
+This directory contains all the tests for that specific app.
 #### Deploy
 #### Fixtures
 #### Logging
