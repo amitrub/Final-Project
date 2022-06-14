@@ -85,4 +85,21 @@ The **fixtures** directory contins json files for some inital object to init the
 The **logging** directory contins the logger file for web server.
 #### My Models
 The **my_models** directory contins our extensions of rest_framework components for handling with errors and our adjustments.
+
 ### System Expansion
+#### Django Commends
+- create new app:
+	**python manage.py startapp <app_name>**
+- create makemigrations from models file in app:
+	**python manage.py makemigrations <app_name>**
+- update the DB according to the makemigrations files:
+	**python manage.py migrate**
+- run the server:
+	**python manage.py runserver (0.0.0.0:8000 optional)**
+- creating a super user:
+	**python manage.py createsuperuser**
+- creating json objects in the fixtures directory for all the objects in the DB:
+	**python manage.py dumpdata <app_name>.<model_name> --indent 4 > fixtures/<model_name>.json**
+- load all json objects from the jsons in the fixtures directory:
+	**python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>**
+
