@@ -11,78 +11,47 @@ The design of our app is especially adapted for iOS devices, of course we can ma
 
 The app supports two types of users : usual and admin ones. Usual user is the event manager that will use the app - for more information look at the user guide. Admin users has access to all users data and it can manage all the maintanace actions.
 
+![folders](https://user-images.githubusercontent.com/48642967/173821896-a8c6b2bd-806f-47bd-b691-97f60e7d136f.PNG)
 
 Let’s talk about how to set up the project for the first time locally, what the project structure looks like and how we can expand the project in the following features.
 
-### Routes File
-This is the most important module in the client side. It defines the web links of all the pages and binds them to the relevant html page (appears in templates directory). For each html page, there must be found a function in this .py file which looks as follows:
+### Get started - project configuration 
+	1. Clone the project from GitHub with the url present on the introduction step. 
+	2. In order to run the project locally: 
+		a. Make sure you have installed npm by run command "npm --v" (and if not https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+		b. Make sure you have installed yarn by run command "yarn --v" (and if not https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable).
+		c. Install expo-cli - run command "npm install --global expo-cli" (https://docs.expo.dev/get-started/installation/) make sure by running "expo --v".
+		d. Install all packages and dependencies.
+		   Let's introduce package.json file, this file includes all names and versions of the packages on the project.
+		![packagejson](https://user-images.githubusercontent.com/48642967/173824325-9555b892-b54d-4bf4-8525-81dfcce76a30.png)
+		   in order to install all packages and dependencies - run command "yarn install" - that uses package.json for that purpose. after this installation a new file 'yarn.lock' and 'node-modules' folder will be generated, this files is on your computer and not supposed to share between developers - gitignore (could make confugraion problems).
+		 e. Run command "expo start" to run the project. on this point our client app is running. we can see a QR code on the terminal or on the localhost server that we can see on the terminal. 
+		 f. Download "expo" application on your mobile device or on emulator, and scan the QR code by the app or by your camera. You can run the app there, and even debug it on "Debug mode" - more inforamtion on expo documantion (link above).
+		 g. Re-install - packages and dependencies errors - in such case you can try to 
+		 	- Delete node modules folder
+			- Delete yarn.lock file
+			- Run "yarn install" again 
 
-    @app.route('/', methods=['GET', 'POST'])  # only for home page definition
-    @app.route("/<page-name>", methods=['GET', 'POST'])  
-    def page_name():
-		    <some code>  
-           return render_template('page-name.html')
-
-The first line denotes that the next url address is the home page of the site, and it should be placed to this page only. The methods specify the type of requests supported in this page.
-The second line binds between the url address to the function below.
-In the function there is a code, that frequently connects to the server in order to send requests or/and get responses.
-Each function must return a redirection to some html page to be loaded in the browser.
-You can pass other arguments to the respective html code by specifying them as follows
-
-    return render_template('page-name.html',param1 = argument1,...)
-Using this arguments in the respective html code is done as follows
-
-    {{parameter name}}
-
-> **Note**: Url address definition, function name and html page redirection returned in the end of the function name must be consistent, correlative and named by html and python conventions respectively.
-
-Another important service supplied by this module is handling waiting pages in order to give the client indication for the progress of upload and analyse the video. The functions that deals with handling with this functionality are:
-
-1. `load_video, run_test` -  python code relevant to the pages where waiting page are shown. In this function we create new thread running the waiting page code defined in function `receive_openpose_msg` .
-2. `receive_openpose_msg`  - uses global socket which used for connecting the server and getting from it a 1 byte code signifies the stage of analysis. Pay attention for the dictionary `response_dict` which map between server code to the message shown in the waiting page. If the code got from the server is code for finish the process, it waits for another message in size of 1024 bytes  signifies whether the process succeeded or not, and changes its status for updating the page shown in the screen (See next function).
-3. `thread_status` -  called frequently from `waiting-page.html`(in templates folder), for checking thread status. Returns to the html the status, and if the status is "finished" the html redirects to other page (with jquery).
-
-
-### Gui Utils
-A small module with some functions for files manipulation such as extracting data from zip file got from server, getting specific files from zip, convert csv content to list of dictionaries passed to the server.
-
- ### Directory and Files Management
- 
- **temp -** Contains zip files with information hold in the server, and some temporal folder which holds files to be shown in the browser.
-> Note: When asking for feedback or data of specific video, the zip is downloaded to this directory. For more details of getting feedbacks and data, please click [here](https://github.com/roeegro/SwimFix/tree/master/client#watching-feedbacks-on-videos).
- 
-**partial_movies -** Generated by the code and contains intervals of movies to be uploaded to the server. See video trimmer section for more details, [Video Cutter ](#video-cutter)
-
-**uploaded_files  -** Generated by the code and contains videos uploaded before from the machine the user works on.
-
-**static -** Contains temp directory and also css, js files, images and other files that are loaded or shown in the html pages shown in temp directory.
-
-#### chart-area-js-demo.js
-Important js file is chart-area-js-demo.js ( appears in static/js/demo/chart-area-js-demo.js), which has the following responsibilities: 
- 1. This file has functions taking csv file (located in [temp directory](https://github.com/roeegro/SwimFix/blob/master/MaintenanceGuide_new.md#directory-management)), reads it into map object, parse this object in order to show graphs using chart.js library dynamically. Graphs positions is done by working with document elements, and definition of visibility and events (showing the frame matched to point position in the graph) is done with Chart object.
- 2. Frame view - When pressing on points in the graph, the frame is changed to the match frame. This done by taking the position of the point in the x-axis and getting the relevant frames stored in (located in [temp directory](https://github.com/roeegro/SwimFix/blob/master/MaintenanceGuide_new.md#directory-management)).
- The relevant functions handling with those events are setImage and `drawImage` and `loadImage` (they have the same described functionality, but the second one binds an event to the load image of painting manual fixes on the current frame).
- 
-This js file is used by all the pages shown feedbacks (e.g user-feedback.html, previous-feedback.html, and test-results.html).
-
-**templates -** Contains html code that are loaded by the Flask code as shown in the section above.
-
-### Video Cutter 
-A module for cutting out only the relevant parts from a swimmer's video- which are the parts where the swimmer is big enough for us to recognize his body parts, and where he is swimming towards the camera; we are not interested in the parts in which the pool is empty or when the swimmer is swimming away from the camera. We want to minimize the data sent to the server in order to save time analyzing a video on the server.<br>The main function in this module is `video_cutter`, which works according to few parameters:
-<br>`min_area`- motion sensitivity factor - contour area wise
-<br>`pixel thresh`- pixel sensitivity factor - the change of a pixel <br>
-`undetected_frames_thresh` - number of frames with no motion detected in it which above it a video part is defined irrelevant.
-<br>`omit_clips_below` - minimum length of a video part to be considered relevant.<br>
- Additional parameter for debugging is `debug_mode` - a `true` value will provide you visual feedback and prints in the command line while running this function.<br> This parameters are tuned according to few swimming videos and the results of the parameters we tried can be found in Preprocessor_param_tuning .xlsx< link ><break>
-The output of this function is 1 or more video in the directory mentioned in the variable `output_dir` under the name <br>`<original video name>_from_frame_<the frame number this part was cutted from>.mp4`<break>
->More about the algorithm can be found in the comments of the file [preprocessor.py](https://github.com/roeegro/SwimFix/blob/master/client/src/preprocessor.py).
-
-
-### Requests Format
-In order to connect to the server, TCP connection is handled for each request. There are different types of requests but they all have the same general format.
-
-    < Request Type > (< parameter name >: < argument name >)*
-
-Handling those requests in server side are described in this section [Request Parser File](#client-request-parser-file)
-
-2
+### Directories and Project structure 
+	#### App.js, useContext
+	
+	#### common (we should combine [constants, assets, entities, global, validation] folders for that)
+	
+	#### lindsly-style-react (we should combine components and style folders for that)
+	
+	#### api
+	
+	#### screens
+	
+	#### navigation
+	
+	#### tests
+		This folder inlcudes all our UI tests. more information about that on the test guide.
+		
+### Expansion
+	#### Reusable code
+		Let's say some words about reuse components and common, lindsly-style-react, api components.
+	#### Tasks feature - expansion example
+		1. Assume we already did the Task feature expansion example on the server side. (: 
+		2. 
+	
