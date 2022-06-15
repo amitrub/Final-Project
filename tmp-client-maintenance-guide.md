@@ -19,8 +19,8 @@ Let’s talk about how to set up the project for the first time locally, what th
 ### Get started - project configuration 
 	1. Clone the project from GitHub with the url present on the introduction step. 
 	2. In order to run the project locally: 
-		a. Make sure you have installed npm by run command "npm --v" (and if not https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
-		b. Make sure you have installed yarn by run command "yarn --v" (and if not https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable).
+		a. Make sure you have installed npm by run command "npm --v" (and if not https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/).
+		b. Make sure you have installed yarn by run command "yarn --v" (and if not https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable/).
 		c. Install expo-cli - run command "npm install --global expo-cli" (https://docs.expo.dev/get-started/installation/) make sure by running "expo --v".
 		d. Install all packages and dependencies.
 		   Let's introduce package.json file, this file includes all names and versions of the packages on the project.
