@@ -85,3 +85,4 @@ In order to connect to the server, TCP connection is handled for each request. T
 
 Handling those requests in server side are described in this section [Request Parser File](#client-request-parser-file)
 
+2
