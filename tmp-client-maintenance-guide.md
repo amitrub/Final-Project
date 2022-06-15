@@ -11,9 +11,10 @@ The design of our app is especially adapted for iOS devices, of course we can ma
 
 The app supports two types of users : usual and admin ones. Usual user is the event manager that will use the app - for more information look at the user guide. Admin users has access to all users data and it can manage all the maintanace actions.
 
-![folders](https://user-images.githubusercontent.com/48642967/173821896-a8c6b2bd-806f-47bd-b691-97f60e7d136f.PNG)
-
 Let’s talk about how to set up the project for the first time locally, what the project structure looks like and how we can expand the project in the following features.
+
+
+![folders](https://user-images.githubusercontent.com/48642967/173821896-a8c6b2bd-806f-47bd-b691-97f60e7d136f.PNG)
 
 ### Get started - project configuration 
 	1. Clone the project from GitHub with the url present on the introduction step. 
