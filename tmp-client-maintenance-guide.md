@@ -34,25 +34,25 @@ Let’s talk about how to set up the project for the first time locally, what th
 			- Run "yarn install" again 
 
 ### Directories and Project structure 
-	#### App.js, useContext
-	
-	#### common (we should combine [constants, assets, entities, global, validation] folders for that)
-	
-	#### lindsly-style-react (we should combine components and style folders for that)
-	
-	#### api
-	
-	#### screens
-	
-	#### navigation
-	
-	#### tests
-		This folder inlcudes all our UI tests. more information about that on the test guide.
-		
+#### App.js, useContext
+
+#### common (we should combine [constants, assets, entities, global, validation] folders for that)
+
+#### lindsly-style-react (we should combine components and style folders for that)
+
+#### api
+
+#### screens
+
+#### navigation
+
+#### tests
+	This folder inlcudes all our UI tests. more information about that on the test guide.
+
 ### Expansion
-	#### Reusable code
-		Let's say some words about reuse components and common, lindsly-style-react, api components.
-	#### Tasks feature - expansion example
-		1. Assume we already did the Task feature expansion example on the server side. (: 
-		2. 
+#### Reusable code
+	Let's say some words about reuse components and common, lindsly-style-react, api components.
+#### Tasks feature - expansion example
+	1. Assume we already did the Task feature expansion example on the server side. (: 
+	2. 
 	
