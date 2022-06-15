@@ -36,9 +36,23 @@ Let’s talk about how to set up the project for the first time locally, what th
 ### Directories and Project structure 
 #### App.js, useContext
 
+useContext: 
+We used this hook to manage the use of all global fields of the system and allow to access them from anywhere at any stage to their most up-to-date value.
+
+Accepts a context object (the value returned from React.createContext) and returns the current context value for that context. The current context value is determined by the value prop of the nearest <MyContext.Provider> above the calling component in the tree.
+
+When the nearest <MyContext.Provider> above the component updates, this Hook will trigger a rerender with the latest context value passed to that MyContext provider. A rerender will alwys happen starting at the component itself using useContext.
+
 #### common (we should combine [constants, assets, entities, global, validation] folders for that)
 
-#### lindsly-style-react (we should combine components and style folders for that)
+#### lindsly-style-react (we should combine components and style folders for that and put here link to figma)
+
+Our application was developed by a UX Designer. A big part of the app's success depends on its visibility and total look.
+Following this, we decided to set up our own components library:  lindsly-style-react. Our goal was to maintain a uniform look across all screens, to make changes easy, to be open to the expansion and addition of additional screens in the future and also to separate logic from design.
+
+In a scenario where a change in the existing design will be required, all the developer will have to do is find the component in the exisiting library and change its design with the help of React Native's base components.
+In a scenario where the developer will be required to add new elements to screens that do not yet exist in the application, he will need to create a file in the appropriate place under the components folder and simply create the element using Native React.
+We emphasize that we do not design elements in the screens and logic files but only within our components library.
 
 #### api
 
