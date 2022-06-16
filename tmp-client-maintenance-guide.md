@@ -45,6 +45,7 @@ Accepts a context object (the value returned from React.createContext) and retur
 When the nearest <MyContext.Provider> above the component updates, this Hook will trigger a rerender with the latest context value passed to that MyContext provider. A rerender will alwys happen starting at the component itself using useContext.
 
 How to...
+
 	1. Add new global field. 
 		Go to app.js -> add new field as state -> add this field as a property of userAuth.
 		![image](https://user-images.githubusercontent.com/48642967/174038368-0c76b18c-b675-4494-a4b9-2c745c9b0aff.png)
