@@ -125,6 +125,7 @@ So now we are familiar with that, let's talk about how it works.
 
 2. Our main navigator is the WelcomeStackScreen navigator that we can see on App.js as well. 
 
+
 3. Now let's talk about the navigation folder. 
 ![image](https://user-images.githubusercontent.com/48642967/174050485-5c78d1cb-ca8b-4df8-b15d-f7a56620a6a6.png)
 
