@@ -46,20 +46,20 @@ When the nearest <MyContext.Provider> above the component updates, this Hook wil
 
 How to...
 
-	1. Add new global field. 
-		Go to app.js -> add new field as state -> add this field as a property of userAuth.
-		![image](https://user-images.githubusercontent.com/48642967/174038368-0c76b18c-b675-4494-a4b9-2c745c9b0aff.png)
-		Here you can see how the this userAuth wrap the whole application and that way you can access it anywhere. 		
-		![image](https://user-images.githubusercontent.com/48642967/174038764-dd3b7ff5-9076-43ed-9375-2ae61ba0675b.png)
+1. Add new global field. 
+	Go to app.js -> add new field as state -> add this field as a property of userAuth.
+	![image](https://user-images.githubusercontent.com/48642967/174038368-0c76b18c-b675-4494-a4b9-2c745c9b0aff.png)
+	Here you can see how the this userAuth wrap the whole application and that way you can access it anywhere. 		
+	![image](https://user-images.githubusercontent.com/48642967/174038764-dd3b7ff5-9076-43ed-9375-2ae61ba0675b.png)
 
-		
-	2. Get/Set Context's fields.
-		 This is one example of using useContext() function. 
-		 On the second line you can see how we take the rellevnt fields for this page from the context we define before.
-		 ![image](https://user-images.githubusercontent.com/48642967/174039703-940bab9e-a0b3-429e-b02b-424f646f6375.png)
-		 
-		 In our example, for Get - we used isLoading, for Set - we used setIsLoading -> that way we could use this global fields on our app.
-		 One more example for the need in this hook - will be the Token that we get back from the server, and should use it on each api request we made to the server. 
+
+2. Get/Set Context's fields.
+	 This is one example of using useContext() function. 
+	 On the second line you can see how we take the rellevnt fields for this page from the context we define before.
+	 ![image](https://user-images.githubusercontent.com/48642967/174039703-940bab9e-a0b3-429e-b02b-424f646f6375.png)
+
+	 In our example, for Get - we used isLoading, for Set - we used setIsLoading -> that way we could use this global fields on our app.
+	 One more example for the need in this hook - will be the Token that we get back from the server, and should use it on each api request we made to the server. 
 		
 
 #### common directory
