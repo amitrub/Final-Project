@@ -1,7 +1,9 @@
 ## Introduction
 
 EventIt! 
+
 Server-Client application written on React Native and Python. 
+
 Let's talk about the structure of the server side and the client side, what we have done so far to make it easer to expand - and example step by step to add new feature. 
 
 ## Client Side
