@@ -136,12 +136,16 @@ The tab navigator contains four options, each of them takes us to a new stack th
 
 We can mention the hierarcy of the navigation components: 
 WelcomeStack --> TabNavigator --> HomePageStack ... 
+
 This hierarcy gives us the option to see the bottom tab navigator all over the use on the app. 
 On the other hand, it can cause circles of calling to pages that can have some problems. 
 
 How to add new page to the navigation...
+
 	1. Choose which stack navigation you want your page to be part of.
+	
 	2. Add new page component - more info on screens paragraph or on the example at the end.
+	
 	3. Add your page as a navigation screen on the navigator you choose.
 		![image](https://user-images.githubusercontent.com/48642967/174052185-c12195ee-3fe3-44dc-b656-484bd37e9c37.png)
 
