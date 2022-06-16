@@ -79,14 +79,20 @@ The main effort is to focus all constants, images, fonts, colors, etc. on one pl
 
 ![image](https://user-images.githubusercontent.com/48642967/174045111-49c3d76a-743b-4ee7-892f-5cc7f5f000b2.png)
 
-#### lindsly-style-react (we should combine components and style folders for that and put here link to figma)
+#### lindsly-style-react
 
 Our application design was developed by a UX Designer. A big part of the app's success depends on its visibility and total look.
+We worked with 'Figma'. This has enabled our product teams to ship new featur faster and feel more confident in their decisions, and manage all UX decisions and changes.
 Following this, we decided to set up our own components library:  lindsly-style-react. Our goal was to maintain a uniform look across all screens, to make changes easy, to be open to the expansion and addition of additional screens in the future and also to separate logic from design.
 
 In a scenario where a change in the existing design will be required, all the developer will have to do is find the component in the exisiting library and change its design with the help of React Native's base components.
 In a scenario where the developer will be required to add new elements to screens that do not yet exist in the application, he will need to create a file in the appropriate place under the components folder and simply create the element using React Native.
+
 We emphasize that we do not design elements in the screens and logic files but only within our components library.
+
+![image](https://user-images.githubusercontent.com/48642967/174057118-1090dcb9-265a-4217-aaa9-2e61534d496b.png)
+![image](https://user-images.githubusercontent.com/48642967/174057190-05881bee-8c29-47d3-bdfc-9e77e4a1a696.png)
+
 
 So if you are a new developer on our team... 
 
