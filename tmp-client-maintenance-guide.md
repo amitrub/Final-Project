@@ -177,17 +177,17 @@ Therefore, we have written in this section Integration tests and e2e tests that 
 
 ### Expansion
 #### Reusable code
-	First, let's start with the fact that we set ourselves an important principle - to use the "Common" and "lindsly-style-react" libraries as much as possible. Let's try to keep a uniform line in the project, both in terms of design and in terms of the visibility of the components - this will make our work easier, create a cleaner and more readable code - and help us expand easily in the future as well.
+First, let's start with the fact that we set ourselves an important principle - to use the "Common" and "lindsly-style-react" libraries as much as possible. Let's try to keep a uniform line in the project, both in terms of design and in terms of the visibility of the components - this will make our work easier, create a cleaner and more readable code - and help us expand easily in the future as well.
 	
 #### Tasks feature - expansion example
-	1. Assume we already did the Task feature expansion example on the server side. (: 
-	2. Assume we want to add "All tasks" page.
-	3. Add new page to ../screens - let's call it "AllTasksPage.js"
-	4. Add this new page to the homeStackNavigator. Follow the explantion on 'navigator' folder.
-	5. Add new item to ../lindsly-style-react - let's call it "PreviewTaskItem.js". We can use the design for other item - and change it for our needs on tasks.
-	6. Add onPress = () => {...} function, and a button, on (for example) our HomePage - that can navigate to our taskPage. Follow the explantion on 'navigator' folder.
-	7. Add new url to ../common/global/url.js - the url we need to get all tasks for event manager for example. (use the api guide for that)
-	8. Add file to ../common/api/ - let's call it TasksApi.js, with a Get function that uses the url we have just added on step 7.
-	9. On the Task component ("TaskPage.js) we have added on step 3, add useEffect() function, on getData with the help og the api request we just added. 
-	10. Keep going with that line, you 
+1. Assume we already did the Task feature expansion example on the server side. (: 
+2. Assume we want to add "All tasks" page.
+3. Add new page to ../screens - let's call it "AllTasksPage.js"
+4. Add this new page to the homeStackNavigator. Follow the explantion on 'navigator' folder.
+5. Add new item to ../lindsly-style-react - let's call it "PreviewTaskItem.js". We can use the design for other item - and change it for our needs on tasks.
+6. Add onPress = () => {...} function, and a button, on (for example) our HomePage - that can navigate to our taskPage. Follow the explantion on 'navigator' folder.
+7. Add new url to ../common/global/url.js - the url we need to get all tasks for event manager for example. (use the api guide for that)
+8. Add file to ../common/api/ - let's call it TasksApi.js, with a Get function that uses the url we have just added on step 7.
+9. On the Task component ("TaskPage.js) we have added on step 3, add useEffect() function, on getData with the help og the api request we just added. 
+10. Keep going with that line, you almost there.
 	
