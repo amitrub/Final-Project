@@ -1,3 +1,9 @@
+## Introduction
+
+EventIt! 
+Server-Client application written on React Native and Python. 
+Let's talk about the structure of the server side and the client side, what we have done so far to make it easer to expand - and example step by step to add new feature. 
+
 ## Client Side
 Our client side is a React-native application written on Expo platform. 
 
@@ -170,9 +176,9 @@ How to navigate from one page to another?
 
 
 #### tests
-	This folder inlcudes all our UI tests. more information about that on the test guide.
-	
-	As mentioned our app was written in React Native. React Native Components Library is a large and well-known library. As a result we have come to the conclusion that there is no need to perform UI tests, since the basic elements of the language have already been tested by its writers and there is no need to perform tests that we know in advance will pass. 
+This folder inlcudes all our UI tests. more information about that on the test guide.
+
+As mentioned our app was written in React Native. React Native Components Library is a large and well-known library. As a result we have come to the conclusion that there is no need to perform UI tests, since the basic elements of the language have already been tested by its writers and there is no need to perform tests that we know in advance will pass. 
 Therefore, we have written in this section Integration tests and e2e tests that check the main app's flows and APIs.
 
 ### Expansion
