@@ -143,15 +143,16 @@ On the other hand, it can cause circles of calling to pages that can have some p
 How to add new page to the navigation...
 
 	1. Choose which stack navigation you want your page to be part of.
-	
 	2. Add new page component - more info on screens paragraph or on the example at the end.
-	
 	3. Add your page as a navigation screen on the navigator you choose.
-		![image](https://user-images.githubusercontent.com/48642967/174052185-c12195ee-3fe3-44dc-b656-484bd37e9c37.png)
+![image](https://user-images.githubusercontent.com/48642967/174052185-c12195ee-3fe3-44dc-b656-484bd37e9c37.png)
 
 How to navigate from one page to another?
+
 	1. You can see a lot of that all over the project and should read about that on React documantions.
+	
 	2. On each component that you defined as a page (on the navigators) - you could use props.navigation or UseNavigation() function.
+	
 	3. This prop gives you some useful function to use: 
 		a. navigation.navigate("pageName") - navigate to specific page on your stack navigator
 		b. navigation.pop() - pop us the last page from your stack and navigate to the last one you came from.
