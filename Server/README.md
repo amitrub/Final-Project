@@ -100,6 +100,16 @@ The **my_models** directory contins our extensions of rest_framework components 
 
 
 ### System Expansion
+
+#### DB
+Our system using sqlite DB localy, for scale up in users and data objects we can easily change the DB.
+In the Main App: **server_django**, in the settings.py file, there is the DB configuration.
+##### Sqlite Configuration
+![local db](https://user-images.githubusercontent.com/48449311/174341371-019ae403-80b5-420e-aa2e-b1a0a01e2831.PNG)
+
+##### Remote DB Configuration
+![remoe DB](https://user-images.githubusercontent.com/48449311/174341394-9fcf619b-77a1-4d26-8ab2-a9604b8cf301.PNG)
+
 #### Django Commends
 - create new app:
 	**python manage.py startapp <app_name>**
@@ -116,15 +126,19 @@ The **my_models** directory contins our extensions of rest_framework components 
 - load all json objects from the jsons in the fixtures directory:
 	**python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>**
 
+#### User Expansion
+In this point our system support in 1 type of user: event manager, we built an infrastructure for expanding the system users.
+suppliers and event owners can be users too in our futere system. there is an infrastructure for this in the Server but on in the Client side.
+
+![supplier event owner models](https://user-images.githubusercontent.com/48449311/174343529-79d876d5-ab46-45f5-a0dc-a15f964a05e2.PNG)
+
 #### App Expansion
+In this point our system support in managing events, suppliers, event owners and payments, we built an infrastructure for expanding the system to manage meeting and tasks for the event manager in our futere system. there is an infrastructure for this in the Server but on in the Client side.
 
-#### DB
-Our system using sqlite DB localy, for scale up in users and data objects we can easily change the DB.
-In the Main App: **server_django**, in the settings.py file, there is the DB configuration.
-##### Sqlite Configuration
-![local db](https://user-images.githubusercontent.com/48449311/174341371-019ae403-80b5-420e-aa2e-b1a0a01e2831.PNG)
+![meetings](https://user-images.githubusercontent.com/48449311/174344943-08655b75-276d-4183-b6eb-4f772fe60f5c.PNG)
+![tasks](https://user-images.githubusercontent.com/48449311/174344953-cde07337-af56-4736-b346-0455284e6890.PNG)
 
-##### Remote DB Configuration
-![remoe DB](https://user-images.githubusercontent.com/48449311/174341394-9fcf619b-77a1-4d26-8ab2-a9604b8cf301.PNG)
+#### Adding New App Example
+
 
 
