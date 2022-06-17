@@ -86,6 +86,19 @@ The **logging** directory contins the logger file for web server.
 #### My Models
 The **my_models** directory contins our extensions of rest_framework components for handling with errors and our adjustments.
 
+### Ongoing Operation
+#### Admin
+- add admin: run in the terminal - python manage.py createsuperuser
+- enter the email and password in the terminal for user admin.
+- enter to the admin login page (url - $SERVER_URL/admin), and login as admin.
+
+![admin login](https://user-images.githubusercontent.com/48449311/174335733-4bd8f19b-abf4-4267-9a29-6815b56d7f6c.PNG)
+
+- and from the admin page you can manage all the object in the server.
+
+![admin in](https://user-images.githubusercontent.com/48449311/174336253-42a274c1-8fa8-45a5-b92b-c55fe8766bd9.PNG)
+
+
 ### System Expansion
 #### Django Commends
 - create new app:
