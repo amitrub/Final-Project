@@ -116,3 +116,15 @@ The **my_models** directory contins our extensions of rest_framework components 
 - load all json objects from the jsons in the fixtures directory:
 	**python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>**
 
+#### App Expansion
+
+#### DB
+Our system using sqlite DB localy, for scale up in users and data objects we can easily change the DB.
+In the Main App: **server_django**, in the settings.py file, there is the DB configuration.
+##### Sqlite Configuration
+![local db](https://user-images.githubusercontent.com/48449311/174341371-019ae403-80b5-420e-aa2e-b1a0a01e2831.PNG)
+
+##### Remote DB Configuration
+![remoe DB](https://user-images.githubusercontent.com/48449311/174341394-9fcf619b-77a1-4d26-8ab2-a9604b8cf301.PNG)
+
+
