@@ -12,7 +12,14 @@
 		* [Fixtures](#fixtures)
 		* [Logging](#logging)
 		* [My Models](#my-models)
+	* [Ongoing Operation](#ongoing-operation)
+		* [Admin](#admin)
 	* [Server Expansion](#server-expansion)
+		* [DB](#db)
+		* [Django Commends](#django-commends)
+		* [User Expansion](#user-expansion)
+		* [App Expansion](#app-expansion)
+		* [Adding New App - Example](#adding-new-app---example)
 3. [Client Side](#client-side)
 	* [Get Started - Project Configuration](#get-started---project-configuration)
 	* [Client Structure](#client-structure)
@@ -26,9 +33,7 @@
 	* [Client Expansion](#client-expansion)
 		* [Reusable Code](#reusable-code)
 		* [Tasks Feature - Expansion Example](#tasks-feature---expansion-example)
-	* [Quick start](#quick-start)
-4. [Adding Functionality Schema](#adding-functionality-schema)
-5. [Assimilation on New Device and Run All Program](#assimilation-on-new-device-and-run-all-program)
+
 
 ## Introduction
 
@@ -37,6 +42,132 @@ EventIt!
 Server-Client application written on React Native and Python. 
 
 Let's talk about the structure of the server side and the client side, what we have done so far to make it easer to expand - and example step by step to add new feature. 
+
+## Server Side
+The Srever is writen in Python useing Django web framework
+The main responsibilities of the server is to manage all the data of the users and make it accessible to the Client side.
+
+### Quick Start
+#### Local
+* For start, you need to have on your device installed - git, python, pip.
+* clone the git project to your local device - git clone https://github.com/amitrub/Final-Project.git.
+* cd to $MAIN_DIR/Server.
+* install all the python requirements - pip install -r requirements.txt.
+* create the modules files for the server - python manage.py makemigrations.
+* create the DB for all the modules objects - python manage.py migrate.
+* now you can run the server - python manage.py runserver (0.0.0.0:8000 optional).
+* open browser on - localhost:8000/api, and you can see the server running.
+
+#### Remote 
+* For start, you need to have a remote Linux server running, with HTTP port rule (80) and SSH port rule (22) open.
+* connect to your remote server through SSH.
+* update and upgrade your server - sudo apt update && sudo apt upgrade.
+* install curl - sudo apt install curl.
+* download the setup file and setup your server - curl -sL https://raw.githubusercontent.com/amitrub/Final-Project/main/Server/deploy/setup.sh | sudo bash -.
+* open browser on - $SERVER_IP/api, and you can see the server running.
+
+### Server Structure
+#### Main App
+The main app of the server is the **server_django** directory.
+There are 3 parts in this app:
+##### - settings.py
+managing all server settings:
+- ALLOWED_HOSTS
+- INSTALLED_APPS
+- WSGI_APPLICATION
+- DATABASES
+- LOGGING
+- AUTH_PASSWORD_VALIDATORS
+##### - urls.py
+redirecte the base url to url file of each sub apps.
+##### - wsgi.py
+defining the Web Server Gateway Interface for the server.
+#### Sub Apps
+The sub apps of the server is the **users, addresses, events, payments** directories.
+There are 9 parts in this app:
+##### - models.py
+defining all the models for the app that will create the DB and will be the last stage before performing queries on the db.
+##### - views.py
+responsible for handling with all the HTTP requests for each model in the app.
+##### - urls.py
+redirecte the url path to the views funtions.
+##### - serializers.py
+responsible for checking the integrity of the input from the HTTP requests. 
+##### - permissions.py
+responsible for defining and checking if the user can priform the action that he is trying to do. 
+##### - admin.py
+define if the admin can manage the app from the admin site.
+##### - migrations
+in the directory all the migrations are creating for every model in the app, for the creation of the DB.
+##### - tests
+this directory contains all the tests for that specific app.
+#### Deploy
+The **deploy** directory contins files for the setup and update of a remote server.
+#### Fixtures
+The **fixtures** directory contins json files for some inital object to init the DB.
+#### Logging
+The **logging** directory contins the logger file for web server.
+#### My Models
+The **my_models** directory contins our extensions of rest_framework components for handling with errors and our adjustments.
+
+### Ongoing Operation
+#### Admin
+- add admin: run in the terminal - python manage.py createsuperuser
+- enter the email and password in the terminal for user admin.
+- enter to the admin login page (url - $SERVER_URL/admin), and login as admin.
+
+![admin login](https://user-images.githubusercontent.com/48449311/174335733-4bd8f19b-abf4-4267-9a29-6815b56d7f6c.PNG)
+
+- and from the admin page you can manage all the object in the server.
+
+![admin in](https://user-images.githubusercontent.com/48449311/174336253-42a274c1-8fa8-45a5-b92b-c55fe8766bd9.PNG)
+
+
+### Server Expansion
+
+#### DB
+Our system using sqlite DB localy, for scale up in users and data objects we can easily change the DB.
+In the Main App: **server_django**, in the settings.py file, there is the DB configuration.
+**Sqlite Configuration**
+![local db](https://user-images.githubusercontent.com/48449311/174341371-019ae403-80b5-420e-aa2e-b1a0a01e2831.PNG)
+
+**Remote DB Configuration**
+![remoe DB](https://user-images.githubusercontent.com/48449311/174341394-9fcf619b-77a1-4d26-8ab2-a9604b8cf301.PNG)
+
+#### Django Commends
+- create new app:
+	```
+	python manage.py startapp <app_name>
+	```
+- create makemigrations from models file in app:
+	**python manage.py makemigrations <app_name>**
+- update the DB according to the makemigrations files:
+	**python manage.py migrate**
+- run the server:
+	**python manage.py runserver (0.0.0.0:8000 optional)**
+- creating a super user:
+	**python manage.py createsuperuser**
+- creating json objects in the fixtures directory for all the objects in the DB:
+	**python manage.py dumpdata <app_name>.<model_name> --indent 4 > fixtures/<model_name>.json**
+- load all json objects from the jsons in the fixtures directory:
+	**python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>**
+
+#### User Expansion
+In this point our system support in 1 type of user: event manager, we built an infrastructure for expanding the system users.
+suppliers and event owners can be users too in our futere system. there is an infrastructure for this in the Server but on in the Client side.
+
+![supplier event owner models](https://user-images.githubusercontent.com/48449311/174343529-79d876d5-ab46-45f5-a0dc-a15f964a05e2.PNG)
+
+#### App Expansion
+In this point our system support in managing events, suppliers, event owners and payments, we built an infrastructure for expanding the system to manage meeting and tasks for the event manager in our futere system. there is an infrastructure for this in the Server but on in the Client side.
+
+![meetings](https://user-images.githubusercontent.com/48449311/174344943-08655b75-276d-4183-b6eb-4f772fe60f5c.PNG)
+![tasks](https://user-images.githubusercontent.com/48449311/174344953-cde07337-af56-4736-b346-0455284e6890.PNG)
+
+#### Adding New App - Example
+
+
+
 
 ## Client Side
 Our client side is a React-native application written on Expo platform. 
@@ -82,8 +213,6 @@ Let’s talk about how to set up the project for the first time locally, what th
 This is the main directory structure, let's break it down.
 
 ![image](https://user-images.githubusercontent.com/48642967/174082807-1450f57e-1c5d-44d2-b15f-2989baf8728b.png)
-
-#### App.js, useContext
 
 #### App.js
 This is the root of the project. Basicly this is the father components, and it is wrapping all other components. Here we are starting to define our navigation mechanisem (more info on navigation folder) and the global context field and more.
