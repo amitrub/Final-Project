@@ -153,6 +153,26 @@ class PrivateEventApiTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(self.event.event_name, payload['event_name'])
 
+    def test_update_event_budget(self):
+        """Test updating the event for authenticated user"""
+        payload = {'budget': '1000'}
+
+        res = self.client.patch(UPDATE_EVENT_URL(self.event.id), payload)
+
+        self.event.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.event.event_name, payload['event_name'])
+
+    def test_update_event_date(self):
+        """Test updating the event for authenticated user"""
+        payload = {'date': '2011-12-12'}
+
+        res = self.client.patch(UPDATE_EVENT_URL(self.event.id), payload)
+
+        self.event.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.event.event_name, payload['event_name'])
+
     def test_delete_event(self):
         """Test deleting the event for authenticated user"""
         res = self.client.delete(UPDATE_EVENT_URL(self.event.id))
