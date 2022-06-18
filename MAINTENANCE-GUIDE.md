@@ -19,7 +19,7 @@
 		* [Django Commends](#django-commends)
 		* [User Expansion](#user-expansion)
 		* [App Expansion](#app-expansion)
-		* [Adding New App - Example](#adding-new-app---example)
+		* [Adding New Sub App - Example](#adding-new-sub-app---example)
 3. [Client Side](#client-side)
 	* [Get Started - Project Configuration](#get-started---project-configuration)
 	* [Client Structure](#client-structure)
@@ -200,9 +200,43 @@ In this point our system support in managing events, suppliers, event owners and
 ![meetings](https://user-images.githubusercontent.com/48449311/174344943-08655b75-276d-4183-b6eb-4f772fe60f5c.PNG)
 ![tasks](https://user-images.githubusercontent.com/48449311/174344953-cde07337-af56-4736-b346-0455284e6890.PNG)
 
-#### Adding New App - Example
+#### Adding New Sub App - Example
+- enter the main server dirctory in the terminal:
+	```
+	cd $BASE_FOLDER\Final-Project\Server
+	```
+- create sub new app:
+	```
+	python manage.py startapp new_app
+	```
+![new_app](https://user-images.githubusercontent.com/48449311/174441755-315eac8b-1f4b-4cb3-8465-a06be5256ea7.PNG)
 
+- add app name to server_django/settings.py under list INSTALLED_APPS.
+![INSTALLED_APPS](https://user-images.githubusercontent.com/48449311/174441880-33eb099b-9750-4de2-b7ac-6158886e10f2.PNG)
 
+- create new model in the new_app/models.py file:
+![new model](https://user-images.githubusercontent.com/48449311/174442183-6489e14a-1baf-485f-9f33-6b44aef474cd.PNG)
+
+- create makemigrations for the new model:
+	```
+	python manage.py makemigrations new_app
+	```
+TODO: add print screen.
+
+- update the DB to add the new model:
+	```
+	python manage.py migrate new_app
+	```
+- create a file serializers.py in the new_app dirctory and add serializer for the new model:
+![NewModelSerializer](https://user-images.githubusercontent.com/48449311/174442758-3e5b982f-9bc7-4e1c-b64b-04b387973929.PNG)
+
+- create new viewset in the new_app/views.py file for the new model:
+![NewModelViewSet](https://user-images.githubusercontent.com/48449311/174442884-9d2cb15c-fb2a-4131-9b2a-325f4da1db32.PNG)
+
+- create a file urls.py in the new_app dirctory and link the new viewset to the url:
+![urls](https://user-images.githubusercontent.com/48449311/174443026-93b3f01a-f433-4c23-990e-def47c8dd664.PNG)
+
+TODO: add url and prmossions
 
 
 ## Client Side
