@@ -50,7 +50,7 @@ App as quickly and as painlessly as possible.
 
 Register is done by clicking on the Sign Up button:
 
-<img src="[https://your-image-url.type](https://user-images.githubusercontent.com/48449311/174451731-abd6e05f-964c-40bd-8e25-0990914b7b1f.jpeg" width="100" height="200">
+<img src="https://camo.githubusercontent.com/..." data-canonical-src="https://user-images.githubusercontent.com/48449311/174451731-abd6e05f-964c-40bd-8e25-0990914b7b1f.jpeg" width="200" height="400" />
 
 ![WhatsApp Image 2022-06-18 at 16 38 38](https://user-images.githubusercontent.com/48449311/174451731-abd6e05f-964c-40bd-8e25-0990914b7b1f.jpeg)
 
