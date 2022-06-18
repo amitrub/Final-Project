@@ -1,4 +1,4 @@
-# <center> EventIt! Maintenance Guide</center>
+# <center> EventIt!<br> Maintenance Guide</center>
 
 1. [Introduction](#introduction)
 2. [Server Side](#server-side)
