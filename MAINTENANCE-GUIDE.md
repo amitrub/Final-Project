@@ -50,20 +50,44 @@ The main responsibilities of the server is to manage all the data of the users a
 ### Quick Start
 #### Local
 * For start, you need to have on your device installed - git, python, pip.
-* clone the git project to your local device - git clone https://github.com/amitrub/Final-Project.git.
+* clone the git project to your local device:
+```
+git clone https://github.com/amitrub/Final-Project.git
+```
 * cd to $MAIN_DIR/Server.
-* install all the python requirements - pip install -r requirements.txt.
-* create the modules files for the server - python manage.py makemigrations.
-* create the DB for all the modules objects - python manage.py migrate.
-* now you can run the server - python manage.py runserver (0.0.0.0:8000 optional).
+* install all the python requirements:
+```
+pip install -r requirements.txt
+```
+* create the modules files for the server:
+```
+python manage.py makemigrations
+```
+* create the DB for all the modules objects:
+```
+python manage.py migrate
+```
+* now you can run the server:
+```
+python manage.py runserver (0.0.0.0:8000 optional)
+```
 * open browser on - localhost:8000/api, and you can see the server running.
 
 #### Remote 
 * For start, you need to have a remote Linux server running, with HTTP port rule (80) and SSH port rule (22) open.
 * connect to your remote server through SSH.
-* update and upgrade your server - sudo apt update && sudo apt upgrade.
-* install curl - sudo apt install curl.
-* download the setup file and setup your server - curl -sL https://raw.githubusercontent.com/amitrub/Final-Project/main/Server/deploy/setup.sh | sudo bash -.
+* update and upgrade your server:
+```
+sudo apt update && sudo apt upgrade
+```
+* install curl:
+```
+sudo apt install curl
+```
+* download the setup file and setup your server: 
+```
+curl -sL https://raw.githubusercontent.com/amitrub/Final-Project/main/Server/deploy/setup.sh | sudo bash -
+```
 * open browser on - $SERVER_IP/api, and you can see the server running.
 
 ### Server Structure
@@ -128,10 +152,10 @@ The **my_models** directory contins our extensions of rest_framework components 
 #### DB
 Our system using sqlite DB localy, for scale up in users and data objects we can easily change the DB.
 In the Main App: **server_django**, in the settings.py file, there is the DB configuration.
-**Sqlite Configuration**
+##### Sqlite Configuration
 ![local db](https://user-images.githubusercontent.com/48449311/174341371-019ae403-80b5-420e-aa2e-b1a0a01e2831.PNG)
 
-**Remote DB Configuration**
+##### Remote DB Configuration
 ![remoe DB](https://user-images.githubusercontent.com/48449311/174341394-9fcf619b-77a1-4d26-8ab2-a9604b8cf301.PNG)
 
 #### Django Commends
@@ -140,17 +164,29 @@ In the Main App: **server_django**, in the settings.py file, there is the DB con
 	python manage.py startapp <app_name>
 	```
 - create makemigrations from models file in app:
-	**python manage.py makemigrations <app_name>**
+	```
+	python manage.py makemigrations <app_name>
+	```
 - update the DB according to the makemigrations files:
-	**python manage.py migrate**
+	```
+	python manage.py migrate
+	```
 - run the server:
-	**python manage.py runserver (0.0.0.0:8000 optional)**
+	```
+	python manage.py runserver (0.0.0.0:8000 optional)
+	```
 - creating a super user:
-	**python manage.py createsuperuser**
+	```
+	python manage.py createsuperuser
+	```
 - creating json objects in the fixtures directory for all the objects in the DB:
-	**python manage.py dumpdata <app_name>.<model_name> --indent 4 > fixtures/<model_name>.json**
+	```
+	python manage.py dumpdata <app_name>.<model_name> --indent 4 > fixtures/<model_name>.json
+	```
 - load all json objects from the jsons in the fixtures directory:
-	**python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>**
+	```
+	python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>
+	```
 
 #### User Expansion
 In this point our system support in 1 type of user: event manager, we built an infrastructure for expanding the system users.
