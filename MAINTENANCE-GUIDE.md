@@ -12,17 +12,18 @@
 		* [Fixtures](#fixtures)
 		* [Logging](#logging)
 		* [My Models](#my-models)
-	* [System Expansion](#system-expansion)
+	* [Server Expansion](#server-expansion)
 3. [Client Side](#client-side)
 	* [Get Started - Project Configuration](#get-started---project-configuration)
-	* [Directories And Project Structure](#directories-and-project-structure)
-		* [App.js, useContext](#app.js,-usecontext)
+	* [Client Structure](#client-structure)
+		* [App.js](#app.js)
+		* [useContext](#usecontext)
 		* [Common Directory](#common-directory)
 		* [lindsly-style-react](#lindsly-style-react)
 		* [Screens](#screens)
 		* [Navigation](#navigation)
 		* [Tests](#tests)
-	* [Expansion](#expansion)
+	* [Client Expansion](#client-expansion)
 		* [Reusable Code](#reusable-code)
 		* [Tasks Feature - Expansion Example](#tasks-feature---expansion-example)
 	* [Quick start](#quick-start)
@@ -76,7 +77,7 @@ Let’s talk about how to set up the project for the first time locally, what th
 		- Delete yarn.lock file
 		- Run "yarn install" again 
 
-### Directories And Project Structure 
+### Client Structure
 
 This is the main directory structure, let's break it down.
 
@@ -84,10 +85,10 @@ This is the main directory structure, let's break it down.
 
 #### App.js, useContext
 
-**App.js:** 
+#### App.js
 This is the root of the project. Basicly this is the father components, and it is wrapping all other components. Here we are starting to define our navigation mechanisem (more info on navigation folder) and the global context field and more.
 
-**useContext:** 
+#### useContext
 We used this hook to manage the use of all global fields of the system and allow to access them from anywhere at any stage to their most up-to-date value.
 Accepts a context object (the value returned from React.createContext) and returns the current context value for that context. The current context value is determined by the value prop of the nearest <MyContext.Provider> above the calling component in the tree.
 When the nearest <MyContext.Provider> above the component updates, this Hook will trigger a rerender with the latest context value passed to that MyContext provider. A rerender will alwys happen starting at the component itself using useContext.
@@ -214,7 +215,7 @@ This folder inlcudes all our UI tests. more information about that on the test g
 As mentioned our app was written in React Native. React Native Components Library is a large and well-known library. As a result we have come to the conclusion that there is no need to perform UI tests, since the basic elements of the language have already been tested by its writers and there is no need to perform tests that we know in advance will pass. 
 Therefore, we have written in this section Integration tests and e2e tests that check the main app's flows and APIs.
 
-### Expansion
+### Client Expansion
 #### Reusable Code
 First, let's start with the fact that we set ourselves an important principle - to use the "Common" and "lindsly-style-react" libraries as much as possible. Let's try to keep a uniform line in the project, both in terms of design and in terms of the visibility of the components - this will make our work easier, create a cleaner and more readable code - and help us expand easily in the future as well.
 	
