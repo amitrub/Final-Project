@@ -228,8 +228,7 @@ In this point our system support in managing events, suppliers, event owners and
 	```
 	python manage.py makemigrations new_app
 	```
-TODO: add print screen.
-
+	
 - update the DB to add the new model:
 	```
 	python manage.py migrate new_app
