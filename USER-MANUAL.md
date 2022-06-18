@@ -50,9 +50,8 @@ App as quickly and as painlessly as possible.
 
 Register is done by clicking on the Sign Up button:
 
-<img src="https://camo.githubusercontent.com/..." data-canonical-src="https://user-images.githubusercontent.com/48449311/174451731-abd6e05f-964c-40bd-8e25-0990914b7b1f.jpeg" width="200" height="400" />
+![1](https://user-images.githubusercontent.com/48449311/174452276-259d4572-b313-4d3f-b9e8-74321209cb4a.jpeg)
 
-![WhatsApp Image 2022-06-18 at 16 38 38](https://user-images.githubusercontent.com/48449311/174451731-abd6e05f-964c-40bd-8e25-0990914b7b1f.jpeg)
 
 After you click on the SignUp! You register by entering email address, password, full name,
 phone number, country, city street and number and pressing on the Sign Up button.
