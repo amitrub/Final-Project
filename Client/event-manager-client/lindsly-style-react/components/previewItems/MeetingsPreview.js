@@ -1,12 +1,9 @@
 import React from "react";
 import { View, Text } from "react-native";
 import MeetingItem from "../calendarItems/MeetingItem";
-import Entypo from "react-native-vector-icons/Entypo";
-import { useNavigation } from "@react-navigation/native";
 import { MeetingsPreviewStyles } from "../../styles/styles";
 
 const MeetingsPreview = (props) => {
-  const navigation = useNavigation();
   const eventStages = props.eventStages;
 
   const eventStagesPreview = [];
@@ -26,7 +23,7 @@ const MeetingsPreview = (props) => {
         const date = eventStage?.start_time?.split("T")[0];
 
         return (
-          <View>
+          <View key={index}>
             <MeetingItem
               description={eventStage.description}
               key={index}

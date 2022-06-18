@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import MeetingItem from "../calendarItems/MeetingItem";
 import { useNavigation } from "@react-navigation/native";
@@ -20,7 +20,13 @@ const TasksPreview = () => {
   );
   const body = (
     <View>
-      <MeetingItem location={"Choosing Hupa song"} time={""} description={""} />
+      <MeetingItem
+        description={"To do something"}
+        key={0}
+        time={"10:00"}
+        eventName={"Task 1"}
+        date={"22.22.22"}
+      />
     </View>
   );
 
