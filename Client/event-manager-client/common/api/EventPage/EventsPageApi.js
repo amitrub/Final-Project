@@ -45,7 +45,7 @@ export async function fetchEvent(myContext, navigation, setEvent, event_id) {
 }
 
 export async function deleteEventRequest(myContext, event_id, navigation) {
-  const { token, setIsLoading, setError, setRefresh } = myContext;
+  const { token, setIsLoading, setRefresh } = myContext;
   let functionName = "Delete Event Request";
   let url = base_url + getEvent(event_id);
   let request = {
@@ -96,7 +96,7 @@ export async function editEventRequest(
   event_id,
   navigation
 ) {
-  const { token, setIsLoading, setRefresh, setError } = myContext;
+  const { token, setIsLoading, setRefresh } = myContext;
   let functionName = "Edit Event Request";
   let url = base_url + getEvent(event_id);
   let request = {
@@ -131,7 +131,7 @@ export async function editEventRequest(
 }
 
 export async function addEventOwnerRequest(myContext, event, navigation) {
-  const { token, setIsLoading, setRefresh, setError } = myContext;
+  const { token, setIsLoading, setRefresh } = myContext;
   let functionName = "Add Event Owner Request";
   let url = base_url + allEvents;
   let request = {
@@ -170,7 +170,7 @@ export async function editEventOwnersRequest(
   newOwners,
   navigation
 ) {
-  const { token, setIsLoading, setError, setRefresh } = myContext;
+  const { token, setIsLoading, setRefresh } = myContext;
   const urlEditEvent = base_url + getEvent(editEvent.id);
   const urlEditOwnerEvent = base_url + addEventOwner(editEvent.id);
   let functionName = "Edit Event Owners Request";
@@ -227,7 +227,6 @@ export async function editEventOwnersRequest(
           })
           .catch((err) => {
             setIsLoading(false);
-            setError(err);
             logAndCreateErrorMessage(
               { Error: global_timeout_message },
               functionName
@@ -237,7 +236,6 @@ export async function editEventOwnersRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
       Log.error("AddEventOwner >> onSaveEvent >> failed with error: ", err);
       createOneButtonAlert(
         "owners didn't updated successfully - catch error: " + err,
@@ -254,7 +252,7 @@ export async function addEventScheduleRequest(
   meetingToAdd
 ) {
   const url = base_url + postEventSchedule(eventId);
-  const { token, refresh, setRefresh, setError, setIsLoading } = myContext;
+  const { token, refresh, setRefresh, setIsLoading } = myContext;
   let functionName = "Add Event Schedule Request";
   let request = {
     method: "POST",
@@ -289,7 +287,7 @@ export async function getEventScheduleRequest(
   setEventSchedulesData,
   setEventSchedulesByDate
 ) {
-  const { token, setError, setIsLoading } = myContext;
+  const { token, setIsLoading } = myContext;
   let functionName = "Get Event Schedule Request";
   let request = {
     method: "GET",
@@ -335,7 +333,6 @@ export async function getEventScheduleRequest(
     })
     .catch((err) => {
       setIsLoading(false);
-      setError(err);
       logAndCreateErrorMessage({ Error: global_timeout_message }, functionName);
     });
 }

@@ -33,7 +33,7 @@ const EventSchedulePage = (props) => {
   const eventName = params.eventName;
 
   const myContext = useContext(UserAuthentication);
-  const { refresh, error, isLoading, setIsLoading } = myContext;
+  const { refresh, isLoading, setIsLoading } = myContext;
   const [eventSchedulesData, setEventSchedulesData] = useState([]);
   const [eventSchedulesByDate, setEventSchedulesByDate] = useState({});
 
@@ -68,7 +68,6 @@ const EventSchedulePage = (props) => {
           onPress={async () => {
             const startTime = `${meetingDate} ${meetingStartTime}`;
             const endTime = `${meetingDate} ${meetingEndTime}`;
-
             function isValidTime(meetingTime) {
               let split = meetingTime?.split(" ");
               if (split.length !== 2) {
@@ -78,7 +77,6 @@ const EventSchedulePage = (props) => {
               let currTime = split[1];
               return currDate.length === 10 && currTime.length === 5;
             }
-
             function resetFields() {
               setMeetingDescription("");
               setMeetingDate("");
