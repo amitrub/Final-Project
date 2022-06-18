@@ -1,4 +1,5 @@
 # <center> EventIt! User Manual</center>
+# <center> EventIt!<br> User Manual</center>
 
 1. [Introduction](#introduction)
 2. [Register](#register)
