@@ -1,3 +1,34 @@
+# <center> EventIt! Maintenance Guide</center>
+
+1. [Introduction](#introduction)
+2. [Server Side](#server-side)
+	* [Quick start](#quick-start)
+	 	* [Local](#local)
+		* [Remote](#remote)
+	* [Server Structure](#server-structure)	
+	 	* [Main App](#main-app)
+		* [Sub Apps](#sub-apps)
+		* [Deploy](#deploy)
+		* [Fixtures](#fixtures)
+		* [Logging](#logging)
+		* [My Models](#my-models)
+	* [System Expansion](#system-expansion)
+3. [Client Side](#client-side)
+	* [Get Started - Project Configuration](#get-started---project-configuration)
+	* [Directories And Project Structure](#directories-and-project-structure)
+		* [App.js, useContext](#app.js,-useContext)
+		* [Common Directory](#common-directory)
+		* [lindsly-style-react](#lindsly-style-react)
+		* [Screens](#screens)
+		* [Navigation](#navigation)
+		* [Tests](#tests)
+	* [Expansion](#expansion)
+		* [Reusable Code](#reusable-code)
+		* [Tasks Feature - Expansion Example](#tasks-feature---expansion-example)
+	* [Quick start](#quick-start)
+4. [Adding Functionality Schema](#adding-functionality-schema)
+5. [Assimilation on New Device and Run All Program](#assimilation-on-new-device-and-run-all-program)
+
 ## Introduction
 
 EventIt! 
@@ -21,7 +52,7 @@ The app supports two types of users : usual and admin ones. Usual user is the ev
 
 Let’s talk about how to set up the project for the first time locally, what the project structure looks like and how we can expand the project in future features.
 
-### Get started - project configuration 
+### Get Started - Project Configuration 
 1. Clone the project from GitHub with the url present on the introduction step. 
 2. In order to run the project locally: 
 
@@ -45,7 +76,7 @@ Let’s talk about how to set up the project for the first time locally, what th
 		- Delete yarn.lock file
 		- Run "yarn install" again 
 
-### Directories and Project structure 
+### Directories And Project Structure 
 
 This is the main directory structure, let's break it down.
 
@@ -79,7 +110,7 @@ How to...
 	 One more example for the need in this hook - will be the Token that we get back from the server, and should use it on each api request we made to the server. 
 		
 
-#### common directory
+#### Common Directory
 
 The purpose of this folder is to contain all functions and fields that will be re-used on many places on the app.
 
@@ -119,7 +150,7 @@ So if you are a new developer on our team...
 
 ![image](https://user-images.githubusercontent.com/48642967/174046976-34422086-9154-4ff5-947d-4d6982212ea6.png)
 
-#### screens
+#### Screens
 
 In this folder we have all the components that are screens on the app. 
 The screens seperate to some folders: add-event-screens, event-manager-screens, main-screens, user-profile-screens.
@@ -128,7 +159,7 @@ If you need to add one more screen to the app, that's the place to open it.
 ![image](https://user-images.githubusercontent.com/48642967/174048097-be3c3397-2c71-4f1a-85c9-78c6a8392159.png)
 
 
-#### navigation
+#### Navigation
 
 So this is how the whole navigation is working on our app. 
 Let's start with that: there are two types of navigations methods that we used on our app; stack navigator and tab navigator.
@@ -177,17 +208,17 @@ How to navigate from one page to another?
 ![image](https://user-images.githubusercontent.com/48642967/174053137-1f8df10d-bf8f-4c45-bdf5-0e9357215c12.png)
 
 
-#### tests
+#### Tests
 This folder inlcudes all our UI tests. more information about that on the test guide.
 
 As mentioned our app was written in React Native. React Native Components Library is a large and well-known library. As a result we have come to the conclusion that there is no need to perform UI tests, since the basic elements of the language have already been tested by its writers and there is no need to perform tests that we know in advance will pass. 
 Therefore, we have written in this section Integration tests and e2e tests that check the main app's flows and APIs.
 
 ### Expansion
-#### Reusable code
+#### Reusable Code
 First, let's start with the fact that we set ourselves an important principle - to use the "Common" and "lindsly-style-react" libraries as much as possible. Let's try to keep a uniform line in the project, both in terms of design and in terms of the visibility of the components - this will make our work easier, create a cleaner and more readable code - and help us expand easily in the future as well.
 	
-#### Tasks feature - expansion example
+#### Tasks Feature - Expansion Example
 1. Assume we already did the Task feature expansion example on the server side. (: 
 2. Assume we want to add "All tasks" page.
 3. Add new page to ../screens - let's call it "AllTasksPage.js"
