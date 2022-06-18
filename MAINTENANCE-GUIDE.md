@@ -16,7 +16,7 @@
 3. [Client Side](#client-side)
 	* [Get Started - Project Configuration](#get-started---project-configuration)
 	* [Directories And Project Structure](#directories-and-project-structure)
-		* [App.js, useContext](#app.js,-useContext)
+		* [App.js, useContext](#app.js,-usecontext)
 		* [Common Directory](#common-directory)
 		* [lindsly-style-react](#lindsly-style-react)
 		* [Screens](#screens)
