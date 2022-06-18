@@ -371,7 +371,6 @@ const EventPage = (props) => {
   };
 
   if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   return (
     <View>

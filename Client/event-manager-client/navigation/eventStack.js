@@ -34,16 +34,6 @@ export const EventsStackScreen = () => {
         component={EventPage}
         options={emptyHeader}
       />
-      {/*<EventsStack.Screen*/}
-      {/*  name="Meeting"*/}
-      {/*  component={MeetingPage}*/}
-      {/*  options={emptyHeader}*/}
-      {/*/>*/}
-      {/*<EventsStack.Screen*/}
-      {/*  name="Meetings"*/}
-      {/*  component={MeetingsPage}*/}
-      {/*  options={emptyHeader}*/}
-      {/*/>*/}
       <EventsStack.Screen
         name="AddEventDetails"
         component={AddEventDetails}

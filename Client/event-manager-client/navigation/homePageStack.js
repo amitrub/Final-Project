@@ -38,16 +38,6 @@ export const HomePageStackScreen = () => {
         component={AllEventsPage}
         options={emptyHeader}
       />
-      {/*<HomePageStack.Screen*/}
-      {/*  name="Meeting"*/}
-      {/*  component={MeetingPage}*/}
-      {/*  options={emptyHeader}*/}
-      {/*/>*/}
-      {/*<HomePageStack.Screen*/}
-      {/*  name="Meetings"*/}
-      {/*  component={MeetingsPage}*/}
-      {/*  options={emptyHeader}*/}
-      {/*/>*/}
       <HomePageStack.Screen
         name="AddEventDetails"
         component={AddEventDetails}
