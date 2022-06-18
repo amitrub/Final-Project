@@ -187,6 +187,10 @@ In the Main App: **server_django**, in the settings.py file, there is the DB con
 	```
 	python manage.py loaddata fixtures/<model_name>.json --app <app_name>.<model_name>
 	```
+- run the tests:
+	```
+	python manage.py test <app_name>
+	```	
 
 #### User Expansion
 In this point our system support in 1 type of user: event manager, we built an infrastructure for expanding the system users.
@@ -234,15 +238,21 @@ TODO: add print screen.
 
 ![NewModelSerializer](https://user-images.githubusercontent.com/48449311/174442758-3e5b982f-9bc7-4e1c-b64b-04b387973929.PNG)
 
+- create a file permissions.py in the new_app dirctory and add 'ho can access to the new model:
+
+![NewModelPermission](https://user-images.githubusercontent.com/48449311/174448974-94bceabc-090f-46bc-97c9-95ab4bb0db40.PNG)
+
 - create new viewset in the new_app/views.py file for the new model:
 
-![NewModelViewSet](https://user-images.githubusercontent.com/48449311/174442884-9d2cb15c-fb2a-4131-9b2a-325f4da1db32.PNG)
+![NewModelViewSet1](https://user-images.githubusercontent.com/48449311/174449103-1285144f-5f0e-469c-a350-ce00f613cf61.PNG)
 
 - create a file urls.py in the new_app dirctory and link the new viewset to the url:
 
 ![urls](https://user-images.githubusercontent.com/48449311/174443026-93b3f01a-f433-4c23-990e-def47c8dd664.PNG)
 
-TODO: add url and prmossions
+- add the new_app/urls.py to the main project url page in server_django/urls.py:
+
+![main urls](https://user-images.githubusercontent.com/48449311/174449250-7757f3f6-f9eb-46af-b991-d356306c0076.PNG)
 
 
 ## Client Side
