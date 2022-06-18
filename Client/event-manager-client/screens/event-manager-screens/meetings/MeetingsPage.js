@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import Colors from "../../../constants/colors";
+import Colors from "../../../common/constants/colors";
 import SelectDropdown from "react-native-select-dropdown";
-import ItemListButton from "../../../components/basicComponents/ItemListButton";
+import ItemListButton from "../../../lindsly-style-react/components/buttons/ItemListButton";
 
 const MeetingsPage = (props) => {
   const testEvents = [
