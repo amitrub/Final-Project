@@ -6,13 +6,9 @@ from events import models
 
 from events.models import Event, EventSchedule
 from my_models.models import MyModelSerializer
-from meetings.models import Meetings
-from meetings.serializers import MeetingSerializer
 
 
 # -------------------EventSchedule-------------------
-
-
 class EventScheduleSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 

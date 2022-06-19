@@ -5,7 +5,6 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
 
 from users import views
-from products import views as viewproduct
 from events import views as view_event
 
 router = DefaultRouter()
