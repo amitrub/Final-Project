@@ -161,7 +161,7 @@ class PrivateEventApiTests(APITestCase):
 
         self.event.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.event.event_name, payload['event_name'])
+        self.assertEqual(self.event.budget, int(payload['budget']))
 
     def test_update_event_date(self):
         """Test updating the event for authenticated user"""
@@ -171,7 +171,7 @@ class PrivateEventApiTests(APITestCase):
 
         self.event.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.event.event_name, payload['event_name'])
+        self.assertEqual(str(self.event.date), payload['date'])
 
     def test_delete_event(self):
         """Test deleting the event for authenticated user"""
