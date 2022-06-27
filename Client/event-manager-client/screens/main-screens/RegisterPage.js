@@ -13,11 +13,11 @@ const RegisterPage = (props) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [fullName, setFullName] = React.useState("");
-  const [phone, setPhone] = React.useState("phoneTest");
-  const [city, setCity] = React.useState("cityTest");
-  const [country, setCountry] = React.useState("countryTest");
-  const [number, setNumber] = React.useState(1);
-  const [street, setStreet] = React.useState("streetTest");
+  const [phone, setPhone] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("");
+  const [number, setNumber] = React.useState("");
+  const [street, setStreet] = React.useState("");
   const myContext = useContext(UserAuthentication);
 
   const emptyRegisterInputs = () => {
