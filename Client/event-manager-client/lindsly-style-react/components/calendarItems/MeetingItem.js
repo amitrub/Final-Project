@@ -1,9 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../../../common/constants/colors";
+import { createOneButtonAlert } from "../../../common/constants/errorHandler";
 
 const MeetingItem = (props) => (
-  <TouchableOpacity style={styles.listItem}>
+  <TouchableOpacity
+    style={styles.listItem}
+    onPress={() =>
+      createOneButtonAlert(
+        "this feature is not implemented yet",
+        "OK",
+        "Tasks - future feature"
+      )
+    }
+  >
     <View>
       <Text style={styles.textTitle}>{props.description}</Text>
       <Text style={styles.text}>{props.eventName}</Text>

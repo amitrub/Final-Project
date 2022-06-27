@@ -4,6 +4,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import MeetingItem from "../calendarItems/MeetingItem";
 import { useNavigation } from "@react-navigation/native";
 import { TasksPreviewStyles } from "../../styles/styles";
+import { createOneButtonAlert } from "../../../common/constants/errorHandler";
 
 const TasksPreview = () => {
   const navigation = useNavigation();
@@ -11,11 +12,7 @@ const TasksPreview = () => {
   const previewTitle = (
     <View style={TasksPreviewStyles.row}>
       <Text style={TasksPreviewStyles.textTitle}>Today's tasks</Text>
-      <Entypo
-        name="dots-three-horizontal"
-        size={22}
-        onPress={() => navigation.navigate("Tasks")}
-      />
+      <Entypo name="dots-three-horizontal" size={22} />
     </View>
   );
   const body = (

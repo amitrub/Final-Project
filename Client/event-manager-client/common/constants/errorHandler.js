@@ -28,19 +28,3 @@ export const createTwoButtonAlert = (
     { text: button_text_Cancel, onPress: onPressCancel, style: "default" },
   ]);
 };
-
-export const handleResponseRegister = async (response) => {
-  try {
-    const data = await response.json();
-
-    if (STATUS_FAILED(response.status)) {
-        const errorMessage = data.Error ? data.Error : "data.Error";
-      createOneButtonAlert(errorMessage, "OK", "Registration Failed");
-    } else if (STATUS_SUCCESS(response.status)) {
-      const message = "You have successfully registered!\nplease LOGIN";
-      createOneButtonAlert(message, "OK", "Registration Succeeded");
-    }
-  } catch (error) {
-    console.log("handleResponse error", error);
-  }
-};
