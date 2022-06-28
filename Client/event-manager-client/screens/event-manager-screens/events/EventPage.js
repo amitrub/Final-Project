@@ -17,38 +17,36 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import DetailEventItem from "../../../components/basicComponents/Events/DetailEventItem";
-import DateTitle from "../../../components/basicComponents/others/DateTitle";
+import DetailEventItem from "../../../lindsly-style-react/components/eventItems/DetailEventItem";
+import DateTitle from "../../../lindsly-style-react/components/others/DateTitle";
 import Entypo from "react-native-vector-icons/Entypo";
-import Loader from "../../../components/basicComponents/others/Loader";
+import Loader from "../../../lindsly-style-react/components/others/Loader";
 import ErrorScreen, {
   ErrorMessages,
-} from "../../../components/basicComponents/others/ErrorScreen";
-import Log from "../../../constants/logger";
-import UserAuthentication from "../../../global/UserAuthentication";
-import { base_url, getEvent } from "../../../constants/urls";
-import { createOneButtonAlert } from "../../../constants/errorHandler";
-import Colors from "../../../constants/colors";
-import DatePickerInput from "../../../components/basicComponents/inputs/DatePickerInput";
-import IconButton from "../../../components/basicComponents/buttons/IconButton";
-import { EditEventEntity } from "../../../Entities/EventEntity";
-import DetailItem from "../../../components/basicComponents/others/DetailItem";
-import { EventPageStyles as styles } from "../../../styles/styles";
+} from "../../../lindsly-style-react/components/others/ErrorScreen";
+import Log from "../../../common/constants/logger";
+import UserAuthentication from "../../../common/global/UserAuthentication";
+import { base_url, getEvent } from "../../../common/constants/urls";
+import { createOneButtonAlert } from "../../../common/constants/errorHandler";
+import Colors from "../../../common/constants/colors";
+import DatePickerInput from "../../../lindsly-style-react/components/inputs/DatePickerInput";
+import IconButton from "../../../lindsly-style-react/components/buttons/IconButton";
+import { EditEventEntity } from "../../../common/Entities/EventEntity";
+import DetailItem from "../../../lindsly-style-react/components/others/DetailItem";
+import { EventPageStyles as styles } from "../../../lindsly-style-react/styles/styles";
 import {
   deleteEventRequest,
   editEventRequest,
   fetchEvent,
-} from "../../../api/EventPage/EventsPageApi";
-import cancelModalButton from "../../../components/basicComponents/buttons/CancelModalButton";
+} from "../../../common/api/EventPage/EventsPageApi";
+import cancelModalButton from "../../../lindsly-style-react/components/buttons/CancelModalButton";
 
 const EventPage = (props) => {
   const params = props.route.params;
   const navigation = props.navigation;
   const myContext = useContext(UserAuthentication);
-  const { token, isLoading, setIsLoading, error, setError, refresh } =
-    myContext;
+  const { isLoading, setIsLoading, refresh } = myContext;
   const event_id = params.event.id;
-  const url = base_url + getEvent(event_id);
 
   const [event, setEvent] = useState({});
 
@@ -63,7 +61,7 @@ const EventPage = (props) => {
   const [editBudget, setEditBudget] = useState(0);
 
   const getData = useCallback(async () => {
-      await fetchEvent(myContext, navigation, setEvent, event_id);
+    await fetchEvent(myContext, navigation, setEvent, event_id);
   }, [event_id]);
 
   useLayoutEffect(() => {
@@ -263,7 +261,7 @@ const EventPage = (props) => {
         <TouchableOpacity
           onPress={() => setTitleModalVisible(!titleModalVisible)}
         >
-            <Text style={styles.h1}>{event.event_name}</Text>
+          <Text style={styles.h1}>{event.event_name}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -340,23 +338,25 @@ const EventPage = (props) => {
     );
   };
   const saveDeleteButtons = () => {
-      return (<View style={[{ marginTop: 20 }, styles.rowButtons]}>
-          <IconButton
-              onPress={onSaveEvent}
-              icon={"save"}
-              color={Colors.black}
-              iconSize={18}
-              textButton={"Save"}
-          />
-          <IconButton
-              onPress={() => deleteEventRequest(myContext, event_id, navigation)}
-              icon={"trash"}
-              color={Colors.black}
-              iconSize={18}
-              textButton={"Delete"}
-          />
-      </View>);
-  }
+    return (
+      <View style={[{ marginTop: 20 }, styles.rowButtons]}>
+        <IconButton
+          onPress={onSaveEvent}
+          icon={"save"}
+          color={Colors.black}
+          iconSize={18}
+          textButton={"Save"}
+        />
+        <IconButton
+          onPress={() => deleteEventRequest(myContext, event_id, navigation)}
+          icon={"trash"}
+          color={Colors.black}
+          iconSize={18}
+          textButton={"Delete"}
+        />
+      </View>
+    );
+  };
   const onSaveEvent = async () => {
     let editEvent = new EditEventEntity(
       event.id,
@@ -371,7 +371,6 @@ const EventPage = (props) => {
   };
 
   if (isLoading) return <Loader />;
-  if (error) return <ErrorScreen errorMessage={ErrorMessages.Fetching} />;
 
   return (
     <View>

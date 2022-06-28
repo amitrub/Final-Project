@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { TasksPageStyles } from "../../../styles/styles";
+import { TasksPageStyles } from "../../../lindsly-style-react/styles/styles";
 
 const TasksPage = () => {
   return (
