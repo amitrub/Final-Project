@@ -13,7 +13,6 @@ class UserObjectsManager(BaseUserManager):
 
     def create_user(self, email, name, password=None, phone="", **kwargs):
         """Create a new user profile"""
-        print("----------------------------")
         if not email:
             raise ValueError('User must have an email address')
 

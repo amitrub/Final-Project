@@ -87,7 +87,6 @@ class EventSerializer(MyModelSerializer):
             budget=validated_data['budget'],
             location=validated_data['location'],
         )
-        print(validated_data)
         if 'event_owners' in validated_data:
             event_owners = validated_data.pop('event_owners')
             for event_owner in event_owners:
@@ -100,7 +99,6 @@ class EventSerializer(MyModelSerializer):
             event_sch = validated_data.pop('event_schedules')
             for schedule in event_sch:
                 EventSchedule.objects.create(event_id=event.id, **schedule)
-        print(event)
         return event
 
 

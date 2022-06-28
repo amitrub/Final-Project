@@ -236,7 +236,6 @@ class EventOwnerApiTests(APITestCase):
     def test_add_event_owner_success(self):
         """Test retrieving event for logged in user"""
         res = self.client.get(UPDATE_EVENT_OWNER_URL(self.event.id, self.event_owner.id))
-        print(res.content)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['name'], self.event_owner.name)
         self.assertEqual(res.data['phone'], self.event_owner.phone)
