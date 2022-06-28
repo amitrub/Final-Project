@@ -5,6 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { enableScreens } from "react-native-screens";
 import UserAuthentication from "./common/global/UserAuthentication";
 import { WelcomeStackScreen } from "./navigation/welcomeStack";
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 enableScreens();
 
