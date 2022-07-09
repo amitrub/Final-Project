@@ -1,14 +1,115 @@
+from abc import ABC
+
+import requests
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from addresses.models import Address
 from addresses.serializers import AddressSerializer
+from django.contrib.auth import get_user_model, authenticate
+from django.utils.translation import ugettext_lazy as _
 from users import models
+from users.models import User, EventManager, EventOwner, Supplier
+from my_models.models import MyModelSerializer, MySerializer
+
+
+# -------------------Login-------------------
+class AuthTokenSerializer(MySerializer):
+    """Serializer for the user authentication object"""
+    email = serializers.CharField()
+    password = serializers.CharField(
+        style={'input_type': 'password'},
+        trim_whitespace=False
+    )
+
+    def validate(self, attrs):
+        """Validate and authenticate the user"""
+        email = attrs.get('email').lower()
+        password = attrs.get('password')
+
+        user = authenticate(
+            request=self.context.get('request'),
+            username=email,
+            password=password
+        )
+        if not user:
+            msg = 'Email or password not filled in properly'
+            raise ValidationError(detail=msg)
+
+        attrs['user'] = user
+        return attrs
+
+
+# -------------------LoginWithGoogle-------------------
+class AuthTokenWithGoogleSerializer(MySerializer):
+    """Serializer for the user authentication object"""
+    email = serializers.CharField()
+    access_token = serializers.CharField()
+
+    def validate(self, attrs):
+        """Validate and authenticate the user"""
+        email = attrs.get('email')
+        access_token = attrs.get('access_token')
+        url = 'https://www.googleapis.com/userinfo/v2/me'
+        headers = {
+            "Authorization": f'Bearer {access_token}'
+        }
+        result = requests.get(url=url, headers=headers)
+        result_json = result.json()
+
+        # {
+        #     "id": "109599329927112222200",
+        #     "email": "amitrubin21@gmail.com",
+        #     "verified_email": true,
+        #     "name": "עמית רובין",
+        #     "given_name": "עמית",
+        #     "family_name": "רובין",
+        #     "picture": "https://lh3.googleusercontent.com/a/AATXAJwODH7MpGDabOMZKn3LnXbQBSvZlCird65EVl4t=s96-c",
+        #     "locale": "he"
+        # }
+
+        # {
+        #     "error": {
+        #         "code": 401,
+        #         "message": "Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.",
+        #         "status": "UNAUTHENTICATED"
+        #     }
+        # }
+
+        if "error" in result_json:
+            msg = _(result_json["error"]["message"])
+            raise ValidationError(msg, code='authorization')
+
+        google_email = result_json["email"]
+        verified_email = result_json["verified_email"]
+        name = result_json["name"]
+
+        if not email == google_email or not verified_email:
+            msg = _('There is an error logging in through Google')
+            raise ValidationError(msg, code='authorization')
+
+        email = email.lower()
+        if not User.objects.filter(email=email).exists():
+            # TODO: Create user from Google
+            # "https://www.googleapis.com/calendar/v3/users/me/calendarList"
+            # 'https://people.googleapis.com/v1/people/me?personFields=birthdays,addresses,phoneNumbers,genders'
+            # result = requests.get(url='https://people.googleapis.com/v1/people/me?personFields=addresses,phoneNumbers',
+            #                       headers=headers)
+            # result_json = result.json()
+            # print(result_json)
+            user = User.objects.create_user(email, name, '1234', "")
+            Address.objects.create(user=user, country='', city='', street='', number=0)
+
+        user = User.objects.get(email=email)
+
+        attrs['user'] = user
+        return attrs
+
 
 # -------------------User-------------------
-from users.models import User, EventManager, EventOwner, Supplier
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(MyModelSerializer):
     """Serializes a user profile object"""
 
     address = AddressSerializer()
@@ -19,18 +120,14 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
+                'min_length': 2,
                 'style': {'input_type': 'password'}
             }
         }
 
     def create(self, validated_data):
         """Create and return new user"""
-        user = User.objects.create_user(
-            email=validated_data['email'],
-            name=validated_data['name'],
-            password=validated_data['password'],
-            phone=validated_data['phone']
-            )
+        user = User.objects.create_user(**validated_data)
         if 'address' in validated_data:
             address_data = validated_data.pop('address')
             Address.objects.create(user=user, **address_data)
@@ -59,7 +156,8 @@ class UserSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class EventManagerSerializer(serializers.ModelSerializer):
+# -------------------EventManager-------------------
+class EventManagerSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -71,7 +169,10 @@ class EventManagerSerializer(serializers.ModelSerializer):
         model = models.EventManager
         fields = '__all__'
 
-class EventOwnerSerializer(serializers.ModelSerializer):
+
+# TODO: Not in use yet
+# -------------------Supplier-------------------
+class EventOwnerSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -83,7 +184,10 @@ class EventOwnerSerializer(serializers.ModelSerializer):
         model = models.EventOwner
         fields = '__all__'
 
-class SupplierSerializer(serializers.ModelSerializer):
+
+# TODO: Not in use yet
+# -------------------Supplier-------------------
+class SupplierSerializer(MyModelSerializer):
     """Serializer profile feed items"""
 
     user = serializers.SlugRelatedField(
@@ -94,5 +198,3 @@ class SupplierSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Supplier
         fields = '__all__'
-
-

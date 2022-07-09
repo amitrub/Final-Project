@@ -1,60 +1,52 @@
-import React, { useContext, useEffect } from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
-import Colors from "../../constants/colors";
-import MeetingsPreview from "../../components/HomePreview/MeetingsPreview";
-import EventsPreview from "../../components/HomePreview/EventsPreview";
-import TasksPreview from "../../components/HomePreview/TasksPreview";
-import { useDispatch, useSelector } from "react-redux";
-import * as eventsActions from "../../store/actions/events";
-import Entypo from "react-native-vector-icons/Entypo";
-import UserAuthentication from "../../global/UserAuthentication";
+import React, { useContext, useEffect, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import MeetingsPreview from "../../lindsly-style-react/components/previewItems/MeetingsPreview";
+import EventsPreview from "../../lindsly-style-react/components/previewItems/EventsPreview";
+import TasksPreview from "../../lindsly-style-react/components/previewItems/TasksPreview";
+import UserAuthentication from "../../common/global/UserAuthentication";
+import Loader from "../../lindsly-style-react/components/others/Loader";
+import {
+  getHomePageData,
+  getIsEventManager,
+} from "../../common/api/HomePage/HomePageApi";
+import { HomePageStyles } from "../../lindsly-style-react/styles/styles";
+import { getEventScheduleByUserId } from "../../common/api/Calendar/CalendarPageApi";
+import { useNavigation } from "@react-navigation/native";
 
-const HomePage = (props) => {
+const HomePage = () => {
   const myContext = useContext(UserAuthentication);
-  console.log("myContext homepage", myContext);
+  const navigation = useNavigation();
+  const { name, refresh, isLoading, setIsLoading } = myContext;
+
+  const [eventsPreview, setEventsPreview] = React.useState([]);
+  const [fetchedEventSchedules, setFetchedEventSchedules] = useState([]);
+
+  useEffect(async () => {
+    setIsLoading(true);
+    await getIsEventManager(myContext);
+    await getHomePageData(myContext, setEventsPreview);
+    await getEventScheduleByUserId(myContext, setFetchedEventSchedules);
+  }, [refresh]);
+  if (isLoading) return <Loader />;
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScrollView>
-        <View style={styles.row}>
-          <Text style={styles.mainTitle}>Hello Hadasi Hayafa</Text>
-          <Entypo name="plus" size={20} />
+    <ScrollView>
+      <View style={HomePageStyles.screen}>
+        <View style={{ marginTop: 100 }}>
+          <Text style={HomePageStyles.mainTitle}>Hello {name}!</Text>
+        </View>
+        <View style={{ paddingTop: "15%" }}>
+          <MeetingsPreview eventStages={fetchedEventSchedules} />
         </View>
         <View style={{ paddingTop: "7%" }}>
-          <MeetingsPreview HomeProps={props} />
+          <EventsPreview events={eventsPreview} />
         </View>
         <View style={{ paddingTop: "7%" }}>
-          <EventsPreview HomeProps={props} />
+          <TasksPreview />
         </View>
-        <View style={{ paddingTop: "7%" }}>
-          <TasksPreview HomeProps={props} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mainTitle: {
-    color: Colors.text_black,
-    fontFamily: "alef-bold",
-    fontSize: 18,
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: 25,
-    textAlign: "center",
-  },
-  row: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    marginTop: 30,
-    width: 400,
-  },
-});
 
 export default HomePage;

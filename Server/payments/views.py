@@ -5,12 +5,13 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from my_models.models import MyModelViewSet
 from payments import models, serializers, permissions
 from payments.models import Payment
 from users.models import User
 
 
-class PaymentViewSet(viewsets.ModelViewSet):
+class PaymentViewSet(MyModelViewSet):
     """Handle creating, reading and updating profiles feed items"""
     serializer_class = serializers.PaymentSerializer
     queryset = models.Payment.objects.all()

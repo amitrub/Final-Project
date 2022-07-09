@@ -5,17 +5,22 @@ from django.contrib.auth.models import BaseUserManager
 
 
 # -------------------User-------------------
+from rest_framework.exceptions import ValidationError
+
 
 class UserObjectsManager(BaseUserManager):
     """Manager for user profiles"""
 
-    def create_user(self, email, name, password=None, phone=""):
+    def create_user(self, email, name, password=None, phone="", **kwargs):
         """Create a new user profile"""
-        print("----------------------------")
         if not email:
             raise ValueError('User must have an email address')
 
-        email = self.normalize_email(email)
+        email = self.normalize_email(email).lower()
+
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(detail={"Error": "user with this email already exists."})
+
         user = self.model(email=email, name=name, phone=phone)
 
         user.set_password(password)
@@ -23,7 +28,7 @@ class UserObjectsManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, name, password, phone=""):
+    def create_superuser(self, email, name, password, phone="", **kwargs):
         """Create and save a new superuser with given details"""
         user = self.create_user(email, name, password, phone)
 
@@ -70,6 +75,7 @@ class EventManager(models.Model):
                                 default= None)
 
 
+# TODO: Not in use yet
 # -------------------EventOwner-------------------
 
 class EventOwner(models.Model):
@@ -78,7 +84,7 @@ class EventOwner(models.Model):
                                 primary_key=True,
                                 default= None)
 
-
+# TODO: Not in use yet
 # -------------------Supplier-------------------
 
 
